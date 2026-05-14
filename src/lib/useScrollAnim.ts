@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, RefObject } from 'react';
 
-export default function useScrollAnim(ref: RefObject<HTMLElement>) {
+export default function useScrollAnim(ref: RefObject<HTMLElement | null>) {
   useEffect(() => {
     if (!ref?.current) return;
 
