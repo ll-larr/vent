@@ -1,6 +1,28 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #1e5c32;
+  --color-brand-hover: #2d7d46;
+  --color-brand-light: #eef5ef;
+  --color-brand-muted: #5a6b5e;
+  --color-bg: #f7faf7;
+
+  --font-family-sans: 'Onest', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --max-width-content: 1120px;
+
+  --radius-pill: 980px;
+  --radius-card: 20px;
+
+  --background-image-hero: linear-gradient(160deg, #0f2d1a 0%, #1e5c32 60%, #163d24 100%);
+
+  --animate-fade-up: fadeUp 0.8s ease forwards;
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
 
 @layer base {
   *, *::before, *::after {
