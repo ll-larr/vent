@@ -44,6 +44,8 @@ const services: Service[] = [
   },
 ];
 
+const CARD_TRANSITION = 'opacity 0.25s ease, transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease, background-color 0.3s ease';
+
 export default function Services() {
   const ref = useRef<HTMLElement>(null);
   const [hovered, setHovered] = useState<string | null>(null);
@@ -53,7 +55,6 @@ export default function Services() {
     <section id="services" ref={ref} className="py-24 px-4 sm:px-6 bg-bg">
       <div className="max-w-content mx-auto">
 
-        {/* Section header */}
         <div className="max-w-xl mb-16" data-anim>
           <span className="text-xs font-bold uppercase tracking-[0.12em] text-brand mb-3 block">
             Что мы делаем
@@ -67,87 +68,89 @@ export default function Services() {
           </p>
         </div>
 
-        {/* Cards grid */}
         <div
           className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5"
           onMouseLeave={() => setHovered(null)}
         >
           {services.map((s) => {
             const Icon = s.icon;
-            // A card is "active" (green) when hovered, OR when nothing is hovered and it's featured
-            const isActive = hovered ? hovered === s.title : !!s.featured;
-            // Dim non-hovered cards when something is hovered
+            const isActive = hovered !== null ? hovered === s.title : !!s.featured;
             const isDimmed = hovered !== null && hovered !== s.title;
 
             return (
-              <div
-                key={s.title}
-                data-anim
-                onMouseEnter={() => setHovered(s.title)}
-                className={[
-                  'group relative flex flex-col rounded-xl2 p-7 cursor-default',
-                  'transition-all duration-300 ease-out',
-                  isActive
-                    ? '-translate-y-1.5 shadow-float bg-brand border-brand'
-                    : 'bg-white border border-black/[0.05] shadow-card',
-                  isDimmed ? 'opacity-60 scale-[0.98]' : '',
-                ].join(' ')}
-              >
-                {/* Icon */}
+              <div key={s.title} data-anim>
                 <div
+                  onMouseEnter={() => setHovered(s.title)}
+                  style={{
+                    opacity: isDimmed ? 0.45 : 1,
+                    transform: isActive
+                      ? 'translateY(-6px)'
+                      : isDimmed
+                      ? 'scale(0.98)'
+                      : 'translateY(0) scale(1)',
+                    transition: CARD_TRANSITION,
+                  }}
                   className={[
-                    'w-11 h-11 rounded-xl flex items-center justify-center mb-6 transition-all duration-300',
-                    isActive ? 'bg-white/15 scale-110' : 'bg-brand-light',
+                    'relative flex flex-col rounded-xl2 p-7 cursor-default h-full',
+                    isActive
+                      ? 'bg-brand shadow-float'
+                      : 'bg-white border border-black/[0.05] shadow-card',
                   ].join(' ')}
                 >
-                  <Icon
-                    size={22}
-                    strokeWidth={1.5}
-                    className={isActive ? 'text-white' : 'text-brand'}
-                  />
-                </div>
-
-                <h3
-                  className={[
-                    'font-semibold text-[1.05rem] mb-2.5 transition-colors duration-300',
-                    isActive ? 'text-white' : 'text-ink',
-                  ].join(' ')}
-                >
-                  {s.title}
-                </h3>
-
-                <p
-                  className={[
-                    'text-sm leading-relaxed flex-1 transition-colors duration-300',
-                    isActive ? 'text-white/65' : 'text-brand-muted',
-                  ].join(' ')}
-                >
-                  {s.description}
-                </p>
-
-                {/* Price + arrow */}
-                <div
-                  className={[
-                    'mt-6 pt-5 flex items-center justify-between border-t transition-colors duration-300',
-                    isActive ? 'border-white/15' : 'border-brand-light',
-                  ].join(' ')}
-                >
-                  <span
+                  <div
                     className={[
-                      'text-sm font-semibold transition-colors duration-300',
-                      isActive ? 'text-brand-accent' : 'text-brand',
+                      'w-11 h-11 rounded-xl flex items-center justify-center mb-6 transition-all duration-300',
+                      isActive ? 'bg-white/15 scale-110' : 'bg-brand-light',
                     ].join(' ')}
                   >
-                    {s.price}
-                  </span>
-                  <ArrowRight
-                    size={15}
-                    strokeWidth={2}
+                    <Icon
+                      size={22}
+                      strokeWidth={1.5}
+                      className={isActive ? 'text-white' : 'text-brand'}
+                    />
+                  </div>
+
+                  <h3
                     className={[
-                      'transition-all duration-300',
-                      isActive ? 'text-white/50 translate-x-1' : 'text-brand-muted',
+                      'font-semibold text-[1.05rem] mb-2.5 transition-colors duration-300',
+                      isActive ? 'text-white' : 'text-ink',
                     ].join(' ')}
-                  />
+                  >
+                    {s.title}
+                  </h3>
+
+                  <p
+                    className={[
+                      'text-sm leading-relaxed flex-1 transition-colors duration-300',
+                      isActive ? 'text-white/65' : 'text-brand-muted',
+                    ].join(' ')}
+                  >
+                    {s.description}
+                  </p>
+
+                  <div
+                    className={[
+                      'mt-6 pt-5 flex items-center justify-between border-t transition-colors duration-300',
+                      isActive ? 'border-white/15' : 'border-brand-light',
+                    ].join(' ')}
+                  >
+                    <span
+                      className={[
+                        'text-sm font-semibold transition-colors duration-300',
+                        isActive ? 'text-brand-accent' : 'text-brand',
+                      ].join(' ')}
+                    >
+                      {s.price}
+                    </span>
+                    <ArrowRight
+                      size={15}
+                      strokeWidth={2}
+                      className={[
+                        'transition-all duration-300',
+                        isActive ? 'text-white/50 translate-x-1' : 'text-brand-muted',
+                      ].join(' ')}
+                    />
+                  </div>
                 </div>
               </div>
             );
