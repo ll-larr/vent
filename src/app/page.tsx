@@ -9,6 +9,7 @@ import Stats from '@/components/Stats/Stats';
 import Reviews from '@/components/Reviews/Reviews';
 import About from '@/components/About/About';
 import Promos from '@/components/Promos/Promos';
+import HomeOrchestrator from '@/components/HomeOrchestrator/HomeOrchestrator';
 
 export const metadata: Metadata = {
   title: 'Clean Vent — Чистка вентиляции для бизнеса',
@@ -28,7 +29,7 @@ export default function Home() {
         <Reviews />
         <About />
         <Promos />
-        {/* Calculator and ContactSection will be added in Plan 2 */}
+        <HomeOrchestrator />
       </main>
       <Footer />
     </>
