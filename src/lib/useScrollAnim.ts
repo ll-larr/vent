@@ -1,27 +1,44 @@
 'use client';
-import { useEffect, RefObject } from 'react';
+import { useEffect, type RefObject } from 'react';
 
-export default function useScrollAnim(ref: RefObject<HTMLElement | null>) {
+interface ScrollAnimOptions {
+  threshold?: number;
+  rootMargin?: string;
+  staggerMs?: number;
+}
+
+export default function useScrollAnim(
+  ref: RefObject<HTMLElement | null>,
+  {
+    threshold = 0.1,
+    rootMargin = '0px 0px -60px 0px',
+    staggerMs = 70,
+  }: ScrollAnimOptions = {}
+) {
   useEffect(() => {
-    if (!ref?.current) return;
+    const container = ref.current;
+    if (!container) return;
+
+    const els = Array.from(container.querySelectorAll<HTMLElement>('[data-anim]'));
+
+    // Apply stagger delays via inline transition-delay
+    els.forEach((el, i) => {
+      el.style.transitionDelay = `${i * staggerMs}ms`;
+    });
 
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const siblings = Array.from(
-              entry.target.parentElement?.children ?? []
-            ).filter((c) => c.hasAttribute('data-anim'));
-            const delay = siblings.indexOf(entry.target as Element) * 120;
-            setTimeout(() => entry.target.classList.add('visible'), delay);
+            (entry.target as HTMLElement).classList.add('visible');
             obs.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -20px 0px' }
+      { threshold, rootMargin }
     );
 
-    ref.current.querySelectorAll('[data-anim]').forEach((el) => obs.observe(el));
+    els.forEach((el) => obs.observe(el));
     return () => obs.disconnect();
-  }, [ref]);
+  }, [ref, threshold, rootMargin, staggerMs]);
 }

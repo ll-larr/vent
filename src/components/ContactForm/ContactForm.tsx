@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { submitSchema, type SubmitFormData, serviceOptions } from '@/lib/schemas';
 import { SERVICES } from '@/lib/pricing';
 import type { ServiceId } from '@/components/Calculator/types';
+import { CheckCircle2, ArrowRight } from '@/lib/icons';
 import { z } from 'zod';
 
 const serviceLabels: Record<string, string> = Object.fromEntries(
@@ -17,9 +18,10 @@ interface ContactFormProps {
 }
 
 type FormStatus = 'idle' | 'loading' | 'success' | 'error';
-
-// Input type (before Zod transforms defaults) for useForm
 type FormInput = z.input<typeof submitSchema>;
+
+const inputClass =
+  'w-full border border-black/[0.12] rounded-xl px-4 py-3 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-brand/30 bg-white transition-shadow placeholder:text-ink/30';
 
 export default function ContactForm({
   preselectedServices = [],
@@ -58,78 +60,92 @@ export default function ContactForm({
 
   if (status === 'success') {
     return (
-      <div className="bg-brand-light border border-brand/20 rounded-card p-10 text-center">
-        <div className="text-4xl mb-4">✓</div>
-        <h3 className="font-semibold text-xl text-gray-900 mb-2">Заявка отправлена!</h3>
-        <p className="text-brand-muted">Перезвоним в течение 30 минут в рабочее время</p>
+      <div className="bg-brand-light border border-brand/20 rounded-xl2 p-10 text-center flex flex-col items-center gap-3">
+        <div className="w-14 h-14 bg-brand rounded-full flex items-center justify-center mb-2">
+          <CheckCircle2 size={28} strokeWidth={1.5} className="text-white" />
+        </div>
+        <h3 className="font-semibold text-xl text-ink">Заявка отправлена!</h3>
+        <p className="text-brand-muted text-sm">Перезвоним в течение 30 минут в рабочее время</p>
       </div>
     );
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+
       {/* Name */}
       <div>
-        <label className="block text-sm font-medium text-gray-900 mb-1.5">
-          Имя <span className="text-red-500">*</span>
+        <label className="block text-sm font-medium text-ink mb-1.5">
+          Имя <span className="text-red-400">*</span>
         </label>
-        <input
-          {...register('name')}
-          placeholder="Алексей"
-          className="w-full border border-brand/20 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand/30 bg-white"
-        />
-        {errors.name && (
-          <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
-        )}
+        <input {...register('name')} placeholder="Алексей" className={inputClass} />
+        {errors.name && <p className="text-red-400 text-xs mt-1.5">{errors.name.message}</p>}
       </div>
 
       {/* Phone */}
       <div>
-        <label className="block text-sm font-medium text-gray-900 mb-1.5">
-          Телефон <span className="text-red-500">*</span>
+        <label className="block text-sm font-medium text-ink mb-1.5">
+          Телефон <span className="text-red-400">*</span>
         </label>
         <input
           {...register('phone')}
           placeholder="+7 (999) 000-00-00"
           type="tel"
-          className="w-full border border-brand/20 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand/30 bg-white"
+          inputMode="tel"
+          autoComplete="tel"
+          className={inputClass}
         />
-        {errors.phone && (
-          <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>
-        )}
+        {errors.phone && <p className="text-red-400 text-xs mt-1.5">{errors.phone.message}</p>}
       </div>
 
       {/* Object type */}
       <div>
-        <label className="block text-sm font-medium text-gray-900 mb-1.5">
-          Тип объекта <span className="text-red-500">*</span>
+        <label className="block text-sm font-medium text-ink mb-1.5">
+          Тип объекта <span className="text-red-400">*</span>
         </label>
         <input
           {...register('objectType')}
           placeholder='Ресторан "Доминос пицца"'
-          className="w-full border border-brand/20 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand/30 bg-white"
+          className={inputClass}
         />
-        {errors.objectType && (
-          <p className="text-red-500 text-xs mt-1">{errors.objectType.message}</p>
-        )}
+        {errors.objectType && <p className="text-red-400 text-xs mt-1.5">{errors.objectType.message}</p>}
+      </div>
+
+      {/* Area — now shown in form */}
+      <div>
+        <label className="block text-sm font-medium text-ink mb-1.5">
+          Площадь помещения (м²)
+        </label>
+        <input
+          {...register('area', { valueAsNumber: true })}
+          type="number"
+          inputMode="numeric"
+          min={1}
+          placeholder="Например: 150"
+          defaultValue={preselectedArea}
+          className={inputClass}
+        />
+        <p className="text-ink/35 text-xs mt-1.5">
+          Укажите примерную площадь — это поможет точнее рассчитать стоимость
+        </p>
       </div>
 
       {/* Services */}
       <div>
-        <label className="block text-sm font-medium text-gray-900 mb-3">
+        <label className="block text-sm font-medium text-ink mb-3">
           Какие услуги нужны
         </label>
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           {serviceOptions.map((id) => (
-            <label key={id} className="flex items-center gap-3 cursor-pointer group">
+            <label key={id} className="flex items-center gap-3 cursor-pointer group px-1 py-0.5">
               <input
                 type="checkbox"
                 value={id}
                 {...register('services')}
                 defaultChecked={preselectedServices.includes(id as ServiceId)}
-                className="w-4 h-4 accent-brand"
+                className="w-4 h-4 accent-brand rounded"
               />
-              <span className="text-sm text-gray-700 group-hover:text-gray-900 transition-colors">
+              <span className="text-sm text-ink/65 group-hover:text-ink transition-colors">
                 {serviceLabels[id] ?? id}
               </span>
             </label>
@@ -139,19 +155,17 @@ export default function ContactForm({
 
       {/* Comment */}
       <div>
-        <label className="block text-sm font-medium text-gray-900 mb-1.5">
-          Комментарий
-        </label>
+        <label className="block text-sm font-medium text-ink mb-1.5">Комментарий</label>
         <textarea
           {...register('comment')}
           rows={3}
-          placeholder="Дополнительная информация об объекте, удобное время звонка..."
-          className="w-full border border-brand/20 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand/30 bg-white resize-none"
+          placeholder="Дополнительная информация, удобное время звонка..."
+          className={`${inputClass} resize-none`}
         />
       </div>
 
       {status === 'error' && (
-        <p className="text-red-500 text-sm">
+        <p className="text-red-400 text-sm bg-red-50 border border-red-100 rounded-xl px-4 py-3">
           Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.
         </p>
       )}
@@ -159,12 +173,17 @@ export default function ContactForm({
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="w-full bg-brand text-white font-semibold py-4 rounded-pill hover:bg-brand-hover transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        className="group w-full bg-brand text-white font-semibold py-4 rounded-pill hover:bg-brand-hover transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 hover:shadow-lifted"
       >
-        {status === 'loading' ? 'Отправляем...' : 'Отправить заявку'}
+        {status === 'loading' ? 'Отправляем...' : (
+          <>
+            Отправить заявку
+            <ArrowRight size={15} strokeWidth={2} className="transition-transform group-hover:translate-x-1" />
+          </>
+        )}
       </button>
 
-      <p className="text-xs text-brand-muted text-center">
+      <p className="text-xs text-ink/35 text-center">
         Нажимая кнопку, вы соглашаетесь с{' '}
         <a href="/privacy" className="underline hover:text-brand transition-colors">
           политикой конфиденциальности
