@@ -1,0 +1,14 @@
+@import '../../app/variables.scss';
+.fstrip {
+  background: $card-bg; padding: 80px 48px; border-bottom: 1px solid $card-border;
+  &__inner { max-width: $max-w; margin: 0 auto; display: grid; grid-template-columns: repeat(3,1fr); gap: 48px; }
+  &__item { text-align: center; @include fade-up;
+    h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+    p { font-size: 14px; color: $text-light; line-height: 1.5; }
+  }
+  &__icon { width: 48px; height: 48px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; background: $section-alt; border-radius: 14px;
+    svg { width: 24px; height: 24px; color: $accent; }
+  }
+  @media (max-width: 1024px) { padding: 60px 24px; }
+  @media (max-width: 640px) { &__inner { grid-template-columns: 1fr; gap: 32px; } }
+}

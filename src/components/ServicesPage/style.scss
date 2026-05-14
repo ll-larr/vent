@@ -1,0 +1,40 @@
+@import '../../app/variables.scss';
+.accent-line { background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #60a5fa 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer 4s linear infinite; }
+.svc-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+  &__text { h1 { font-size: clamp(36px,5vw,56px); font-weight: 700; color: $text-hero; letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 24px; opacity: 0; animation: fadeUp .8s .3s forwards; }
+    p { font-size: 16px; color: #8b95a8; line-height: 1.7; opacity: 0; animation: fadeUp .8s .5s forwards; }
+  }
+  @media (max-width: 1024px) { grid-template-columns: 1fr; gap: 40px; }
+}
+.pricebox { &__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; opacity: 0; animation: fadeUp .8s .6s forwards; }
+  &__title { font-size: 15px; font-weight: 700; color: #e0e7f1; text-transform: uppercase; letter-spacing: .04em; }
+  &__badge { background: #1db954; color: #fff; font-size: 12px; font-weight: 700; padding: 6px 16px; border-radius: $radius-pill; text-transform: uppercase; }
+  &__rows { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden; backdrop-filter: blur(8px); opacity: 0; animation: fadeUp .8s .6s forwards; }
+  &__row { display: flex; align-items: baseline; padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.06); transition: background .2s; &:last-child { border-bottom: none; } &:hover { background: rgba(255,255,255,0.04); } }
+  &__service { font-size: 15px; color: #c8d0dc; white-space: nowrap; }
+  &__dots { flex: 1; margin: 0 12px; border-bottom: 1px dotted rgba(255,255,255,0.12); min-width: 20px; align-self: center; margin-bottom: 4px; }
+  &__price { font-size: 15px; color: $text-hero; font-weight: 600; white-space: nowrap; }
+}
+.svc-grid-section { padding: 80px 48px; background: $bg; @media (max-width: 1024px) { padding: 60px 24px; } }
+.svc-grid { max-width: $max-w; margin: 0 auto; display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
+  @media (max-width: 1024px) { grid-template-columns: repeat(2,1fr); }
+  @media (max-width: 640px) { grid-template-columns: 1fr; }
+}
+.svc-card { @include card-base; overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; @include fade-up; cursor: pointer;
+  &:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,0,0,0.07); }
+  &__visual { position: relative; width: 100%; aspect-ratio: 1/1; background: #f0f2f6; overflow: hidden;
+    img { width: 100%; height: 100%; object-fit: contain; padding: 12px; display: block; transition: transform .5s $ease; }
+    .svc-card:hover & img { transform: scale(1.06); }
+  }
+  &__overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 60px 24px 20px; background: linear-gradient(transparent 0%, rgba(6,13,31,0.5) 55%, rgba(6,13,31,0.78) 100%); pointer-events: none;
+    h3 { font-size: 20px; font-weight: 700; color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,0.25); }
+  }
+  &__desc { font-size: 15px; color: #6e6e73; line-height: 1.65; padding: 16px 20px 20px; }
+}
+.svc-cta { padding: 100px 48px; background: $section-alt; text-align: center;
+  &__inner { max-width: 600px; margin: 0 auto; }
+  h2 { font-size: clamp(28px,4vw,44px); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 16px; @include fade-up; }
+  p { font-size: 17px; color: $text-light; line-height: 1.6; margin-bottom: 32px; @include fade-up; }
+  div[data-anim] { @include fade-up; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  @media (max-width: 1024px) { padding: 80px 24px; }
+}

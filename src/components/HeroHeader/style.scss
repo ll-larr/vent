@@ -1,0 +1,30 @@
+@import '../../app/variables.scss';
+
+.hero-header {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+  padding: 28px 48px; display: flex; align-items: center; justify-content: space-between;
+  opacity: 0; animation: fadeDown .7s .2s forwards;
+
+  &__logo {
+    display: flex; align-items: center; gap: 12px; text-decoration: none; color: $text-hero;
+    svg { width: 34px; height: 34px; transition: transform .5s $ease; }
+    &:hover svg { transform: rotate(180deg); }
+    span { font-weight: 600; font-size: 18px; letter-spacing: -0.02em; }
+  }
+
+  &__nav {
+    display: flex; gap: 8px; align-items: center;
+    @include glass(rgba(255,255,255,0.06), 12px);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: $radius-pill; padding: 6px 8px;
+    a { color: $text-hero-sub; text-decoration: none; font-size: 14px; font-weight: 500; padding: 10px 20px; border-radius: $radius-pill; transition: all .3s $ease;
+      &:hover { color: $text-hero; background: rgba(255,255,255,0.1); }
+    }
+  }
+
+  &__right { display: flex; align-items: center; gap: 20px; }
+  &__phone { color: $text-hero; text-decoration: none; font-size: 15px; font-weight: 500; transition: opacity .3s; &:hover { opacity: .7; } }
+  &__cta { background: $accent; color: $white; border: none; padding: 12px 24px; border-radius: $radius-pill; font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none; transition: all .3s $ease; &:hover { background: $accent-hover; transform: scale(1.05); } }
+
+  @media (max-width: 1024px) { padding: 20px 24px; &__nav { display: none; } }
+  @media (max-width: 640px) { &__phone { display: none; } }
+}

@@ -1,0 +1,39 @@
+@import '../../app/variables.scss';
+
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 0 48px; height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  @include glass(rgba(255,255,255,0.85));
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  transform: translateY(-100%); opacity: 0;
+  transition: transform .45s $ease, opacity .45s $ease;
+  &.visible { transform: translateY(0); opacity: 1; }
+
+  &__logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: $text;
+    svg { width: 28px; height: 28px; transition: transform .5s $ease; }
+    &:hover svg { transform: rotate(180deg); }
+    span { font-weight: 600; font-size: 15px; letter-spacing: -0.01em; }
+  }
+
+  &__links {
+    display: flex; gap: 6px; align-items: center;
+    background: $section-alt; border: 1px solid $card-border;
+    border-radius: $radius-pill; padding: 4px 6px;
+    a { color: $text-light; text-decoration: none; font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: $radius-pill; transition: all .3s $ease;
+      &:hover { color: $text; background: $white; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+    }
+  }
+
+  &__right { display: flex; align-items: center; gap: 20px; }
+  &__phone { color: $text; text-decoration: none; font-size: 14px; font-weight: 500; transition: color .3s; &:hover { color: $accent; } }
+  &__cta { background: $accent; color: $white; border: none; padding: 10px 22px; border-radius: $radius-pill; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; transition: all .3s $ease; &:hover { background: $accent-hover; transform: scale(1.04); } }
+
+  @media (max-width: 1024px) {
+    padding: 0 24px;
+    &__links { display: none; }
+  }
+  @media (max-width: 640px) { &__phone { display: none; } }
+}

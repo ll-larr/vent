@@ -1,0 +1,10 @@
+@import '../../app/variables.scss';
+.privacy { padding-top: 80px; background: $bg;
+  &__inner { max-width: 780px; margin: 0 auto; padding: 60px 48px 100px; }
+  &__back { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: $accent; text-decoration: none; margin-bottom: 40px; transition: gap .3s; &:hover { gap: 12px; } svg { width: 16px; height: 16px; } }
+  h1 { font-size: clamp(28px,4vw,40px); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 48px; line-height: 1.15; }
+  h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; margin-top: 40px; margin-bottom: 16px; }
+  p { font-size: 15px; color: #6e6e73; line-height: 1.7; margin-bottom: 12px; }
+  a { color: $accent; text-decoration: none; &:hover { text-decoration: underline; } }
+  @media (max-width: 640px) { &__inner { padding: 40px 24px 80px; } }
+}
