@@ -67,12 +67,6 @@ export function Header({ variant = 'landing' }: { variant?: Variant }) {
   if (variant === 'back') {
     return (
       <>
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-full focus:bg-accent focus:text-ink focus:text-sm focus:font-mono focus:uppercase focus:tracking-wider focus:shadow-lifted"
-        >
-          Перейти к содержимому
-        </a>
         <header className="sticky top-3 z-50 px-4">
           <div className="max-w-[1320px] mx-auto grid grid-cols-[auto_1fr_auto] items-center gap-3 bg-ink/[.92] backdrop-blur-md text-bg pl-[18px] pr-[12px] py-[10px] rounded-full">
             <a href="/" className="flex items-center gap-2.5 font-medium hover:text-accent transition-colors" aria-label="Vent — на главную">
