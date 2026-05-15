@@ -1,8 +1,75 @@
-export type Venue = { id: string; name: string; src: string; alt: string };
+export type Venue = {
+  id: string;
+  name: string;
+  src: string;
+  alt: string;
+  category: string;      // long form: "Стадион · Санкт-Петербург"
+  categoryShort: string; // short form for popup: "Стадион · СПб"
+  date: string;          // tag on photo: "сентябрь 2023"
+  dateShort: string;     // popup head: "сен 2023"
+  tasks: string;
+  timeline: string;
+  quote: string;
+};
 
 export const VENUES: Venue[] = [
-  { id: 'gazprom',  name: 'Газпром Арена', src: '/images/trust-gazprom.jpg',  alt: 'Газпром Арена — стадион' },
-  { id: 'miratorg', name: 'Мираторг',      src: '/images/trust-miratorg.jpg', alt: 'Мираторг — производство' },
-  { id: 'multon',   name: 'Мультон',       src: '/images/trust-multon.jpg',   alt: 'Мультон — производство' },
-  { id: 'ska',      name: 'СКА',           src: '/images/trust-ska.jpg',      alt: 'СКА — ледовая арена' },
+  {
+    id: 'gazprom',
+    name: 'Газпром Арена',
+    src: '/images/trust-gazprom.jpg',
+    alt: 'Газпром Арена — стадион в Санкт-Петербурге',
+    category: 'Стадион · Санкт-Петербург',
+    categoryShort: 'Стадион · СПб',
+    date: 'сентябрь 2023',
+    dateShort: 'сен 2023',
+    tasks: 'Чистка вытяжных систем VIP-лож и фуд-кортов от жира, дезинфекция перед серией матчей.',
+    timeline: '6 ночных смен между матчами · протокол СЭС в день сдачи.',
+    quote:
+      'Зашли точно в окно — к утру всё готово, протокол СЭС в день сдачи. Без сорванных стартов матчей.',
+  },
+  {
+    id: 'miratorg',
+    name: 'Мираторг',
+    src: '/images/trust-miratorg.jpg',
+    alt: 'Мираторг — мясоперерабатывающее производство',
+    category: 'Мясопереработка · Брянская обл.',
+    categoryShort: 'Мясопереработка',
+    date: 'март 2024',
+    dateShort: 'март 2024',
+    tasks:
+      'Чистка промышленной вентиляции цеха разделки + дезинфекция под Россельхознадзор.',
+    timeline: 'Плановая остановка · 3 смены · принято без замечаний.',
+    quote:
+      'Уложились в технологическое окно с запасом. Россельхознадзор принял протокол без замечаний.',
+  },
+  {
+    id: 'multon',
+    name: 'Мультон',
+    src: '/images/trust-multon.jpg',
+    alt: 'Мультон — пищевое производство',
+    category: 'Пищевое производство · Москва',
+    categoryShort: 'Пищевое производство',
+    date: 'июль 2024',
+    dateShort: 'июл 2024',
+    tasks:
+      'Чистка приточно-вытяжной вентиляции линии розлива + протокол для аудита HACCP.',
+    timeline: '4 дня · аудит HACCP пройдён с первого раза.',
+    quote:
+      'Сработали в условиях ограниченного доступа, не сорвали аудит. Протокол подходящего качества с первого раза.',
+  },
+  {
+    id: 'ska',
+    name: 'СКА Арена',
+    src: '/images/trust-ska.jpg',
+    alt: 'СКА Арена — ледовая арена в Санкт-Петербурге',
+    category: 'Ледовая арена · Санкт-Петербург',
+    categoryShort: 'Ледовая арена · СПб',
+    date: 'май 2024',
+    dateShort: 'май 2024',
+    tasks:
+      'Общеобменная вентиляция зрительских зон + дезинфекция + видеоинспекция труднодоступных каналов.',
+    timeline: 'Межсезонье · 2 недели · видеоотчёт по каждой ветке.',
+    quote:
+      'Подняли качество воздуха в сложной геометрии каналов. Видеоотчёт по каждой ветке — редкость в индустрии.',
+  },
 ];
