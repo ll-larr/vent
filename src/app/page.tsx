@@ -1,37 +1,30 @@
-import type { Metadata } from 'next';
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
-import Hero from '@/components/Hero/Hero';
-import Services from '@/components/Services/Services';
-import HowWeWork from '@/components/HowWeWork/HowWeWork';
-import Portfolio from '@/components/Portfolio/Portfolio';
-import Stats from '@/components/Stats/Stats';
-import Reviews from '@/components/Reviews/Reviews';
-import About from '@/components/About/About';
-import Promos from '@/components/Promos/Promos';
-import HomeOrchestrator from '@/components/HomeOrchestrator/HomeOrchestrator';
+import { Header } from '@/components/Header/Header';
+import { Hero } from '@/components/Hero/Hero';
+import { Services } from '@/components/Services/Services';
+import { Cases } from '@/components/Cases/Cases';
+import { Calculator } from '@/components/Calculator/Calculator';
+import { BigVenues } from '@/components/BigVenues/BigVenues';
+import { HowWeWork } from '@/components/HowWeWork/HowWeWork';
+import { TrustSection } from '@/components/TrustSection/TrustSection';
+import { ContactSection } from '@/components/ContactSection/ContactSection';
+import { Footer } from '@/components/Footer/Footer';
+import { CalculatorProvider } from '@/lib/calculator-context';
 
-export const metadata: Metadata = {
-  title: 'Clean Vent — Чистка вентиляции для бизнеса',
-  description: 'Профессиональная чистка вентиляционных систем для ресторанов, офисов, производств. Бесплатный выезд специалиста.',
-};
-
-export default function Home() {
+export default function HomePage() {
   return (
-    <>
+    <CalculatorProvider>
       <Header />
       <main>
         <Hero />
         <Services />
+        <Cases />
+        <Calculator />
+        <BigVenues />
         <HowWeWork />
-        <Portfolio />
-        <Stats />
-        <Reviews />
-        <About />
-        <Promos />
-        <HomeOrchestrator />
+        <TrustSection />
+        <ContactSection />
       </main>
       <Footer />
-    </>
+    </CalculatorProvider>
   );
 }
