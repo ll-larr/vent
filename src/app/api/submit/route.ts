@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { submitSchema } from '@/lib/schemas';
 import { appendRow } from '@/lib/sheets';
+import { PACKAGES, SERVICES } from '@/lib/pricing';
 
 export async function POST(req: NextRequest) {
   try {
@@ -20,10 +21,10 @@ export async function POST(req: NextRequest) {
       timestamp,
       data.name,
       data.phone,
-      data.objectType,
-      data.services.join(', ') || '—',
+      PACKAGES[data.packageKey].label,
+      `${data.areaM2} м²`,
+      data.services.map((s) => SERVICES[s].label).join(', '),
       data.comment || '—',
-      data.area ? `${data.area} м²` : '—',
     ];
 
     await appendRow(row);
