@@ -1,70 +1,244 @@
 import type { Metadata } from 'next';
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
+import Link from 'next/link';
+import { Header } from '@/components/Header/Header';
+import { CalculatorProvider } from '@/lib/calculator-context';
+import { ArrowRight } from '@/lib/icons';
 
 export const metadata: Metadata = {
-  title: 'Политика конфиденциальности — Clean Vent',
+  title: 'Согласие на обработку персональных данных',
+  description:
+    'Какие данные собирает Vent через форму заявки, для чего, как хранит и сколько. Документ в соответствии с 152-ФЗ РФ.',
+  robots: { index: false, follow: true },
+  alternates: { canonical: '/privacy' },
 };
+
+const SECTIONS: Array<{ n: string; title: string; body: React.ReactNode }> = [
+  {
+    n: '01',
+    title: 'Какие данные мы собираем',
+    body: (
+      <>
+        <p>
+          Через форму заявки на сайте и в мессенджерах мы получаем только то, что нужно, чтобы
+          перезвонить и подготовить расчёт:
+        </p>
+        <BulletList
+          items={[
+            'Имя или то, как к вам обращаться.',
+            'Номер телефона.',
+            'Тип объекта и площадь, если вы их указали.',
+            'Комментарий к заявке (что нужно почистить, желаемые сроки).',
+            'Технические данные браузера: IP, user-agent, страница, с которой пришла заявка — для защиты от спама и аналитики.',
+          ]}
+        />
+        <p>
+          Мы не запрашиваем паспортные данные, ИНН, банковские реквизиты или фотографии — для
+          расчёта и выезда инженера они не нужны.
+        </p>
+      </>
+    ),
+  },
+  {
+    n: '02',
+    title: 'Для чего мы их используем',
+    body: (
+      <>
+        <BulletList
+          items={[
+            'Связаться с вами по поводу заявки — звонок, мессенджер или e-mail.',
+            'Подготовить ориентировочный расчёт стоимости и согласовать выезд инженера.',
+            'Заключить и исполнить договор на оказание услуг.',
+            'Хранить историю обращений на случай повторных заявок и обслуживания по графику.',
+            'Улучшать сайт и форму заявки на основе обезличенной статистики.',
+          ]}
+        />
+        <p>
+          Мы не используем ваш номер для холодных продаж сторонним сервисам и не передаём его
+          рекламным площадкам.
+        </p>
+      </>
+    ),
+  },
+  {
+    n: '03',
+    title: 'Как мы храним и передаём',
+    body: (
+      <>
+        <p>
+          Заявки попадают в защищённую таблицу Google Sheets, доступ к которой имеет только команда
+          Vent. Резервные копии хранятся на серверах в РФ. Данные передаются по защищённому
+          соединению (HTTPS, TLS 1.3).
+        </p>
+        <p>Мы передаём данные третьим лицам только в трёх случаях:</p>
+        <BulletList
+          items={[
+            'Если вы стали клиентом — реквизиты заносятся в бухгалтерскую систему для оформления договора и счёта.',
+            'По обоснованному требованию государственных органов в порядке, установленном законом.',
+            'Подрядчикам, которые выполняют конкретную задачу (например, доставка SMS-уведомления) — на основании договора о конфиденциальности.',
+          ]}
+        />
+      </>
+    ),
+  },
+  {
+    n: '04',
+    title: 'Сроки хранения',
+    body: (
+      <>
+        <BulletList
+          items={[
+            'Активные заявки и контакты — 3 года с момента последнего обращения.',
+            'Документы по заключённым договорам — 5 лет, согласно требованиям бухгалтерского учёта.',
+            'Технические логи и аналитика — 12 месяцев в обезличенном виде.',
+          ]}
+        />
+        <p>По истечении срока данные удаляются или анонимизируются.</p>
+      </>
+    ),
+  },
+  {
+    n: '05',
+    title: 'Ваши права',
+    body: (
+      <>
+        <p>В любой момент вы можете:</p>
+        <BulletList
+          items={[
+            'Запросить, какие именно данные о вас мы храним.',
+            'Попросить нас исправить неточные данные.',
+            'Отозвать согласие — мы удалим вашу заявку и контакт в течение 10 рабочих дней.',
+            'Пожаловаться в Роскомнадзор, если считаете, что мы нарушили закон.',
+          ]}
+        />
+        <p>
+          Запросы принимаются по адресу{' '}
+          <a
+            href="mailto:privacy@vent.team"
+            className="text-brand border-b border-current hover:text-ink transition-colors"
+          >
+            privacy@vent.team
+          </a>
+          . Ответим в течение 10 рабочих дней, обычно — за день.
+        </p>
+      </>
+    ),
+  },
+  {
+    n: '06',
+    title: 'Cookies и аналитика',
+    body: (
+      <p>
+        На сайте работают только функциональные cookies (запоминают согласие на cookies, тему
+        интерфейса) и обезличенная веб-аналитика. Мы не используем рекламные трекеры и пиксели
+        социальных сетей.
+      </p>
+    ),
+  },
+  {
+    n: '07',
+    title: 'Согласие',
+    body: (
+      <p>
+        Отправляя форму заявки на сайте, вы подтверждаете, что прочитали этот документ и согласны
+        с обработкой ваших персональных данных в указанных целях и объёме. Согласие действует до
+        его отзыва.
+      </p>
+    ),
+  },
+];
+
+function BulletList({ items }: { items: string[] }) {
+  return (
+    <ul className="list-none p-0 m-0 mb-3.5 flex flex-col gap-2">
+      {items.map((it) => (
+        <li key={it} className="relative pl-[22px] max-w-[70ch]">
+          <span
+            className="absolute left-1 top-[.65em] w-1.5 h-1.5 rounded-full bg-brand"
+            aria-hidden="true"
+          />
+          {it}
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export default function PrivacyPage() {
   return (
-    <>
+    <CalculatorProvider>
       <Header />
-      <main className="pt-24 pb-24 px-6 max-w-content mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Политика конфиденциальности</h1>
+      <main id="main" className="bg-bg text-ink min-h-screen">
+        <div className="max-w-[880px] mx-auto px-6 pt-20 pb-24">
+          <div className="inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[.14em] text-ink/50">
+            <span className="w-[18px] h-px bg-brand inline-block" />
+            Документ / приложение к оферте
+          </div>
+          <h1 className="font-display font-light text-[clamp(40px,5.5vw,76px)] leading-[.98] tracking-[-.025em] mt-3.5 mb-4.5">
+            Согласие на обработку <em className="italic text-brand">персональных данных.</em>
+          </h1>
+          <p className="text-[17px] text-ink/70 max-w-[60ch] mb-9 leading-[1.55]">
+            Этот документ описывает, какие данные мы собираем через форму заявки на сайте, зачем
+            они нам и сколько мы их храним. Коротко и по делу, без скрытых пунктов мелким шрифтом.
+          </p>
 
-        <div className="prose prose-neutral max-w-none text-brand-muted space-y-6 text-sm leading-relaxed">
-          <section>
-            <h2 className="text-lg font-semibold text-brand mb-2">1. Общие положения</h2>
-            <p>
-              Настоящая политика конфиденциальности описывает, как Clean Vent (далее — «Компания»)
-              собирает, использует и защищает информацию, которую вы предоставляете при использовании сайта.
-            </p>
-          </section>
+          <div
+            className="flex flex-wrap gap-2.5 mb-12 p-4 bg-surface rounded-[14px] font-mono text-[10.5px] uppercase tracking-[.14em] text-ink/55"
+            style={{ border: '1px solid rgba(20,19,18,.08)' }}
+          >
+            <span>
+              Оператор: <b className="text-brand font-medium">ООО «Вент»</b>
+            </span>
+            <span>
+              Редакция: <b className="text-brand font-medium">15.05.2026</b>
+            </span>
+            <span>
+              Юрисдикция: <b className="text-brand font-medium">152-ФЗ РФ</b>
+            </span>
+            <span>
+              Контакт: <b className="text-brand font-medium">privacy@vent.team</b>
+            </span>
+          </div>
 
-          <section>
-            <h2 className="text-lg font-semibold text-brand mb-2">2. Какие данные мы собираем</h2>
-            <p>
-              При заполнении формы заявки мы собираем: имя, номер телефона, тип объекта, выбранные услуги
-              и комментарий. Эти данные необходимы исключительно для обработки вашего обращения.
-            </p>
-          </section>
+          {SECTIONS.map((s) => (
+            <section key={s.n} className="mt-14 first:mt-0">
+              <h2 className="font-display font-normal text-[clamp(22px,2.4vw,30px)] tracking-[-.015em] leading-[1.15] mb-3.5">
+                <span className="font-mono text-[12px] tracking-[.14em] text-brand mr-3 align-middle">
+                  {s.n}
+                </span>
+                {s.title}
+              </h2>
+              <div className="[&_p]:max-w-[70ch] [&_p]:mb-3.5 [&_p:last-child]:mb-0">{s.body}</div>
+            </section>
+          ))}
 
-          <section>
-            <h2 className="text-lg font-semibold text-brand mb-2">3. Использование данных</h2>
-            <p>
-              Полученные данные используются только для связи с вами по вопросу вашей заявки.
-              Мы не передаём ваши данные третьим лицам и не используем их в маркетинговых целях
-              без вашего согласия.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-semibold text-brand mb-2">4. Хранение данных</h2>
-            <p>
-              Данные хранятся в защищённой таблице Google Sheets, доступной только сотрудникам компании.
-              Срок хранения — не более 3 лет с момента получения заявки.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-semibold text-brand mb-2">5. Ваши права</h2>
-            <p>
-              Вы вправе запросить удаление ваших данных, направив письмо на{' '}
-              <a href="mailto:info@cleanvent.ru" className="text-brand underline">info@cleanvent.ru</a>.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-semibold text-brand mb-2">6. Контакты</h2>
-            <p>
-              По вопросам конфиденциальности:{' '}
-              <a href="mailto:info@cleanvent.ru" className="text-brand underline">info@cleanvent.ru</a>
-            </p>
-          </section>
+          <div className="mt-16 px-6 py-5 bg-ink text-bg rounded-[18px] grid grid-cols-1 sm:grid-cols-[1fr_auto] items-center gap-4">
+            <div>
+              <h3 className="font-display font-normal text-[22px] tracking-[-.012em] mb-1.5 leading-[1.2]">
+                Вопросы по обработке <em className="italic text-accent">данных?</em>
+              </h3>
+              <p className="text-[13.5px] text-bg/65 m-0">
+                Напишите на privacy@vent.team или позвоните в офис — ответим тем же днём.
+              </p>
+            </div>
+            <Link
+              href="/#contact"
+              className="inline-flex items-center gap-2 px-4 py-3 rounded-full bg-accent text-ink font-medium text-[14px] hover:bg-bg transition-colors whitespace-nowrap justify-self-start sm:justify-self-end"
+            >
+              Связаться
+              <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
+            </Link>
+          </div>
         </div>
       </main>
-      <Footer />
-    </>
+      <footer className="bg-ink text-bg py-8 text-center font-mono text-[10.5px] uppercase tracking-[.12em] text-bg/50">
+        © 2021–2026 Vent ·{' '}
+        <Link
+          href="/privacy"
+          className="text-bg/70 border-b border-bg/[.15] hover:text-accent hover:border-accent"
+        >
+          политика
+        </Link>
+      </footer>
+    </CalculatorProvider>
   );
 }
