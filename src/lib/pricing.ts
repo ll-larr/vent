@@ -1,140 +1,112 @@
-import type { ServiceDef, ServiceId, Package, PackageId, CalculatorState, PriceRange } from '@/components/Calculator/types';
+export type ServiceKey = 'grease' | 'dust' | 'disinfect' | 'hood' | 'diag';
+export type PackageKey = 'restaurant' | 'office' | 'warehouse' | 'custom';
 
-const POGM_PER_SQM = 0.25;
+export type DiameterTier = { code: string; label: string; rate: number };
 
-export const SERVICES: ServiceDef[] = [
-  {
-    id: 'vent-dust',
-    label: 'Чистка вентиляции (от пыли)',
-    unit: 'per-sqm',
-    priceMin: Math.round(90 * POGM_PER_SQM),
-    priceMax: Math.round(135 * POGM_PER_SQM),
-    perSqm: true,
-  },
-  {
-    id: 'vent-grease',
-    label: 'Чистка вентиляции (от жира)',
-    unit: 'per-sqm',
-    priceMin: Math.round(270 * POGM_PER_SQM),
-    priceMax: Math.round(360 * POGM_PER_SQM),
-    perSqm: true,
-  },
-  {
-    id: 'hoods',
-    label: 'Чистка вытяжек (зонты)',
-    unit: 'per-unit',
-    priceMin: 1800,
-    priceMax: 2700,
-    perSqm: false,
-  },
-  {
-    id: 'disinfection',
-    label: 'Дезинфекция воздуховодов',
-    unit: 'per-sqm',
-    priceMin: Math.round(27 * POGM_PER_SQM),
-    priceMax: Math.round(40 * POGM_PER_SQM),
-    perSqm: true,
-  },
-  {
-    id: 'pipes-dust',
-    label: 'Чистка труб (от пыли)',
-    unit: 'per-sqm',
-    priceMin: Math.round(90 * POGM_PER_SQM),
-    priceMax: Math.round(135 * POGM_PER_SQM),
-    perSqm: true,
-  },
-  {
-    id: 'pipes-grease',
-    label: 'Чистка труб (от жира)',
-    unit: 'per-sqm',
-    priceMin: Math.round(270 * POGM_PER_SQM),
-    priceMax: Math.round(360 * POGM_PER_SQM),
-    perSqm: true,
-  },
-  {
-    id: 'reservoirs',
-    label: 'Чистка резервуаров',
-    unit: 'fixed',
-    priceMin: 3500,
-    priceMax: 8000,
-    perSqm: false,
-  },
-  {
-    id: 'diagnostics',
-    label: 'Диагностика / осмотр',
-    unit: 'fixed',
-    priceMin: 0,
-    priceMax: 0,
-    perSqm: false,
-  },
-];
+type LinearService = {
+  kind: 'linear';
+  min: number;
+  max: number;
+  label: string;
+  hint: string;
+  diameterTiers?: DiameterTier[];
+};
+type UnitService  = { kind: 'unit';  price: number; label: string; hint: string };
+type FixedService = { kind: 'fixed'; price: number; label: string; hint: string };
+export type Service = LinearService | UnitService | FixedService;
 
-export const PACKAGES: Package[] = [
-  {
-    id: 'catering',
-    label: 'Общепит',
-    icon: '🍽️',
-    description: 'Для ресторанов, кафе, столовых',
-    defaultServices: ['vent-grease', 'hoods', 'disinfection'],
+export const SERVICES: Record<ServiceKey, Service> = {
+  grease: {
+    kind: 'linear',
+    min: 300,
+    max: 400,
+    label: 'Чистка вентиляции от жира',
+    hint: 'для кухонь общепита',
+    diameterTiers: [
+      { code: 'pipe-small', label: 'труба Ø ≤ 600 мм',   rate: 300 },
+      { code: 'box-small',  label: 'короб ≤ 600×400 мм', rate: 350 },
+      { code: 'pipe-large', label: 'труба Ø > 600 мм',   rate: 400 },
+      { code: 'box-large',  label: 'короб > 600×400 мм', rate: 400 },
+    ],
   },
-  {
-    id: 'office',
-    label: 'Офис',
-    icon: '🏢',
-    description: 'Для офисов и бизнес-центров',
-    defaultServices: ['vent-dust'],
+  dust: {
+    kind: 'linear',
+    min: 100,
+    max: 220,
+    label: 'Чистка вентиляции от пыли',
+    hint: 'для офисов и складов',
+    diameterTiers: [
+      { code: 'pipe-small', label: 'труба Ø ≤ 600 мм',   rate: 100 },
+      { code: 'box-small',  label: 'короб ≤ 600×400 мм', rate: 120 },
+      { code: 'pipe-large', label: 'труба Ø > 600 мм',   rate: 180 },
+      { code: 'box-large',  label: 'короб > 600×400 мм', rate: 220 },
+    ],
   },
-  {
-    id: 'production',
-    label: 'Производство',
-    icon: '🏭',
-    description: 'Для заводов и складов',
-    defaultServices: ['vent-dust', 'disinfection'],
+  disinfect: {
+    kind: 'linear',
+    min: 30,
+    max: 30,
+    label: 'Дезинфекция',
+    hint: 'противомикробная обработка воздуховодов',
   },
-  {
-    id: 'custom',
-    label: 'Своё',
-    icon: '⚙️',
-    description: 'Выбери услуги самостоятельно',
-    defaultServices: [],
+  hood: {
+    kind: 'unit',
+    price: 1000,
+    label: 'Чистка вытяжек / зонтов',
+    hint: 'за каждый зонт пищеблока',
   },
-];
+  diag: {
+    kind: 'fixed',
+    price: 4500,
+    label: 'Диагностика / видеоинспекция',
+    hint: 'осмотр и видеоконтроль каналов перед чисткой',
+  },
+};
 
-export function getServiceById(id: ServiceId): ServiceDef {
-  const s = SERVICES.find((s) => s.id === id);
-  if (!s) throw new Error(`Unknown service: ${id}`);
-  return s;
-}
+export type Package = {
+  label: string;
+  m2ToLm: number;
+  default: ServiceKey[];
+  available: ServiceKey[];
+};
 
-export function getPackageById(id: PackageId): Package {
-  const p = PACKAGES.find((p) => p.id === id);
-  if (!p) throw new Error(`Unknown package: ${id}`);
-  return p;
-}
+export const PACKAGES: Record<PackageKey, Package> = {
+  restaurant: { label: 'Общепит',      m2ToLm: 0.45, default: ['grease', 'hood'],    available: ['grease', 'hood', 'dust', 'diag'] },
+  office:     { label: 'Офис',         m2ToLm: 0.30, default: ['dust'],              available: ['dust', 'diag'] },
+  warehouse:  { label: 'Производство', m2ToLm: 0.25, default: ['dust', 'disinfect'], available: ['dust', 'disinfect', 'grease', 'diag'] },
+  custom:     { label: 'Своё',         m2ToLm: 0.30, default: [],                    available: ['grease', 'dust', 'hood', 'disinfect', 'diag'] },
+};
 
-export function calculatePrice(state: CalculatorState): PriceRange {
-  let min = 0;
-  let max = 0;
+export type PriceLine = { key: ServiceKey; label: string; amount: number };
+export type PriceComputation = { totalMin: number; breakdown: PriceLine[] };
 
-  for (const serviceId of state.selectedServices) {
-    const service = getServiceById(serviceId);
-    if (service.id === 'diagnostics') continue;
+const round100 = (n: number) => Math.round(n / 100) * 100;
 
-    if (service.perSqm) {
-      min += service.priceMin * state.area;
-      max += service.priceMax * state.area;
-    } else if (service.id === 'hoods') {
-      min += service.priceMin * Math.max(1, state.hoodCount);
-      max += service.priceMax * Math.max(1, state.hoodCount);
+export function computePrice(
+  services: ServiceKey[],
+  areaM2: number,
+  packageKey: PackageKey,
+  hoodCount: number = 1,
+): PriceComputation {
+  const coef = PACKAGES[packageKey].m2ToLm;
+  const breakdown: PriceLine[] = [];
+
+  for (const key of services) {
+    const s = SERVICES[key];
+    let amount = 0;
+    if (s.kind === 'linear') {
+      amount = round100(areaM2 * coef * s.min);
+    } else if (s.kind === 'unit') {
+      amount = hoodCount * s.price;
     } else {
-      min += service.priceMin;
-      max += service.priceMax;
+      amount = s.price;
     }
+    breakdown.push({ key, label: s.label, amount });
   }
 
-  return { min: Math.round(min), max: Math.round(max) };
+  const totalMin = breakdown.reduce((sum, line) => sum + line.amount, 0);
+  return { totalMin, breakdown };
 }
 
-export function formatPrice(n: number): string {
-  return n.toLocaleString('ru-RU') + ' ₽';
-}
+export const formatPrice = (n: number): string =>
+  new Intl.NumberFormat('ru-RU').format(n) + ' ₽';
