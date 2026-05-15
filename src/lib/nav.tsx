@@ -5,13 +5,16 @@ export interface NavLink {
 }
 
 export const navLinks: NavLink[] = [
-  { href: '#services',   label: 'Услуги',   anchor: true },
-  { href: '#cases',      label: 'Кейсы',    anchor: true },
-  { href: '#venues',     label: 'Объекты',  anchor: true },
-  { href: '#process',    label: 'Процесс',  anchor: true },
-  { href: '#calculator', label: 'Цены',     anchor: true },
-  { href: '#contact',    label: 'Контакты', anchor: true },
+  { href: '/#services',   label: 'Услуги',   anchor: true },
+  { href: '/#cases',      label: 'Кейсы',    anchor: true },
+  { href: '/#venues',     label: 'Объекты',  anchor: true },
+  { href: '/#process',    label: 'Процесс',  anchor: true },
+  { href: '/#calculator', label: 'Цены',     anchor: true },
+  { href: '/#contact',    label: 'Контакты', anchor: true },
 ];
+
+/** Extract section id from a nav href (e.g. "/#services" → "services"). */
+export const navHrefToId = (href: string): string => href.split('#')[1] ?? '';
 
 export const CONTACT_PHONE = '+7 (495) 120-04-04';
 export const CONTACT_PHONE_HREF = 'tel:+74951200404';

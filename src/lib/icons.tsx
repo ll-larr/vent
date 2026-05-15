@@ -47,4 +47,5 @@ export {
   SprayCan,
   ArrowUpRight,
   Edit,
+  ChevronLeft,
 } from 'lucide-react';

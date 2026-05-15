@@ -166,7 +166,7 @@ function BulletList({ items }: { items: string[] }) {
 export default function PrivacyPage() {
   return (
     <CalculatorProvider>
-      <Header />
+      <Header variant="back" />
       <main id="main" className="bg-bg text-ink min-h-screen">
         <div className="max-w-[880px] mx-auto px-6 pt-20 pb-24">
           <div className="inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[.14em] text-ink/50">

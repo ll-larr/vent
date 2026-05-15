@@ -18,10 +18,11 @@
   --color-stone:        #f4f4f2;
   --color-ink-2:        #1f1d1b;
 
-  /* Fonts — variables come from next/font in layout.tsx */
-  --font-family-display: var(--font-fraunces), Georgia, serif;
-  --font-family-sans:    var(--font-inter-tight), system-ui, sans-serif;
-  --font-family-mono:    var(--font-jetbrains-mono), ui-monospace, monospace;
+  /* Fonts — variables come from next/font in layout.tsx.
+     Tailwind 4 convention: --font-{name} (not --font-family-{name}). */
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans:    var(--font-inter-tight), system-ui, -apple-system, sans-serif;
+  --font-mono:    var(--font-jetbrains-mono), ui-monospace, monospace;
 
   --max-width-content: 1320px;
 
@@ -96,6 +97,7 @@
     background-color: #f6f3ec;
     color: #141312;
     overflow-x: hidden;
+    font-family: var(--font-inter-tight), system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -122,37 +124,15 @@
 }
 
 @layer utilities {
-  /* Scroll animation system */
-  [data-anim] {
-    opacity: 0;
-    transform: translateY(24px);
-    transition:
-      opacity  0.65s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  [data-anim].visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Stagger delays via CSS custom property */
-  [data-anim][style*="--delay"] {
-    transition-delay: var(--delay, 0ms);
-  }
-
-  /* Scale variant */
-  [data-anim="scale"] {
-    opacity: 0;
-    transform: scale(0.96);
-    transition:
-      opacity  0.55s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
+  /* Scroll-reveal system disabled to match bento reference (no entrance animations).
+     Markup keeps [data-anim] / useScrollAnim hooks intact for future re-enable. */
+  [data-anim],
+  [data-anim].visible,
+  [data-anim="scale"],
   [data-anim="scale"].visible {
     opacity: 1;
-    transform: scale(1);
+    transform: none;
+    transition: none;
   }
 
   /* Noise texture overlay for Hero */

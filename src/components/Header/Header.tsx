@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import {
   navLinks,
+  navHrefToId,
   LogoMark,
   LogoWord,
   CONTACT_PHONE,
@@ -10,15 +11,18 @@ import {
   CONTACT_EMAIL,
   CONTACT_EMAIL_HREF,
 } from '@/lib/nav';
-import { Menu, X, ArrowRight, Phone, Mail } from '@/lib/icons';
+import { Menu, X, ArrowRight, ChevronLeft, Phone, Mail } from '@/lib/icons';
 
-export function Header() {
+type Variant = 'landing' | 'back';
+
+export function Header({ variant = 'landing' }: { variant?: Variant }) {
   const [activeId, setActiveId] = useState<string>('services');
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Highlight active nav link via IntersectionObserver on sections.
+  // Active-section highlight only makes sense on landing where sections exist.
   useEffect(() => {
-    const ids = navLinks.map((l) => l.href.replace('#', ''));
+    if (variant !== 'landing') return;
+    const ids = navLinks.map((l) => navHrefToId(l.href));
     const els = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
@@ -38,9 +42,8 @@ export function Header() {
     );
     els.forEach((el) => obs.observe(el));
     return () => obs.disconnect();
-  }, []);
+  }, [variant]);
 
-  // Lock scroll + Esc when mobile drawer open.
   useEffect(() => {
     if (!mobileOpen) return;
     document.body.style.overflow = 'hidden';
@@ -52,7 +55,6 @@ export function Header() {
     };
   }, [mobileOpen]);
 
-  // Close drawer when crossing lg breakpoint.
   useEffect(() => {
     const onResize = () => {
       if (window.innerWidth >= 1024) setMobileOpen(false);
@@ -61,9 +63,38 @@ export function Header() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
+  // BACK variant: brand + "На главную" — matches HTML privacy.html topbar
+  if (variant === 'back') {
+    return (
+      <>
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-full focus:bg-accent focus:text-ink focus:text-sm focus:font-mono focus:uppercase focus:tracking-wider focus:shadow-lifted"
+        >
+          Перейти к содержимому
+        </a>
+        <header className="sticky top-3 z-50 px-4">
+          <div className="max-w-[1320px] mx-auto grid grid-cols-[auto_1fr_auto] items-center gap-3 bg-ink/[.92] backdrop-blur-md text-bg pl-[18px] pr-[12px] py-[10px] rounded-full">
+            <a href="/" className="flex items-center gap-2.5 font-medium hover:text-accent transition-colors" aria-label="Vent — на главную">
+              <LogoMark />
+              <LogoWord />
+            </a>
+            <span aria-hidden="true" />
+            <a
+              href="/"
+              className="group inline-flex items-center gap-2 bg-accent text-ink px-3.5 py-2.5 rounded-full font-mono text-[11px] uppercase tracking-[.14em] hover:bg-bg transition-colors whitespace-nowrap"
+            >
+              <ChevronLeft size={14} strokeWidth={2} aria-hidden="true" />
+              На главную
+            </a>
+          </div>
+        </header>
+      </>
+    );
+  }
+
   return (
     <>
-      {/* Skip link for keyboard users */}
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-full focus:bg-accent focus:text-ink focus:text-sm focus:font-mono focus:uppercase focus:tracking-wider focus:shadow-lifted"
@@ -73,14 +104,14 @@ export function Header() {
 
       <header className="sticky top-3 z-50 px-4">
         <div className="max-w-[1320px] mx-auto grid grid-cols-[auto_1fr_auto] lg:grid-cols-[auto_1fr_auto_auto] items-center gap-3.5 bg-ink/[.92] backdrop-blur-md text-bg pl-[18px] pr-[12px] py-[10px] rounded-full">
-          <a href="#top" className="flex items-center gap-2.5 font-medium" aria-label="Vent — на главную">
+          <a href="/#top" className="flex items-center gap-2.5 font-medium" aria-label="Vent — на главную">
             <LogoMark />
             <LogoWord />
           </a>
 
           <nav className="hidden lg:flex justify-center gap-1 font-mono text-[11px] tracking-[.14em] uppercase" aria-label="Основная навигация">
             {navLinks.map((l) => {
-              const id = l.href.replace('#', '');
+              const id = navHrefToId(l.href);
               const active = id === activeId;
               return (
                 <a
@@ -119,7 +150,7 @@ export function Header() {
           </div>
 
           <a
-            href="#calculator"
+            href="/#calculator"
             className="hidden lg:inline-flex items-center gap-2 bg-accent text-ink px-[14px] py-[10px] rounded-full font-medium text-[12px] hover:bg-bg transition-colors group whitespace-nowrap"
           >
             Рассчитать
@@ -131,7 +162,6 @@ export function Header() {
             />
           </a>
 
-          {/* Mobile burger (col 3 — replaces nav+contacts+CTA stack) */}
           <button
             type="button"
             onClick={() => setMobileOpen(true)}
@@ -152,7 +182,7 @@ export function Header() {
           aria-label="Меню"
         >
           <div className="flex items-center justify-between px-5 py-4 border-b border-bg/[.12]">
-            <a href="#top" onClick={() => setMobileOpen(false)} className="flex items-center gap-2.5" aria-label="Vent — на главную">
+            <a href="/#top" onClick={() => setMobileOpen(false)} className="flex items-center gap-2.5" aria-label="Vent — на главную">
               <LogoMark />
               <LogoWord />
             </a>
@@ -197,7 +227,7 @@ export function Header() {
               {CONTACT_EMAIL}
             </a>
             <a
-              href="#calculator"
+              href="/#calculator"
               onClick={() => setMobileOpen(false)}
               className="mt-3 inline-flex items-center justify-center gap-2 bg-accent text-ink px-6 py-4 rounded-full font-medium text-[15px] min-h-[48px]"
             >

@@ -96,7 +96,7 @@ function StepTile({ s, isFirst, autoDemo }: { s: Step; isFirst: boolean; autoDem
 
   return (
     <article
-      className={`pr-step ${bgClass} group col-span-12 sm:col-span-6 lg:col-span-3 rounded-[28px] p-[22px] min-h-[240px] flex flex-col gap-3.5 relative overflow-hidden cursor-pointer transition-transform duration-[350ms] ease-[cubic-bezier(.16,1,.3,1)] hover:-translate-y-0.5`}
+      className={`pr-step ${bgClass} group col-span-12 sm:col-span-6 lg:col-span-3 rounded-[28px] p-[22px] min-h-[290px] flex flex-col gap-3.5 relative overflow-hidden cursor-pointer transition-transform duration-[350ms] ease-[cubic-bezier(.16,1,.3,1)] hover:-translate-y-0.5`}
       {...dataHintProps}
     >
       {/* Static content — fades out on hover/hint */}
@@ -115,28 +115,28 @@ function StepTile({ s, isFirst, autoDemo }: { s: Step; isFirst: boolean; autoDem
       </div>
 
       {/* Popup — slides in on hover or data-hint */}
-      <div className="absolute inset-0 z-[3] p-[22px] flex flex-col gap-3 bg-ink text-bg opacity-0 translate-y-2 pointer-events-none transition-[opacity,transform] duration-300 ease-[cubic-bezier(.16,1,.3,1)] group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-data-[hint=open]:opacity-100 group-data-[hint=open]:translate-y-0 group-data-[hint=open]:pointer-events-auto">
-        <div className="flex justify-between items-baseline gap-2.5 font-mono text-[10px] uppercase tracking-[.14em]">
+      <div className="absolute inset-0 z-[3] p-[18px] flex flex-col gap-2.5 bg-ink text-bg opacity-0 translate-y-2 pointer-events-none transition-[opacity,transform] duration-300 ease-[cubic-bezier(.16,1,.3,1)] group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-data-[hint=open]:opacity-100 group-data-[hint=open]:translate-y-0 group-data-[hint=open]:pointer-events-auto overflow-y-auto">
+        <div className="flex justify-between items-baseline gap-2.5 font-mono text-[10px] uppercase tracking-[.14em] flex-shrink-0">
           <span className="text-accent">{s.n.split(' / ')[0]} / {s.title.toLowerCase()}</span>
           <span className="text-bg/55">{s.dur}</span>
         </div>
-        <h5 className="font-display font-normal text-[22px] leading-none tracking-[-.012em]">
+        <h5 className="font-display font-normal text-[18px] leading-[1.1] tracking-[-.012em] flex-shrink-0">
           {s.popupHead}
         </h5>
-        <ul className="flex flex-col gap-1.5 mt-1 list-none p-0 m-0">
+        <ul className="flex flex-col gap-1.5 list-none p-0 m-0 flex-shrink">
           {s.popupItems.map((item, i) => (
-            <li key={i} className="text-[12.5px] leading-[1.4] text-bg/[.86] flex gap-2 items-baseline">
+            <li key={i} className="text-[12px] leading-[1.35] text-bg/[.86] flex gap-2 items-baseline">
               <span
-                className="w-[5px] h-[5px] rounded-full bg-accent flex-shrink-0 relative top-1.5"
+                className="w-[5px] h-[5px] rounded-full bg-accent flex-shrink-0 relative top-1"
                 aria-hidden="true"
               />
               <span>{item}</span>
             </li>
           ))}
         </ul>
-        <div className="mt-auto pt-2.5 border-t border-bg/[.14] flex flex-col gap-1">
+        <div className="mt-auto pt-2 border-t border-bg/[.14] flex flex-col gap-0.5 flex-shrink-0">
           <span className="font-mono text-[9.5px] uppercase tracking-[.14em] text-bg/50">{s.outLabel}</span>
-          <span className="font-display font-light italic text-[14px] leading-[1.3] text-accent">{s.outValue}</span>
+          <span className="font-display font-light italic text-[13.5px] leading-[1.3] text-accent">{s.outValue}</span>
         </div>
       </div>
     </article>
