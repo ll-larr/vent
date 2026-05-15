@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Vent · Palette preview (Hybrid layout)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,30..100&family=Inter+Tight:wght@300..800&family=JetBrains+Mono:wght@300..600&display=swap" rel="stylesheet">
+
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter Tight',system-ui,sans-serif;line-height:1.4}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  ::selection{background:var(--cta);color:var(--bg)}
+
+  /* sticky switcher */
+  .switcher{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:100;display:flex;gap:6px;padding:6px;background:rgba(20,20,20,.85);backdrop-filter:blur(20px);border-radius:999px;font-size:12px;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+  .switcher a{padding:8px 14px;color:#aaa;border-radius:999px;letter-spacing:.02em;transition:.2s}
+  .switcher a:hover{color:#fff;background:rgba(255,255,255,.08)}
+  .switcher a.rec{color:#0a0a0a;background:#d4ff3e}
+
+  /* common hero (vars set per palette) */
+  .hero{
+    --bg:#f6f3ec;--ink:#141312;--cta:#1e5c32;--cta-text:#f6f3ec;
+    --accent:#c8ff3e;--mute:#5a6b5e;--surface:#fff;--field-bg:#f6f3ec;
+    background:var(--bg);color:var(--ink);
+    min-height:100vh;padding:80px 5vw;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center
+  }
+  .variant-tag{position:absolute;top:24px;right:24px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.15em;opacity:.55;text-transform:uppercase}
+
+  .nav{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px solid color-mix(in srgb, var(--ink) 8%, transparent);margin-bottom:80px}
+  .logo{font-family:'Fraunces',serif;font-weight:500;font-size:28px;letter-spacing:-.02em;display:inline-flex;align-items:baseline;gap:10px}
+  .logo .dash{font-style:italic;font-weight:300;color:var(--cta)}
+  .logo .est{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:color-mix(in srgb, var(--ink) 50%, transparent)}
+  .links{display:flex;gap:32px;font-size:14px;color:color-mix(in srgb, var(--ink) 70%, transparent)}
+  .ctaheader{background:var(--cta);color:var(--cta-text);padding:11px 20px;border-radius:999px;font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:8px}
+  .ctaheader::after{content:'→';transition:.2s transform}
+  .ctaheader:hover::after{transform:translateX(4px)}
+
+  .hero-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:60px;align-items:end}
+  .crumb{display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:color-mix(in srgb, var(--ink) 55%, transparent);margin-bottom:32px}
+  .crumb::before{content:'';width:24px;height:1px;background:var(--cta)}
+  h1{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(56px,7.5vw,124px);line-height:.97;letter-spacing:-.025em;color:var(--ink)}
+  h1 em{font-style:italic;font-variation-settings:"SOFT" 100;color:var(--cta)}
+  h1 .stroke{-webkit-text-stroke:1.5px var(--ink);color:transparent}
+  .sub{font-size:17px;line-height:1.55;color:color-mix(in srgb, var(--ink) 70%, transparent);max-width:440px;margin:36px 0 40px}
+  .ctas{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .btn-pri{background:var(--ink);color:var(--bg);padding:16px 24px;border-radius:999px;font-weight:500;font-size:15px;display:inline-flex;align-items:center;gap:10px;transition:.2s}
+  .btn-pri::after{content:'→';transition:.2s transform}
+  .btn-pri:hover{background:var(--cta);color:var(--cta-text)}
+  .btn-pri:hover::after{transform:translateX(4px)}
+  .btn-sec{color:var(--ink);padding:16px 22px;font-size:15px;border-bottom:1px solid var(--ink);border-radius:0;display:inline-flex;align-items:center;gap:8px}
+  .micro{margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:color-mix(in srgb, var(--ink) 45%, transparent)}
+  .micro b{color:var(--cta);font-weight:400}
+
+  .side{display:flex;flex-direction:column;gap:14px}
+  .calc{background:var(--surface);border-radius:20px;padding:24px;box-shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.05)}
+  .calc-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:color-mix(in srgb, var(--ink) 50%, transparent);margin-bottom:14px}
+  .chip-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .chip{padding:7px 12px;font-size:13px;background:color-mix(in srgb, var(--ink) 5%, transparent);border-radius:8px;color:color-mix(in srgb, var(--ink) 70%, transparent)}
+  .chip.on{background:var(--ink);color:var(--bg)}
+  .field{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--field-bg);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:13px}
+  .field input{font-family:'Fraunces',serif;font-size:22px;background:none;border:none;width:80px;text-align:right;color:var(--ink)}
+  .field input:focus{outline:none}
+  .price-line{display:flex;justify-content:space-between;align-items:end;margin-top:18px;padding-top:14px;border-top:1px solid color-mix(in srgb, var(--ink) 8%, transparent)}
+  .price-line .v{font-family:'Fraunces',serif;font-weight:400;font-size:36px;line-height:1;letter-spacing:-.02em}
+  .price-line .v em{font-style:italic;color:var(--cta)}
+  .price-line small{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:color-mix(in srgb, var(--ink) 45%, transparent)}
+  .mini{background:var(--ink);color:var(--bg);display:flex;justify-content:space-between;align-items:center;border-radius:20px;padding:20px 24px}
+  .mini .l{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;opacity:.6}
+  .mini .r{font-family:'Fraunces',serif;font-size:28px;letter-spacing:-.02em}
+  .mini .r em{font-style:italic;color:var(--accent)}
+
+  /* ───────── PALETTE A · Brand-green + modern accent ───────── */
+  .pA{--bg:#f6f3ec;--ink:#141312;--cta:#1e5c32;--cta-text:#f6f3ec;--accent:#c8ff3e;--mute:#5a6b5e;--surface:#ffffff;--field-bg:#f6f3ec}
+
+  /* ───────── PALETTE B · Fresh green ───────── */
+  .pB{--bg:#faf7f0;--ink:#0e0e0c;--cta:#2d8f4f;--cta-text:#ffffff;--accent:#d4ff3e;--mute:#506b56;--surface:#ffffff;--field-bg:#faf7f0}
+
+  /* ───────── PALETTE C · Black + lime, green as CTA ───────── */
+  .pC{--bg:#f4f1ea;--ink:#0a0a0a;--cta:#0a0a0a;--cta-text:#c8ff3e;--accent:#c8ff3e;--mute:#5a5854;--surface:#ffffff;--field-bg:#f4f1ea}
+  .pC h1 em{color:#1e5c32}
+  .pC .crumb::before{background:#c8ff3e}
+  .pC .ctaheader{background:#c8ff3e;color:#0a0a0a}
+  .pC .micro b{color:#1e5c32}
+  .pC .price-line .v em{color:#1e5c32}
+
+  /* ───────── PALETTE D · Neutral + sienna ───────── */
+  .pD{--bg:#f6f3ec;--ink:#171513;--cta:#c44a1f;--cta-text:#ffffff;--accent:#f3a672;--mute:#6b5e54;--surface:#ffffff;--field-bg:#f6f3ec}
+  .pD .logo .dash{color:#c44a1f}
+  .pD .mini .r em{color:#f3a672}
+
+  /* swatch row */
+  .swatches{position:absolute;left:5vw;bottom:32px;display:flex;gap:10px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:color-mix(in srgb, var(--ink) 50%, transparent)}
+  .swatches .sw{display:inline-flex;align-items:center;gap:6px}
+  .swatches .sw i{width:14px;height:14px;border-radius:4px;border:1px solid rgba(0,0,0,.08)}
+
+  .verdict{padding:60px 5vw 80px;background:#0a0a0a;color:#9a9a98;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.05em;line-height:1.7}
+  .verdict b{color:#d4ff3e}
+
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:40px}
+    .links{display:none}
+    .swatches{position:static;margin-top:40px;flex-wrap:wrap}
+    .switcher{font-size:11px}
+    .switcher a{padding:7px 10px}
+  }
+</style>
+</head>
+<body>
+
+<nav class="switcher" aria-label="Palette switcher">
+  <a href="#pA" class="rec">A · Brand green ★</a>
+  <a href="#pB">B · Fresh green</a>
+  <a href="#pC">C · Black+Lime</a>
+  <a href="#pD">D · Sienna</a>
+</nav>
+
+<!-- ═════ PALETTE A · BRAND GREEN ═════ -->
+<section id="pA" class="hero pA">
+  <div class="variant-tag" style="color:#1e5c32">PAL.A · BRAND GREEN — RECOMMENDED ★</div>
+  <header class="nav">
+    <div class="logo">Vent<span class="dash">—</span><span class="est">est. 2014</span></div>
+    <div class="links"><span>Услуги</span><span>Кейсы</span><span>Цены</span><span>О нас</span><span>Контакты</span></div>
+    <a class="ctaheader">Рассчитать стоимость</a>
+  </header>
+  <div class="hero-grid">
+    <div>
+      <div class="crumb">01 / промышленная чистка вентсистем</div>
+      <h1>Чистим то,<br><em>что никто</em><br><span class="stroke">не видит.</span></h1>
+      <p class="sub">Спецсервис по чистке вентканалов, вытяжек и зонтов для общепита, офисов и складов. С 2014 года, по протоколу МЧС и СЭС.</p>
+      <div class="ctas">
+        <button class="btn-pri">Рассчитать стоимость</button>
+        <button class="btn-sec">Смотреть кейсы →</button>
+      </div>
+      <div class="micro">● <b>240+</b> объектов &nbsp;·&nbsp; ● срок <b>4 дня</b> &nbsp;·&nbsp; ● лицензия <b>МЧС 21-Б</b></div>
+    </div>
+    <div class="side">
+      <div class="calc">
+        <div class="calc-lbl">калькулятор / live</div>
+        <div class="chip-row">
+          <span class="chip on">Общепит</span><span class="chip">Офис</span><span class="chip">Производство</span><span class="chip">Своё</span>
+        </div>
+        <div class="field"><span style="color:color-mix(in srgb, var(--ink) 55%, transparent)">площадь, м²</span><input type="number" value="180" /></div>
+        <div class="price-line"><span class="v">от <em>12 400</em> ₽</span><small>точно — после осмотра</small></div>
+      </div>
+      <div class="mini"><span class="l">средняя экономия<br>после чистки</span><span class="r"><em>—18%</em> расход</span></div>
+    </div>
+  </div>
+  <div class="swatches">
+    <span class="sw"><i style="background:#f6f3ec"></i>BG #f6f3ec</span>
+    <span class="sw"><i style="background:#141312"></i>INK #141312</span>
+    <span class="sw"><i style="background:#1e5c32"></i>CTA #1e5c32</span>
+    <span class="sw"><i style="background:#c8ff3e"></i>ACCENT #c8ff3e</span>
+  </div>
+</section>
+
+<!-- ═════ PALETTE B · FRESH GREEN ═════ -->
+<section id="pB" class="hero pB">
+  <div class="variant-tag" style="color:#2d8f4f">PAL.B · FRESH GREEN</div>
+  <header class="nav">
+    <div class="logo">Vent<span class="dash">—</span><span class="est">est. 2014</span></div>
+    <div class="links"><span>Услуги</span><span>Кейсы</span><span>Цены</span><span>О нас</span><span>Контакты</span></div>
+    <a class="ctaheader">Рассчитать стоимость</a>
+  </header>
+  <div class="hero-grid">
+    <div>
+      <div class="crumb">01 / промышленная чистка вентсистем</div>
+      <h1>Чистим то,<br><em>что никто</em><br><span class="stroke">не видит.</span></h1>
+      <p class="sub">Спецсервис по чистке вентканалов, вытяжек и зонтов для общепита, офисов и складов. С 2014 года, по протоколу МЧС и СЭС.</p>
+      <div class="ctas">
+        <button class="btn-pri">Рассчитать стоимость</button>
+        <button class="btn-sec">Смотреть кейсы →</button>
+      </div>
+      <div class="micro">● <b>240+</b> объектов &nbsp;·&nbsp; ● срок <b>4 дня</b> &nbsp;·&nbsp; ● лицензия <b>МЧС 21-Б</b></div>
+    </div>
+    <div class="side">
+      <div class="calc">
+        <div class="calc-lbl">калькулятор / live</div>
+        <div class="chip-row">
+          <span class="chip on">Общепит</span><span class="chip">Офис</span><span class="chip">Производство</span><span class="chip">Своё</span>
+        </div>
+        <div class="field"><span style="color:color-mix(in srgb, var(--ink) 55%, transparent)">площадь, м²</span><input type="number" value="180" /></div>
+        <div class="price-line"><span class="v">от <em>12 400</em> ₽</span><small>точно — после осмотра</small></div>
+      </div>
+      <div class="mini"><span class="l">средняя экономия<br>после чистки</span><span class="r"><em>—18%</em> расход</span></div>
+    </div>
+  </div>
+  <div class="swatches">
+    <span class="sw"><i style="background:#faf7f0"></i>BG #faf7f0</span>
+    <span class="sw"><i style="background:#0e0e0c"></i>INK #0e0e0c</span>
+    <span class="sw"><i style="background:#2d8f4f"></i>CTA #2d8f4f</span>
+    <span class="sw"><i style="background:#d4ff3e"></i>ACCENT #d4ff3e</span>
+  </div>
+</section>
+
+<!-- ═════ PALETTE C · BLACK + LIME ═════ -->
+<section id="pC" class="hero pC">
+  <div class="variant-tag" style="color:#0a0a0a">PAL.C · BLACK + LIME</div>
+  <header class="nav">
+    <div class="logo">Vent<span class="dash">—</span><span class="est">est. 2014</span></div>
+    <div class="links"><span>Услуги</span><span>Кейсы</span><span>Цены</span><span>О нас</span><span>Контакты</span></div>
+    <a class="ctaheader">Рассчитать стоимость</a>
+  </header>
+  <div class="hero-grid">
+    <div>
+      <div class="crumb">01 / промышленная чистка вентсистем</div>
+      <h1>Чистим то,<br><em>что никто</em><br><span class="stroke">не видит.</span></h1>
+      <p class="sub">Спецсервис по чистке вентканалов, вытяжек и зонтов для общепита, офисов и складов. С 2014 года, по протоколу МЧС и СЭС.</p>
+      <div class="ctas">
+        <button class="btn-pri">Рассчитать стоимость</button>
+        <button class="btn-sec">Смотреть кейсы →</button>
+      </div>
+      <div class="micro">● <b>240+</b> объектов &nbsp;·&nbsp; ● срок <b>4 дня</b> &nbsp;·&nbsp; ● лицензия <b>МЧС 21-Б</b></div>
+    </div>
+    <div class="side">
+      <div class="calc">
+        <div class="calc-lbl">калькулятор / live</div>
+        <div class="chip-row">
+          <span class="chip on">Общепит</span><span class="chip">Офис</span><span class="chip">Производство</span><span class="chip">Своё</span>
+        </div>
+        <div class="field"><span style="color:color-mix(in srgb, var(--ink) 55%, transparent)">площадь, м²</span><input type="number" value="180" /></div>
+        <div class="price-line"><span class="v">от <em>12 400</em> ₽</span><small>точно — после осмотра</small></div>
+      </div>
+      <div class="mini"><span class="l">средняя экономия<br>после чистки</span><span class="r"><em>—18%</em> расход</span></div>
+    </div>
+  </div>
+  <div class="swatches">
+    <span class="sw"><i style="background:#f4f1ea"></i>BG #f4f1ea</span>
+    <span class="sw"><i style="background:#0a0a0a"></i>INK #0a0a0a</span>
+    <span class="sw"><i style="background:#1e5c32"></i>GREEN #1e5c32</span>
+    <span class="sw"><i style="background:#c8ff3e"></i>LIME #c8ff3e</span>
+  </div>
+</section>
+
+<!-- ═════ PALETTE D · SIENNA ═════ -->
+<section id="pD" class="hero pD">
+  <div class="variant-tag" style="color:#c44a1f">PAL.D · NEUTRAL + SIENNA</div>
+  <header class="nav">
+    <div class="logo">Vent<span class="dash">—</span><span class="est">est. 2014</span></div>
+    <div class="links"><span>Услуги</span><span>Кейсы</span><span>Цены</span><span>О нас</span><span>Контакты</span></div>
+    <a class="ctaheader">Рассчитать стоимость</a>
+  </header>
+  <div class="hero-grid">
+    <div>
+      <div class="crumb">01 / промышленная чистка вентсистем</div>
+      <h1>Чистим то,<br><em>что никто</em><br><span class="stroke">не видит.</span></h1>
+      <p class="sub">Спецсервис по чистке вентканалов, вытяжек и зонтов для общепита, офисов и складов. С 2014 года, по протоколу МЧС и СЭС.</p>
+      <div class="ctas">
+        <button class="btn-pri">Рассчитать стоимость</button>
+        <button class="btn-sec">Смотреть кейсы →</button>
+      </div>
+      <div class="micro">● <b>240+</b> объектов &nbsp;·&nbsp; ● срок <b>4 дня</b> &nbsp;·&nbsp; ● лицензия <b>МЧС 21-Б</b></div>
+    </div>
+    <div class="side">
+      <div class="calc">
+        <div class="calc-lbl">калькулятор / live</div>
+        <div class="chip-row">
+          <span class="chip on">Общепит</span><span class="chip">Офис</span><span class="chip">Производство</span><span class="chip">Своё</span>
+        </div>
+        <div class="field"><span style="color:color-mix(in srgb, var(--ink) 55%, transparent)">площадь, м²</span><input type="number" value="180" /></div>
+        <div class="price-line"><span class="v">от <em>12 400</em> ₽</span><small>точно — после осмотра</small></div>
+      </div>
+      <div class="mini"><span class="l">средняя экономия<br>после чистки</span><span class="r"><em>—18%</em> расход</span></div>
+    </div>
+  </div>
+  <div class="swatches">
+    <span class="sw"><i style="background:#f6f3ec"></i>BG #f6f3ec</span>
+    <span class="sw"><i style="background:#171513"></i>INK #171513</span>
+    <span class="sw"><i style="background:#c44a1f"></i>SIENNA #c44a1f</span>
+    <span class="sw"><i style="background:#f3a672"></i>WARM #f3a672</span>
+  </div>
+</section>
+
+<div class="verdict">
+  <div style="max-width:780px">
+    <b>Что сравнивать.</b> Один и тот же hero, разная только палитра. Прокатись по A → B → C → D и смотри на: <b>а)</b> ощущение от первого экрана (тепло/холод/контраст), <b>б)</b> читаемость mono-теков "01 / промышленная чистка", <b>в)</b> как выглядит CTA-кнопка в калькуляторе.
+    <br><br>
+    <b>Мой совет → A · Brand green.</b> Сохраняет идентичность, тёплый кремовый фон даёт editorial-настроение, а холодный lime-акцент работает только в hover/active — это придаёт "продуктовое" ощущение без агрессии. <b>C · Black + Lime</b> — самый "продуктовый" и выделяющийся, но теряет узнаваемость зелёного. <b>D · Sienna</b> — самый смелый, но это уже не "чистая вентиляция", а скорее "ремесленный сервис" — диссонанс с темой.
+  </div>
+</div>
+
+</body>
+</html>

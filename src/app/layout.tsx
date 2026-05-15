@@ -5,10 +5,9 @@ import './globals.css';
 
 const fraunces = Fraunces({
   subsets: ['latin', 'latin-ext'],
-  axes: ['opsz', 'SOFT'],
+  axes: ['SOFT'],
   display: 'swap',
   variable: '--font-fraunces',
-  weight: ['300', '400', '500', '600'],
 });
 
 const interTight = Inter_Tight({

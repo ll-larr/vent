@@ -12,7 +12,7 @@ export const submitSchema = z.object({
   areaM2: z.coerce.number().int().min(20, 'Минимум 20 м²').max(5000, 'Свяжитесь с нами для крупных объектов'),
   services: z.array(z.enum(SERVICE_KEYS)).min(1, 'Выберите хотя бы одну услугу'),
   comment: z.string().max(500, 'Слишком длинный комментарий').optional().default(''),
-  consent: z.literal(true, { message: 'Подтвердите согласие на обработку данных' }),
+  consent: z.boolean().refine((v) => v === true, { message: 'Подтвердите согласие на обработку данных' }),
 });
 
 export type SubmitFormData = z.infer<typeof submitSchema>;
