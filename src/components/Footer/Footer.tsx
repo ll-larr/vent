@@ -1,62 +1,103 @@
 import Link from 'next/link';
-import { navLinks } from '@/lib/nav';
-import { Phone, Mail, MapPinned } from '@/lib/icons';
+import { CONTACT_PHONE, CONTACT_PHONE_HREF, CONTACT_EMAIL, CONTACT_EMAIL_HREF } from '@/lib/nav';
 
 export function Footer() {
   return (
-    <footer className="bg-ink text-bg px-5 md:px-[5vw] py-16">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-10">
-        <div>
-          <div className="font-display font-medium text-[28px] tracking-[-.02em] flex items-baseline gap-2">
-            Vent<span className="text-accent italic font-light">—</span>
-            <span className="font-mono text-[11px] tracking-[.1em] uppercase text-bg/55 font-normal">est. 2014</span>
+    <footer className="bg-ink text-bg mt-6">
+      <div className="max-w-[1320px] mx-auto px-4 pt-[60px] pb-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-7 lg:gap-[30px] items-start">
+        {/* Mark */}
+        <div className="flex flex-col gap-4 max-w-[360px]">
+          <div className="font-display font-light text-[clamp(40px,5vw,76px)] leading-[.95] tracking-[-.025em]">
+            vent<em className="italic text-accent">.</em>
+            <br />
+            чистим то,
+            <br />
+            что <em className="italic text-accent">не&nbsp;видно.</em>
           </div>
-          <p className="mt-5 text-[14px] text-bg/65 leading-relaxed max-w-xs">
-            Промышленная чистка вентиляции для бизнеса. Москва и Подмосковье.
+          <p className="font-sans text-[13px] text-bg/65 max-w-[36ch] leading-[1.5]">
+            Промышленный сервис по чистке вентиляции, вытяжек и зонтов. Москва · СПб · регионы РФ с 2021 года.
           </p>
         </div>
 
-        <div>
-          <div className="font-mono text-[11px] uppercase tracking-[.15em] text-bg/45 mb-4">навигация</div>
-          <ul className="flex flex-col gap-2 text-[14px]">
-            {navLinks.map((l) => (
-              <li key={l.href}>
-                <a href={l.href} className="hover:text-accent transition-colors">{l.label}</a>
-              </li>
-            ))}
-            <li>
-              <Link href="/contacts" className="hover:text-accent transition-colors">Контакты</Link>
-            </li>
-            <li>
-              <Link href="/privacy" className="hover:text-accent transition-colors">Политика</Link>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <div className="font-mono text-[11px] uppercase tracking-[.15em] text-bg/45 mb-4">связаться</div>
-          <ul className="flex flex-col gap-3 text-[14px]">
-            <li className="flex items-center gap-2.5">
-              <Phone size={14} strokeWidth={1.5} className="text-bg/55" />
-              <a href="tel:+74951234567" className="hover:text-accent transition-colors">+7 (495) 123-45-67</a>
-            </li>
-            <li className="flex items-center gap-2.5">
-              <Mail size={14} strokeWidth={1.5} className="text-bg/55" />
-              <a href="mailto:info@cleanvent.ru" className="hover:text-accent transition-colors">info@cleanvent.ru</a>
-            </li>
-            <li className="flex items-center gap-2.5">
-              <MapPinned size={14} strokeWidth={1.5} className="text-bg/55" />
-              <span className="text-bg/65">Москва и Подмосковье</span>
-            </li>
-          </ul>
-        </div>
+        <FooterCol
+          title="услуги"
+          items={[
+            { label: 'Чистка от жира', href: '#services' },
+            { label: 'Чистка от пыли', href: '#services' },
+            { label: 'Зонты и вытяжки', href: '#services' },
+            { label: 'Дезинфекция', href: '#services' },
+            { label: 'Диагностика', href: '#services' },
+          ]}
+        />
+        <FooterCol
+          title="компания"
+          items={[
+            { label: 'Кейсы', href: '#cases' },
+            { label: 'Объекты', href: '#venues' },
+            { label: 'Процесс', href: '#process' },
+            { label: 'Лицензии', href: '#trust' },
+            { label: 'Контакты', href: '/contacts' },
+          ]}
+        />
+        <FooterCol
+          title="контакты"
+          items={[
+            { label: CONTACT_PHONE, href: CONTACT_PHONE_HREF },
+            { label: CONTACT_EMAIL, href: CONTACT_EMAIL_HREF },
+            { label: 'Telegram', href: 'https://t.me/vent' },
+            { label: 'WhatsApp', href: 'https://wa.me/74951200404' },
+          ]}
+        />
       </div>
 
-      <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-bg/10 flex flex-wrap gap-3 justify-between font-mono text-[11px] uppercase tracking-[.1em] text-bg/45">
-        <span>© 2014–2026 Vent</span>
-        <span>промышленная чистка вентиляции</span>
+      <div
+        className="max-w-[1320px] mx-auto px-4 pt-4.5 pb-8 flex justify-between gap-3 flex-wrap font-mono text-[10.5px] uppercase tracking-[.12em] text-bg/50"
+        style={{ borderTop: '1px solid rgba(246,243,236,.1)' }}
+      >
+        <span>© 2021–2026 Vent</span>
+        <Link
+          href="/privacy"
+          className="text-bg/70 border-b border-bg/[.15] hover:text-accent hover:border-accent transition-colors"
+        >
+          Политика конфиденциальности
+        </Link>
       </div>
     </footer>
+  );
+}
+
+function FooterCol({
+  title,
+  items,
+}: {
+  title: string;
+  items: { label: string; href: string }[];
+}) {
+  return (
+    <div>
+      <h6 className="font-mono text-[11px] uppercase tracking-[.14em] text-bg/55 mb-3.5">{title}</h6>
+      <ul className="list-none p-0 m-0 flex flex-col gap-2">
+        {items.map((it) => (
+          <li key={it.label}>
+            {it.href.startsWith('/') ? (
+              <Link
+                href={it.href}
+                className="font-mono text-[12px] tracking-[.06em] text-bg/85 uppercase hover:text-accent transition-colors"
+              >
+                {it.label}
+              </Link>
+            ) : (
+              <a
+                href={it.href}
+                className="font-mono text-[12px] tracking-[.06em] text-bg/85 uppercase hover:text-accent transition-colors"
+              >
+                {it.label}
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
