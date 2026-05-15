@@ -32,4 +32,17 @@ export {
   Gauge,
   Layers,
   Zap,
+  // Redesign additions
+  ClipboardList,
+  Eye,
+  Sparkles,
+  FileCheck,
+  ArrowDown,
+  Plus,
+  Minus,
+  Check,
+  Info,
+  ChevronRight,
+  Stethoscope,
+  SprayCan,
 } from 'lucide-react';
