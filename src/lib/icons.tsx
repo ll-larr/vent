@@ -45,4 +45,6 @@ export {
   ChevronRight,
   Stethoscope,
   SprayCan,
+  ArrowUpRight,
+  Edit,
 } from 'lucide-react';
