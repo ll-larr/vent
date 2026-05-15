@@ -1,92 +1,22 @@
-'use client';
-import { useRef } from 'react';
-import useScrollAnim from '@/lib/useScrollAnim';
-import ContactForm from '@/components/ContactForm/ContactForm';
-import type { ServiceId } from '@/components/Calculator/types';
+import { ContactForm } from '@/components/ContactForm/ContactForm';
 
-interface ContactSectionProps {
-  preselectedServices?: ServiceId[];
-  preselectedArea?: number;
-}
-
-export default function ContactSection({
-  preselectedServices,
-  preselectedArea,
-}: ContactSectionProps) {
-  const ref = useRef<HTMLElement>(null);
-  useScrollAnim(ref);
-
+export function ContactSection() {
   return (
-    <section id="contacts" ref={ref} className="py-24 px-6 bg-brand">
-      <div className="max-w-content mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-16" data-anim>
-          <span className="text-xs font-bold uppercase tracking-[0.1em] text-white/50 mb-3 block">
-            Связаться с нами
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-[-0.03em] text-white mb-4">
-            Оставить заявку
-          </h2>
-          <p className="text-white/60 text-lg">
-            Перезвоним в течение 30 минут в рабочее время
-          </p>
+    <section id="contact" className="px-5 md:px-[5vw] py-24 bg-ink text-bg" data-anim>
+      <div className="max-w-3xl mx-auto">
+        <div className="font-mono text-[11px] uppercase tracking-[.15em] text-bg/60 mb-3">
+          08 / заявка
         </div>
-
-        <div
-          className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10 items-start"
-          data-anim
-        >
-          {/* Form — key forces remount when preselected services change from Calculator */}
-          <div className="bg-white rounded-card p-8">
-            <ContactForm
-              key={(preselectedServices ?? []).join(',') + String(preselectedArea)}
-              preselectedServices={preselectedServices}
-              preselectedArea={preselectedArea}
-            />
-          </div>
-
-          {/* Contact info */}
-          <div className="text-white space-y-8">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.1em] text-white/40 mb-3">
-                Телефон
-              </p>
-              <a
-                href="tel:+74951234567"
-                className="text-2xl font-semibold hover:text-white/80 transition-colors"
-              >
-                +7 (495) 123-45-67
-              </a>
-            </div>
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.1em] text-white/40 mb-3">
-                Email
-              </p>
-              <a
-                href="mailto:info@cleanvent.ru"
-                className="text-lg hover:text-white/80 transition-colors"
-              >
-                info@cleanvent.ru
-              </a>
-            </div>
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.1em] text-white/40 mb-3">
-                Режим работы
-              </p>
-              <p className="text-lg">Пн–Пт 9:00–19:00</p>
-              <p className="text-white/60 text-sm mt-1">
-                Выезд в выходные по договорённости
-              </p>
-            </div>
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.1em] text-white/40 mb-3">
-                Выезд
-              </p>
-              <p className="text-lg">Москва и область</p>
-              <p className="text-white/60 text-sm mt-1">Бесплатный осмотр объекта</p>
-            </div>
-          </div>
-        </div>
+        <h2 className="font-display font-light text-[clamp(40px,5vw,72px)] leading-none tracking-[-.025em] mb-3">
+          Оставьте <em className="italic text-accent">заявку.</em>
+        </h2>
+        <p className="text-bg/70 text-[15px] mb-10 max-w-md">
+          Перезвоним в течение 2 часов в рабочее время. Бесплатный осмотр и точная смета.
+        </p>
+        <ContactForm />
       </div>
     </section>
   );
 }
+
+export default ContactSection;
