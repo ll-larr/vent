@@ -9,21 +9,27 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        bg:          '#f6f3ec',
+        ink:         '#141312',
         brand: {
           DEFAULT: '#1e5c32',
-          hover:   '#2d7d46',
           dark:    '#0f3d22',
+          hover:   '#2d7d46',
           accent:  '#22c55e',
           light:   '#eef5ef',
           muted:   '#5a6b5e',
         },
-        ink:   '#111827',
-        stone: '#f4f4f2',
-        bg:    '#f7faf7',
+        'brand-dark':'#0f3d22',
+        accent:      '#c8ff3e',
+        surface:     '#ffffff',
+        mute:        '#5a6b5e',
+        line:        'rgba(20,19,18,0.08)',
+        stone:       '#f4f4f2',
       },
       fontFamily: {
-        sans:    ['Onest', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-        display: ['Fraunces', 'Georgia', 'serif'],
+        display: ['var(--font-fraunces)', 'Georgia', 'serif'],
+        sans:    ['var(--font-inter-tight)', 'system-ui', 'sans-serif'],
+        mono:    ['var(--font-jetbrains-mono)', 'ui-monospace', 'monospace'],
       },
       maxWidth: {
         content: '1120px',
