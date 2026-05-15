@@ -1,42 +1,41 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
-import { navLinks, LogoSvg } from '@/lib/nav';
-import { Menu, X, Phone } from '@/lib/icons';
 
-export default function Header() {
+import { useEffect, useRef, useState } from 'react';
+import { navLinks } from '@/lib/nav';
+import { Menu, X, ArrowRight } from '@/lib/icons';
+
+export function Header() {
   const navRef = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const hero = document.querySelector('.hero-section');
-
-    if (!hero || !navRef.current) {
-      navRef.current?.classList.add('visible');
+    if (!hero) {
+      setScrolled(true);
       return;
     }
-
     const obs = new IntersectionObserver(
-      ([e]) => {
-        const visible = !e.isIntersecting;
-        navRef.current?.classList.toggle('visible', visible);
-        setScrolled(visible);
-      },
-      { threshold: 0 }
+      ([e]) => setScrolled(!e.isIntersecting),
+      { threshold: 0, rootMargin: '-80px 0px 0px 0px' },
     );
     obs.observe(hero);
     return () => obs.disconnect();
   }, []);
 
-  // Close mobile menu on route change / escape
+  // Close mobile drawer on resize ≥ md or on Esc
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => e.key === 'Escape' && setMobileOpen(false);
-    document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
+    const onResize = () => window.innerWidth >= 768 && setMobileOpen(false);
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMobileOpen(false);
+    window.addEventListener('resize', onResize);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('keydown', onKey);
+    };
   }, []);
 
-  // Prevent body scroll when mobile menu open
+  // Lock body scroll when drawer open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
@@ -44,142 +43,73 @@ export default function Header() {
 
   return (
     <>
-      <nav
+      <header
         ref={navRef}
-        className={[
-          'fixed top-0 left-0 right-0 z-50',
-          'transition-all duration-300 ease-out',
-          'opacity-0 -translate-y-full',
-          '[&.visible]:opacity-100 [&.visible]:translate-y-0',
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-white/95 backdrop-blur-md border-b border-black/[0.06] shadow-card'
-            : 'bg-brand',
-        ].join(' ')}
+            ? 'bg-bg/95 backdrop-blur-md border-b border-line'
+            : 'bg-transparent'
+        }`}
       >
-        <div className="max-w-content mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-6">
-          {/* Logo */}
-          <Link
-            href="/"
-            className={[
-              'flex items-center gap-2.5 font-semibold text-base shrink-0 transition-colors',
-              scrolled ? 'text-brand' : 'text-white',
-            ].join(' ')}
-          >
-            <LogoSvg />
-            <span className="tracking-tight">Clean Vent</span>
-          </Link>
+        <div className="max-w-7xl mx-auto px-5 md:px-[5vw] py-4 flex items-center justify-between gap-6">
+          <a href="/" className="font-display font-medium text-[24px] tracking-[-.02em] flex items-baseline gap-2 text-ink">
+            Vent<span className="text-brand font-light italic">—</span>
+            <span className="font-mono text-[11px] tracking-[.1em] uppercase text-ink/50 font-normal">est. 2014</span>
+          </a>
 
-          {/* Desktop nav */}
-          <div className="hidden lg:flex items-center gap-7 flex-1 justify-center">
+          <nav className="hidden md:flex items-center gap-8 text-[14px] text-ink/70">
             {navLinks.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                className={[
-                  'text-sm font-medium transition-colors whitespace-nowrap',
-                  scrolled
-                    ? 'text-ink/60 hover:text-ink'
-                    : 'text-white/70 hover:text-white',
-                ].join(' ')}
-              >
+              <a key={l.href} href={l.href} className="hover:text-ink transition-colors">
                 {l.label}
               </a>
             ))}
-          </div>
+          </nav>
 
-          {/* Right controls */}
-          <div className="flex items-center gap-3 shrink-0">
-            <a
-              href="tel:+74951234567"
-              className={[
-                'hidden lg:flex items-center gap-1.5 text-sm font-medium transition-colors',
-                scrolled ? 'text-ink/60 hover:text-ink' : 'text-white/70 hover:text-white',
-              ].join(' ')}
-            >
-              <Phone size={15} strokeWidth={2} />
-              +7 (495) 123-45-67
-            </a>
+          <a
+            href="#calculator"
+            className="hidden md:inline-flex items-center gap-2 bg-brand text-bg px-5 py-2.5 rounded-full text-[14px] font-medium hover:bg-brand-dark transition-colors"
+          >
+            Рассчитать
+            <ArrowRight size={14} strokeWidth={2} />
+          </a>
 
-            <a
-              href="#contacts"
-              className={[
-                'text-sm font-semibold px-5 py-2.5 rounded-pill transition-all whitespace-nowrap',
-                scrolled
-                  ? 'bg-brand text-white hover:bg-brand-hover shadow-card'
-                  : 'bg-white text-brand hover:bg-brand-light',
-              ].join(' ')}
-            >
-              Оставить заявку
-            </a>
+          <button
+            type="button"
+            onClick={() => setMobileOpen(true)}
+            aria-label="Открыть меню"
+            className="md:hidden p-2 -mr-2 text-ink"
+          >
+            <Menu size={22} strokeWidth={1.75} />
+          </button>
+        </div>
+      </header>
 
-            {/* Mobile burger */}
-            <button
-              onClick={() => setMobileOpen((v) => !v)}
-              aria-label="Меню"
-              className={[
-                'lg:hidden p-2 rounded-lg transition-colors',
-                scrolled ? 'text-ink hover:bg-black/5' : 'text-white hover:bg-white/10',
-              ].join(' ')}
-            >
-              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-[60] bg-bg flex flex-col md:hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-line">
+            <span className="font-display font-medium text-[24px] tracking-[-.02em]">Vent</span>
+            <button type="button" onClick={() => setMobileOpen(false)} aria-label="Закрыть меню" className="p-2 -mr-2 text-ink">
+              <X size={24} strokeWidth={1.75} />
             </button>
           </div>
-        </div>
-      </nav>
-
-      {/* Mobile drawer */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-40 lg:hidden">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+          <nav className="flex flex-col px-5 py-8 gap-2 text-2xl font-display">
+            {navLinks.map((l) => (
+              <a key={l.href} href={l.href} onClick={() => setMobileOpen(false)} className="py-3 border-b border-line">
+                {l.label}
+              </a>
+            ))}
+          </nav>
+          <a
+            href="#calculator"
             onClick={() => setMobileOpen(false)}
-          />
-          {/* Panel */}
-          <div className="absolute top-0 right-0 bottom-0 w-[min(320px,85vw)] bg-white shadow-float flex flex-col">
-            <div className="h-16 flex items-center justify-between px-6 border-b border-black/[0.06]">
-              <span className="font-semibold text-brand">Навигация</span>
-              <button
-                onClick={() => setMobileOpen(false)}
-                aria-label="Закрыть меню"
-                className="p-2 rounded-lg text-ink/50 hover:bg-black/5 transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <nav className="flex-1 overflow-y-auto py-6 px-6 space-y-1">
-              {navLinks.map((l) => (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-3 px-3 py-3 rounded-xl text-ink/70 hover:text-brand hover:bg-brand-light font-medium transition-colors"
-                >
-                  {l.label}
-                </a>
-              ))}
-            </nav>
-
-            <div className="p-6 border-t border-black/[0.06] space-y-3">
-              <a
-                href="tel:+74951234567"
-                className="flex items-center gap-2 text-sm text-ink/60 hover:text-ink transition-colors"
-              >
-                <Phone size={15} strokeWidth={2} />
-                +7 (495) 123-45-67
-              </a>
-              <a
-                href="#contacts"
-                onClick={() => setMobileOpen(false)}
-                className="block w-full text-center bg-brand text-white font-semibold py-3 rounded-pill hover:bg-brand-hover transition-colors"
-              >
-                Оставить заявку
-              </a>
-            </div>
-          </div>
+            className="mx-5 mt-auto mb-8 bg-brand text-bg px-6 py-4 rounded-full text-center font-medium"
+          >
+            Рассчитать стоимость
+          </a>
         </div>
       )}
     </>
   );
 }
+
+export default Header;
