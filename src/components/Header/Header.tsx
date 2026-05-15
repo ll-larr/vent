@@ -1,111 +1,210 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { navLinks } from '@/lib/nav';
-import { Menu, X, ArrowRight } from '@/lib/icons';
+import { useEffect, useState } from 'react';
+import {
+  navLinks,
+  LogoMark,
+  LogoWord,
+  CONTACT_PHONE,
+  CONTACT_PHONE_HREF,
+  CONTACT_EMAIL,
+  CONTACT_EMAIL_HREF,
+} from '@/lib/nav';
+import { Menu, X, ArrowRight, Phone, Mail } from '@/lib/icons';
 
 export function Header() {
-  const navRef = useRef<HTMLElement>(null);
-  const [scrolled, setScrolled] = useState(false);
+  const [activeId, setActiveId] = useState<string>('services');
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  // Highlight active nav link via IntersectionObserver on sections.
   useEffect(() => {
-    const hero = document.querySelector('.hero-section');
-    if (!hero) {
-      setScrolled(true);
-      return;
-    }
+    const ids = navLinks.map((l) => l.href.replace('#', ''));
+    const els = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (els.length === 0) return;
+
     const obs = new IntersectionObserver(
-      ([e]) => setScrolled(!e.isIntersecting),
-      { threshold: 0, rootMargin: '-80px 0px 0px 0px' },
+      (entries) => {
+        let best: IntersectionObserverEntry | null = null;
+        for (const e of entries) {
+          if (e.isIntersecting && (!best || e.intersectionRatio > best.intersectionRatio)) {
+            best = e;
+          }
+        }
+        if (best) setActiveId(best.target.id);
+      },
+      { rootMargin: '-30% 0px -55% 0px', threshold: [0, 0.1, 0.25, 0.5] },
     );
-    obs.observe(hero);
+    els.forEach((el) => obs.observe(el));
     return () => obs.disconnect();
   }, []);
 
-  // Close mobile drawer on resize ≥ md or on Esc
+  // Lock scroll + Esc when mobile drawer open.
   useEffect(() => {
-    const onResize = () => window.innerWidth >= 768 && setMobileOpen(false);
+    if (!mobileOpen) return;
+    document.body.style.overflow = 'hidden';
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMobileOpen(false);
-    window.addEventListener('resize', onResize);
     window.addEventListener('keydown', onKey);
     return () => {
-      window.removeEventListener('resize', onResize);
+      document.body.style.overflow = '';
       window.removeEventListener('keydown', onKey);
     };
-  }, []);
-
-  // Lock body scroll when drawer open
-  useEffect(() => {
-    document.body.style.overflow = mobileOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
+
+  // Close drawer when crossing lg breakpoint.
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth >= 1024) setMobileOpen(false);
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   return (
     <>
-      <header
-        ref={navRef}
-        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? 'bg-bg/95 backdrop-blur-md border-b border-line'
-            : 'bg-transparent'
-        }`}
+      {/* Skip link for keyboard users */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-full focus:bg-accent focus:text-ink focus:text-sm focus:font-mono focus:uppercase focus:tracking-wider focus:shadow-lifted"
       >
-        <div className="max-w-7xl mx-auto px-5 md:px-[5vw] py-4 flex items-center justify-between gap-6">
-          <a href="/" className="font-display font-medium text-[24px] tracking-[-.02em] flex items-baseline gap-2 text-ink">
-            Vent<span className="text-brand font-light italic">—</span>
-            <span className="font-mono text-[11px] tracking-[.1em] uppercase text-ink/50 font-normal">est. 2014</span>
+        Перейти к содержимому
+      </a>
+
+      <header className="sticky top-3 z-50 px-4">
+        <div className="max-w-[1320px] mx-auto grid grid-cols-[auto_1fr_auto] lg:grid-cols-[auto_1fr_auto_auto] items-center gap-3.5 bg-ink/[.92] backdrop-blur-md text-bg pl-[18px] pr-[12px] py-[10px] rounded-full">
+          <a href="#top" className="flex items-center gap-2.5 font-medium" aria-label="Vent — на главную">
+            <LogoMark />
+            <LogoWord />
           </a>
 
-          <nav className="hidden md:flex items-center gap-8 text-[14px] text-ink/70">
-            {navLinks.map((l) => (
-              <a key={l.href} href={l.href} className="hover:text-ink transition-colors">
-                {l.label}
-              </a>
-            ))}
+          <nav className="hidden lg:flex justify-center gap-1 font-mono text-[11px] tracking-[.14em] uppercase" aria-label="Основная навигация">
+            {navLinks.map((l) => {
+              const id = l.href.replace('#', '');
+              const active = id === activeId;
+              return (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  aria-current={active ? 'true' : undefined}
+                  className={`px-3 py-2 rounded-full transition-colors ${
+                    active
+                      ? 'text-accent'
+                      : 'text-bg/70 hover:bg-bg/[.07] hover:text-bg'
+                  }`}
+                >
+                  {l.label}
+                </a>
+              );
+            })}
           </nav>
+
+          <div className="hidden lg:flex items-center gap-3.5 pr-3.5 border-r border-bg/[.14]">
+            <a
+              href={CONTACT_PHONE_HREF}
+              className="inline-flex items-center gap-1.5 text-[12.5px] tracking-[.04em] text-bg hover:text-accent transition-colors whitespace-nowrap"
+              aria-label="Позвонить"
+            >
+              <Phone size={13} strokeWidth={1.7} aria-hidden="true" />
+              {CONTACT_PHONE}
+            </a>
+            <a
+              href={CONTACT_EMAIL_HREF}
+              className="inline-flex items-center gap-1.5 font-mono text-[11px] tracking-[.08em] uppercase text-bg/80 hover:text-accent transition-colors whitespace-nowrap"
+              aria-label="Написать"
+            >
+              <Mail size={13} strokeWidth={1.7} aria-hidden="true" />
+              {CONTACT_EMAIL}
+            </a>
+          </div>
 
           <a
             href="#calculator"
-            className="hidden md:inline-flex items-center gap-2 bg-brand text-bg px-5 py-2.5 rounded-full text-[14px] font-medium hover:bg-brand-dark transition-colors"
+            className="hidden lg:inline-flex items-center gap-2 bg-accent text-ink px-[14px] py-[10px] rounded-full font-medium text-[12px] hover:bg-bg transition-colors group whitespace-nowrap"
           >
             Рассчитать
-            <ArrowRight size={14} strokeWidth={2} />
+            <ArrowRight
+              size={14}
+              strokeWidth={2}
+              className="transition-transform group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
           </a>
 
+          {/* Mobile burger (col 3 — replaces nav+contacts+CTA stack) */}
           <button
             type="button"
             onClick={() => setMobileOpen(true)}
             aria-label="Открыть меню"
-            className="md:hidden p-2 -mr-2 text-ink"
+            aria-expanded={mobileOpen}
+            className="lg:hidden justify-self-end -mr-1 w-11 h-11 grid place-items-center rounded-full bg-bg/[.08] text-bg hover:bg-bg/[.14] transition-colors"
           >
-            <Menu size={22} strokeWidth={1.75} />
+            <Menu size={18} strokeWidth={1.75} aria-hidden="true" />
           </button>
         </div>
       </header>
 
       {mobileOpen && (
-        <div className="fixed inset-0 z-[60] bg-bg flex flex-col md:hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-line">
-            <span className="font-display font-medium text-[24px] tracking-[-.02em]">Vent</span>
-            <button type="button" onClick={() => setMobileOpen(false)} aria-label="Закрыть меню" className="p-2 -mr-2 text-ink">
-              <X size={24} strokeWidth={1.75} />
+        <div
+          className="fixed inset-0 z-[60] bg-ink text-bg flex flex-col"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Меню"
+        >
+          <div className="flex items-center justify-between px-5 py-4 border-b border-bg/[.12]">
+            <a href="#top" onClick={() => setMobileOpen(false)} className="flex items-center gap-2.5" aria-label="Vent — на главную">
+              <LogoMark />
+              <LogoWord />
+            </a>
+            <button
+              type="button"
+              onClick={() => setMobileOpen(false)}
+              aria-label="Закрыть меню"
+              className="w-11 h-11 grid place-items-center rounded-full bg-bg/[.08] hover:bg-bg/[.14] transition-colors"
+            >
+              <X size={20} strokeWidth={1.75} aria-hidden="true" />
             </button>
           </div>
-          <nav className="flex flex-col px-5 py-8 gap-2 text-2xl font-display">
+
+          <nav className="flex-1 flex flex-col px-5 py-6 gap-0 overflow-y-auto" aria-label="Мобильная навигация">
             {navLinks.map((l) => (
-              <a key={l.href} href={l.href} onClick={() => setMobileOpen(false)} className="py-3 border-b border-line">
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={() => setMobileOpen(false)}
+                className="py-4 font-display font-light text-[clamp(28px,7vw,40px)] leading-none tracking-[-.02em] border-b border-bg/[.08]"
+              >
                 {l.label}
               </a>
             ))}
           </nav>
-          <a
-            href="#calculator"
-            onClick={() => setMobileOpen(false)}
-            className="mx-5 mt-auto mb-8 bg-brand text-bg px-6 py-4 rounded-full text-center font-medium"
-          >
-            Рассчитать стоимость
-          </a>
+
+          <div className="px-5 py-6 flex flex-col gap-3 border-t border-bg/[.12]">
+            <a
+              href={CONTACT_PHONE_HREF}
+              className="inline-flex items-center gap-2.5 text-[16px] text-bg hover:text-accent"
+              onClick={() => setMobileOpen(false)}
+            >
+              <Phone size={15} strokeWidth={1.7} aria-hidden="true" />
+              {CONTACT_PHONE}
+            </a>
+            <a
+              href={CONTACT_EMAIL_HREF}
+              className="inline-flex items-center gap-2.5 text-[14px] font-mono text-bg/80 hover:text-accent"
+              onClick={() => setMobileOpen(false)}
+            >
+              <Mail size={14} strokeWidth={1.7} aria-hidden="true" />
+              {CONTACT_EMAIL}
+            </a>
+            <a
+              href="#calculator"
+              onClick={() => setMobileOpen(false)}
+              className="mt-3 inline-flex items-center justify-center gap-2 bg-accent text-ink px-6 py-4 rounded-full font-medium text-[15px] min-h-[48px]"
+            >
+              Рассчитать
+              <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
+            </a>
+          </div>
         </div>
       )}
     </>
