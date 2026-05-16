@@ -375,4 +375,83 @@
     transform: scale(0.92);
     pointer-events: none;
   }
+
+  /* ================================================================
+     Custom cursor (Apple-style). See src/components/CustomCursor.
+     - Toggled by .has-custom-cursor on <html> — capability + a11y gates
+       live in the component (hover: hover, prefers-reduced-motion).
+     - Native cursor is hidden ONLY when the class is present, so touch
+       and reduced-motion users keep their pointers (hand, I-beam, grab).
+     - `*` + `!important` is intentional — Tailwind `cursor-*` utilities
+       and shadcn/custom rules add cursor declarations everywhere, and
+       this is the only way to consistently override them in cascade
+       without touching each one. Do NOT relax this selector.
+     ================================================================ */
+  html.has-custom-cursor,
+  html.has-custom-cursor *,
+  html.has-custom-cursor *::before,
+  html.has-custom-cursor *::after {
+    cursor: none !important;
+  }
+
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.18s ease;
+    mix-blend-mode: difference;
+    will-change: transform;
+  }
+  .custom-cursor-dot.is-visible,
+  .custom-cursor-ring.is-visible {
+    opacity: 1;
+  }
+
+  .custom-cursor-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #ffffff;
+  }
+
+  .custom-cursor-ring {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    border: 1.5px solid #ffffff;
+    background: transparent;
+    transition:
+      opacity 0.18s ease,
+      width 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+      height 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+      margin 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.18s ease,
+      background-color 0.18s ease,
+      mix-blend-mode 0s linear 0.18s;
+  }
+  /* Hover on regular interactive element — medium ring, lime accent.
+     Drop mix-blend-mode so the lime tint is true to color, not inverted. */
+  .custom-cursor-ring.is-link {
+    width: 56px;
+    height: 56px;
+    margin-left: -12px;
+    margin-top: -12px;
+    border-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+    mix-blend-mode: normal;
+  }
+  /* Hover on magnetic button — big ring. */
+  .custom-cursor-ring.is-magnet {
+    width: 78px;
+    height: 78px;
+    margin-left: -23px;
+    margin-top: -23px;
+    border-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+    mix-blend-mode: normal;
+  }
 }

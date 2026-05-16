@@ -2,11 +2,13 @@
 
 import { useRef } from 'react';
 import useScrollAnim from '@/lib/useScrollAnim';
+import { useMagnet } from '@/lib/useMagnet';
 import { MiniCalculator } from '@/components/Calculator/MiniCalculator';
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   useScrollAnim(ref);
+  const statusCtaRef = useMagnet<HTMLAnchorElement>({ strength: 0.22 });
 
   return (
     <section ref={ref} className="hero-section px-4 pt-[22px] pb-3" aria-label="Hero">
@@ -169,7 +171,7 @@ export function Hero() {
           </div>
           <div className="flex justify-between items-end gap-3 font-mono text-[10.5px] uppercase tracking-[.14em] text-bg/55">
             <span>пн–вс · 24/7</span>
-            <a href="#contact" className="btn-now-cta">
+            <a ref={statusCtaRef} href="#contact" data-magnet className="btn-now-cta">
               оставить заявку
               <span className="arrow">→</span>
             </a>

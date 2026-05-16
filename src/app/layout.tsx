@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter_Tight, JetBrains_Mono } from 'next/font/google';
 import { localBusinessSchema, jsonLdScript } from '@/lib/schema';
+import CustomCursor from '@/components/CustomCursor/CustomCursor';
 import './globals.css';
 
 // Inter Tight via next/font (Cyrillic supported, ships only weights we use).
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="stylesheet" href={FRAUNCES_HREF} />
       </head>
       <body className="font-sans bg-bg text-ink antialiased">
+        <CustomCursor />
         {children}
         <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(localBusinessSchema())} />
       </body>

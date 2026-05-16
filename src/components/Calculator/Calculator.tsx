@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import useScrollAnim from '@/lib/useScrollAnim';
+import { useMagnet } from '@/lib/useMagnet';
 import { useCalculator } from '@/lib/calculator-context';
 import {
   PACKAGES,
@@ -50,6 +51,7 @@ export function Calculator() {
   const ref = useRef<HTMLElement>(null);
   useScrollAnim(ref);
   const { state, dispatch } = useCalculator();
+  const submitCtaRef = useMagnet<HTMLAnchorElement>({ strength: 0.3 });
 
   // Handle data-calc-jump links from anywhere on the page
   useEffect(() => {
@@ -366,7 +368,12 @@ export function Calculator() {
           </div>
 
           <div className="flex gap-2 flex-wrap mt-1.5">
-            <a href="#contact" className="btn-lime">
+            <a
+              ref={submitCtaRef}
+              href="#contact"
+              data-magnet
+              className="btn-lime transition-transform duration-300 ease-[cubic-bezier(.16,1,.3,1)]"
+            >
               Оставить заявку
               <ArrowRight size={14} strokeWidth={2} className="arrow" aria-hidden="true" />
             </a>

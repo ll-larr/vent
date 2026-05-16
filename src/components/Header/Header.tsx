@@ -12,12 +12,14 @@ import {
   CONTACT_EMAIL_HREF,
 } from '@/lib/nav';
 import { Menu, X, ArrowRight, ChevronLeft, Phone, Mail } from '@/lib/icons';
+import { useMagnet } from '@/lib/useMagnet';
 
 type Variant = 'landing' | 'back';
 
 export function Header({ variant = 'landing' }: { variant?: Variant }) {
   const [activeId, setActiveId] = useState<string>('services');
   const [mobileOpen, setMobileOpen] = useState(false);
+  const headerCtaRef = useMagnet<HTMLAnchorElement>({ strength: 0.15 });
 
   // Active-section highlight only makes sense on landing where sections exist.
   useEffect(() => {
@@ -144,8 +146,10 @@ export function Header({ variant = 'landing' }: { variant?: Variant }) {
           </div>
 
           <a
+            ref={headerCtaRef}
             href="/#calculator"
-            className="hidden lg:inline-flex items-center gap-2 bg-accent text-ink px-[14px] py-[10px] rounded-full font-medium text-[12px] hover:bg-bg transition-colors group whitespace-nowrap"
+            data-magnet
+            className="hidden lg:inline-flex items-center gap-2 bg-accent text-ink px-[14px] py-[10px] rounded-full font-medium text-[12px] hover:bg-bg whitespace-nowrap transition-[transform,background-color,color] duration-200 ease-[cubic-bezier(.16,1,.3,1)] group"
           >
             Рассчитать
             <ArrowRight

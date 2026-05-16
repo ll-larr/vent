@@ -5,6 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { submitSchema, type SubmitFormData, type SubmitFormInput } from '@/lib/schemas';
 import { useCalculator } from '@/lib/calculator-context';
+import { useMagnet } from '@/lib/useMagnet';
 import { PACKAGES, SERVICES } from '@/lib/pricing';
 import { ArrowRight, CheckCircle2 } from '@/lib/icons';
 
@@ -32,6 +33,8 @@ export function ContactForm() {
   const { state } = useCalculator();
   const [status, setStatus] = useState<Status>('idle');
   const [phoneDisplay, setPhoneDisplay] = useState('');
+  // Final-CTA submit gets a stronger magnet pull than body buttons.
+  const submitRef = useMagnet<HTMLButtonElement>({ strength: 0.35 });
 
   const form = useForm<SubmitFormInput, unknown, SubmitFormData>({
     resolver: zodResolver(submitSchema),
@@ -263,9 +266,11 @@ export function ContactForm() {
           {' '}в соответствии с офертой.
         </span>
         <button
+          ref={submitRef}
           type="submit"
+          data-magnet
           disabled={status === 'loading'}
-          className="btn-ink disabled:opacity-60 disabled:cursor-not-allowed"
+          className="btn-ink disabled:opacity-60 disabled:cursor-not-allowed transition-transform duration-300 ease-[cubic-bezier(.16,1,.3,1)]"
         >
           {status === 'loading' ? 'Отправляем…' : 'Отправить заявку'}
           <ArrowRight size={14} strokeWidth={2} className="arrow" aria-hidden="true" />
