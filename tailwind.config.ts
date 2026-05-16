@@ -26,11 +26,9 @@ const config: Config = {
         line:        'rgba(20,19,18,0.08)',
         stone:       '#f4f4f2',
       },
-      fontFamily: {
-        display: ['var(--font-fraunces)', 'Georgia', 'serif'],
-        sans:    ['var(--font-inter-tight)', 'system-ui', 'sans-serif'],
-        mono:    ['var(--font-jetbrains-mono)', 'ui-monospace', 'monospace'],
-      },
+      // fontFamily intentionally removed — Tailwind v4 reads it from @theme
+      // in src/app/globals.css (--font-display / --font-sans / --font-mono).
+      // Keeping both creates two sources of truth.
       maxWidth: {
         content: '1120px',
       },

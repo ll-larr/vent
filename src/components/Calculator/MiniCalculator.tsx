@@ -31,10 +31,10 @@ export function MiniCalculator() {
         </span>
       </div>
 
-      {/* Grid */}
-      <div className={`grid gap-2.5 ${isRestaurant ? 'grid-cols-2 sm:grid-cols-4' : 'grid-cols-1 sm:grid-cols-3'}`}>
+      {/* Grid — flex so .mc-field-hood can animate flex-grow on package change */}
+      <div className="flex flex-col sm:flex-row gap-2.5 items-stretch">
         {/* Package */}
-        <div className="bg-stone rounded-[14px] px-3.5 py-3 min-h-[96px] flex flex-col justify-between gap-1.5 overflow-hidden">
+        <div className="flex-[1.2_1_0] min-w-0 bg-stone rounded-[14px] px-3.5 py-3 min-h-[96px] flex flex-col justify-between gap-1.5 overflow-hidden">
           <span className="font-mono text-[10px] uppercase tracking-[.14em] text-ink/50">Тип объекта</span>
           <div className="flex gap-1.5 flex-wrap">
             {pkgKeys.map((k) => {
@@ -59,7 +59,8 @@ export function MiniCalculator() {
         </div>
 
         {/* Area */}
-        <div className="bg-stone rounded-[14px] px-3.5 py-3 min-h-[96px] flex flex-col justify-between gap-1.5 overflow-hidden">
+        <div className="flex-1 min-w-0 bg-stone rounded-[14px] px-3.5 py-3 min-h-[96px] flex flex-col justify-between gap-1.5 overflow-hidden transition-[flex-grow] duration-[450ms] ease-[cubic-bezier(.16,1,.3,1)]"
+             style={{ flexGrow: isRestaurant ? 1 : 2.1 }}>
           <label htmlFor="area-mini" className="font-mono text-[10px] uppercase tracking-[.14em] text-ink/50">
             Площадь
           </label>
@@ -81,46 +82,51 @@ export function MiniCalculator() {
           </div>
         </div>
 
-        {/* Hood stepper (only for restaurant) */}
-        {isRestaurant && (
-          <div className="bg-stone rounded-[14px] px-3.5 py-3 min-h-[96px] flex flex-col justify-between gap-1.5 overflow-hidden">
-            <span className="font-mono text-[10px] uppercase tracking-[.14em] text-ink/50">Зонты</span>
-            <div className="flex items-center gap-1 bg-surface rounded-full p-[3px] w-full">
-              <button
-                type="button"
-                aria-label="Меньше зонтов"
-                onClick={() => dispatch({ type: 'SET_HOOD_COUNT', value: state.hoodCount - 1 })}
-                disabled={state.hoodCount <= 0}
-                className="w-[26px] h-[26px] rounded-full bg-stone text-ink grid place-items-center font-display font-light text-[18px] leading-none hover:bg-ink hover:text-accent transition-colors disabled:opacity-35 disabled:cursor-not-allowed active:scale-90 flex-shrink-0"
-              >
-                <Minus size={11} strokeWidth={2} aria-hidden="true" />
-              </button>
-              <input
-                type="number"
-                inputMode="numeric"
-                min={0}
-                max={40}
-                value={state.hoodCount}
-                onChange={(e) => dispatch({ type: 'SET_HOOD_COUNT', value: parseInt(e.target.value) || 0 })}
-                className="flex-1 min-w-0 text-center bg-transparent border-0 outline-0 font-display font-light text-[19px] text-ink tracking-[-.02em]"
-                style={{ MozAppearance: 'textfield' } as React.CSSProperties}
-              />
-              <button
-                type="button"
-                aria-label="Больше зонтов"
-                onClick={() => dispatch({ type: 'SET_HOOD_COUNT', value: state.hoodCount + 1 })}
-                disabled={state.hoodCount >= 40}
-                className="w-[26px] h-[26px] rounded-full bg-stone text-ink grid place-items-center font-display font-light text-[18px] leading-none hover:bg-ink hover:text-accent transition-colors disabled:opacity-35 disabled:cursor-not-allowed active:scale-90 flex-shrink-0"
-              >
-                <Plus size={11} strokeWidth={2} aria-hidden="true" />
-              </button>
-              <span className="font-mono text-[10px] tracking-[.12em] uppercase text-ink/50 pr-2 flex-shrink-0">шт</span>
-            </div>
+        {/* Hood stepper — always rendered, animated collapse via .mc-field-hood class */}
+        <div
+          className="mc-field-hood bg-stone rounded-[14px] px-3.5 py-3 min-h-[96px] flex flex-col justify-between gap-1.5"
+          data-hood-shown={isRestaurant ? 'true' : 'false'}
+          aria-hidden={!isRestaurant}
+        >
+          <span className="font-mono text-[10px] uppercase tracking-[.14em] text-ink/50">Зонты</span>
+          <div className="flex items-center gap-1 bg-surface rounded-full p-[3px] w-full">
+            <button
+              type="button"
+              aria-label="Меньше зонтов"
+              onClick={() => dispatch({ type: 'SET_HOOD_COUNT', value: state.hoodCount - 1 })}
+              disabled={state.hoodCount <= 0 || !isRestaurant}
+              tabIndex={isRestaurant ? 0 : -1}
+              className="w-[26px] h-[26px] rounded-full bg-stone text-ink grid place-items-center font-display font-light text-[18px] leading-none hover:bg-ink hover:text-accent transition-colors disabled:opacity-35 disabled:cursor-not-allowed active:scale-90 flex-shrink-0"
+            >
+              <Minus size={11} strokeWidth={2} aria-hidden="true" />
+            </button>
+            <input
+              type="number"
+              inputMode="numeric"
+              min={0}
+              max={40}
+              value={state.hoodCount}
+              onChange={(e) => dispatch({ type: 'SET_HOOD_COUNT', value: parseInt(e.target.value) || 0 })}
+              tabIndex={isRestaurant ? 0 : -1}
+              className="flex-1 min-w-0 text-center bg-transparent border-0 outline-0 font-display font-light text-[19px] text-ink tracking-[-.02em]"
+              style={{ MozAppearance: 'textfield' } as React.CSSProperties}
+            />
+            <button
+              type="button"
+              aria-label="Больше зонтов"
+              onClick={() => dispatch({ type: 'SET_HOOD_COUNT', value: state.hoodCount + 1 })}
+              disabled={state.hoodCount >= 40 || !isRestaurant}
+              tabIndex={isRestaurant ? 0 : -1}
+              className="w-[26px] h-[26px] rounded-full bg-stone text-ink grid place-items-center font-display font-light text-[18px] leading-none hover:bg-ink hover:text-accent transition-colors disabled:opacity-35 disabled:cursor-not-allowed active:scale-90 flex-shrink-0"
+            >
+              <Plus size={11} strokeWidth={2} aria-hidden="true" />
+            </button>
+            <span className="font-mono text-[10px] tracking-[.12em] uppercase text-ink/50 pr-2 flex-shrink-0">шт</span>
           </div>
-        )}
+        </div>
 
         {/* Result */}
-        <div className="bg-ink text-bg rounded-[14px] px-3.5 py-3 min-h-[96px] flex flex-col justify-between gap-1">
+        <div className="flex-[1.2_1_0] min-w-0 bg-ink text-bg rounded-[14px] px-3.5 py-3 min-h-[96px] flex flex-col justify-between gap-1">
           <span className="font-mono text-[10px] uppercase tracking-[.14em] text-bg/55">от</span>
           <span className="font-display font-light text-[30px] text-accent tracking-[-.02em] leading-none">
             {fmt(result.totalMin)} ₽
@@ -143,12 +149,9 @@ export function MiniCalculator() {
             </span>
           ))}
         </div>
-        <a
-          href="#calculator"
-          className="group inline-flex items-center gap-2 px-3.5 py-2.5 bg-ink text-bg rounded-full font-medium text-[13px] hover:bg-brand transition-colors"
-        >
+        <a href="#calculator" className="btn-ink">
           Полный расчёт
-          <ArrowRight size={13} strokeWidth={2} className="transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+          <ArrowRight size={13} strokeWidth={2} className="arrow" aria-hidden="true" />
         </a>
       </div>
     </div>

@@ -18,9 +18,10 @@
   --color-stone:        #f4f4f2;
   --color-ink-2:        #1f1d1b;
 
-  /* Fonts — variables come from next/font in layout.tsx.
-     Tailwind 4 convention: --font-{name} (not --font-family-{name}). */
-  --font-display: var(--font-fraunces), Georgia, serif;
+  /* Fonts. Inter Tight + JetBrains Mono come from next/font in layout.tsx.
+     Fraunces is loaded via <link> tag in layout.tsx (so we get the full
+     opsz + italic + Cyrillic subset that next/font doesn't expose). */
+  --font-display: "Fraunces", Georgia, serif;
   --font-sans:    var(--font-inter-tight), system-ui, -apple-system, sans-serif;
   --font-mono:    var(--font-jetbrains-mono), ui-monospace, monospace;
 
@@ -151,11 +152,6 @@
     animation: shimmer 3s linear infinite;
   }
 
-  /* Display font utility */
-  .font-display {
-    font-family: 'Fraunces', Georgia, serif;
-  }
-
   /* Line grow animation for step connectors */
   .line-grow {
     transform-origin: left center;
@@ -174,5 +170,209 @@
   /* Bento — live indicator dot (lime) */
   .animate-live-pulse {
     animation: live-pulse 1.6s ease-in-out infinite;
+  }
+
+  /* ================================================================
+     Bento CTAs — match reference .btn / .btn.lime / .btn.ghost exactly.
+     ================================================================ */
+  .btn-ink,
+  .btn-lime,
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    font-family: var(--font-inter-tight), system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  .btn-ink .arrow,
+  .btn-lime .arrow,
+  .btn-ghost .arrow {
+    display: inline-block;
+    transition: transform 0.25s;
+  }
+
+  /* Default (ink) — bg ink, text bg, hover brand */
+  .btn-ink {
+    background: var(--color-ink);
+    color: var(--color-bg);
+    transition: background 0.25s, transform 0.25s;
+  }
+  .btn-ink:hover { background: var(--color-brand); }
+  .btn-ink:hover .arrow { transform: translateX(3px); }
+
+  /* Lime — accent fill with wipe-fill ink + arrow translateX(4) — matches
+     reference .btn.lime::before exactly. */
+  .btn-lime {
+    background: var(--color-accent);
+    color: var(--color-ink);
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    transition: color 0.3s ease, padding-right 0.3s ease;
+  }
+  .btn-lime::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-ink);
+    border-radius: 999px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+    z-index: -1;
+  }
+  .btn-lime:hover {
+    background: var(--color-accent);
+    color: var(--color-accent);
+    padding-right: 24px;
+  }
+  .btn-lime:hover::before { transform: scaleX(1); }
+  .btn-lime:hover .arrow {
+    transform: translateX(4px);
+    transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  /* Ghost — transparent with subtle border, hover ink fill */
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-ink);
+    border: 1px solid var(--color-line-2);
+    transition: background 0.25s, color 0.25s, border-color 0.25s;
+  }
+  .btn-ghost:hover {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-bg);
+  }
+  .btn-ghost:hover .arrow { transform: translateX(3px); }
+
+  /* Hero status "оставить заявку" mini CTA — transparent / accent text / wipe-fill on hover.
+     Matches reference .h-status .now-foot a.now-cta exactly. */
+  .btn-now-cta {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    padding: 8px 14px 8px 16px;
+    border-radius: 999px;
+    overflow: hidden;
+    isolation: isolate;
+    transition: color 0.3s ease, padding-right 0.3s ease;
+    cursor: pointer;
+  }
+  .btn-now-cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-accent);
+    border-radius: 999px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+    z-index: -1;
+  }
+  .btn-now-cta::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: rgba(200, 255, 62, 0.3);
+    transition: background 0.3s ease;
+  }
+  .btn-now-cta:hover {
+    color: var(--color-ink);
+    padding-right: 22px;
+  }
+  .btn-now-cta:hover::before { transform: scaleX(1); }
+  .btn-now-cta:hover::after { background: transparent; }
+  .btn-now-cta .arrow {
+    display: inline-block;
+    transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .btn-now-cta:hover .arrow { transform: translateX(4px); }
+
+  /* Ghost variant for use on ink/brand background (Services included block,
+     calculator right panel). */
+  .btn-ghost-on-dark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1;
+    white-space: nowrap;
+    background: transparent;
+    color: var(--color-bg);
+    border: 1px solid rgba(246, 243, 236, 0.22);
+    transition: background 0.25s, border-color 0.25s, color 0.25s;
+  }
+  .btn-ghost-on-dark:hover {
+    background: rgba(246, 243, 236, 0.08);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  /* ================================================================
+     HowWeWork popup — explicit CSS for [data-hint="open"] so we don't
+     rely on Tailwind v4 group-data-* selector matching.
+     ================================================================ */
+  .pr-step .pr-popup {
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    transition:
+      opacity 0.3s ease,
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .pr-step:hover .pr-popup,
+  .pr-step[data-hint="open"] .pr-popup {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .pr-step .pr-static { transition: opacity 0.25s; }
+  .pr-step:hover .pr-static,
+  .pr-step[data-hint="open"] .pr-static {
+    opacity: 0;
+  }
+
+  /* ================================================================
+     Mini calc hood field — animated collapse when not-restaurant pkg.
+     Reference uses .mc-grid.no-hood .mc-field--hood with flex-grow/basis.
+     ================================================================ */
+  .mc-field-hood {
+    flex: 1 1 0;
+    transition:
+      flex 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.25s ease,
+      padding 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      margin-right 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+  }
+  .mc-field-hood[data-hood-shown="false"] {
+    flex: 0 0 0;
+    opacity: 0;
+    padding-left: 0;
+    padding-right: 0;
+    margin-right: -10px;
+    transform: scale(0.92);
+    pointer-events: none;
   }
 }

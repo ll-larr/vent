@@ -169,20 +169,9 @@ export function Hero() {
           </div>
           <div className="flex justify-between items-end gap-3 font-mono text-[10.5px] uppercase tracking-[.14em] text-bg/55">
             <span>пн–вс · 24/7</span>
-            <a
-              href="#contact"
-              className="group relative inline-flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[.14em] text-accent px-3.5 py-2 rounded-full overflow-hidden border-b border-accent/30 hover:border-transparent transition-colors"
-            >
-              <span
-                className="absolute inset-0 bg-accent rounded-full origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[450ms] -z-10"
-                style={{ transitionTimingFunction: 'cubic-bezier(.65,0,.35,1)' }}
-              />
-              <span className="relative group-hover:text-ink transition-colors duration-300">
-                оставить заявку
-              </span>
-              <span className="relative inline-block transition-transform duration-[350ms] group-hover:translate-x-1 group-hover:text-ink">
-                →
-              </span>
+            <a href="#contact" className="btn-now-cta">
+              оставить заявку
+              <span className="arrow">→</span>
             </a>
           </div>
         </div>

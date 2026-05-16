@@ -265,15 +265,10 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="group inline-flex items-center gap-2.5 px-4.5 py-3 rounded-full bg-ink text-bg text-[14px] font-medium hover:bg-brand transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          className="btn-ink disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {status === 'loading' ? 'Отправляем…' : 'Отправить заявку'}
-          <ArrowRight
-            size={14}
-            strokeWidth={2}
-            className="transition-transform group-hover:translate-x-1"
-            aria-hidden="true"
-          />
+          <ArrowRight size={14} strokeWidth={2} className="arrow" aria-hidden="true" />
         </button>
       </div>
 

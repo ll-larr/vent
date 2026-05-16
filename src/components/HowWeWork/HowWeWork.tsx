@@ -99,8 +99,8 @@ function StepTile({ s, isFirst, autoDemo }: { s: Step; isFirst: boolean; autoDem
       className={`pr-step ${bgClass} group col-span-12 sm:col-span-6 lg:col-span-3 rounded-[28px] p-[22px] min-h-[290px] flex flex-col gap-3.5 relative overflow-hidden cursor-pointer transition-transform duration-[350ms] ease-[cubic-bezier(.16,1,.3,1)] hover:-translate-y-0.5`}
       {...dataHintProps}
     >
-      {/* Static content — fades out on hover/hint */}
-      <div className="contents [&>*]:transition-opacity [&>*]:duration-[250ms] group-hover:[&>*]:opacity-0 group-data-[hint=open]:[&>*]:opacity-0">
+      {/* Static content — pr-static class is fade-out targeted by globals.css :hover / [data-hint=open] */}
+      <div className="pr-static flex flex-col gap-3.5 flex-1 min-h-0">
         <div className={`font-mono text-[11px] uppercase tracking-[.14em] ${nClass}`}>{s.n}</div>
         <div
           className={`w-9 h-9 rounded-[10px] border grid place-items-center ${glyphClass}`}
@@ -114,8 +114,8 @@ function StepTile({ s, isFirst, autoDemo }: { s: Step; isFirst: boolean; autoDem
         <p className={`text-[13.5px] leading-[1.55] ${pClass}`}>{s.shortDesc}</p>
       </div>
 
-      {/* Popup — slides in on hover or data-hint */}
-      <div className="absolute inset-0 z-[3] p-[18px] flex flex-col gap-2.5 bg-ink text-bg opacity-0 translate-y-2 pointer-events-none transition-[opacity,transform] duration-300 ease-[cubic-bezier(.16,1,.3,1)] group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-data-[hint=open]:opacity-100 group-data-[hint=open]:translate-y-0 group-data-[hint=open]:pointer-events-auto overflow-y-auto">
+      {/* Popup — pr-popup class is the only opacity/transform target (driven from globals.css) */}
+      <div className="pr-popup absolute inset-0 z-[3] p-[18px] flex flex-col gap-2.5 bg-ink text-bg overflow-y-auto">
         <div className="flex justify-between items-baseline gap-2.5 font-mono text-[10px] uppercase tracking-[.14em] flex-shrink-0">
           <span className="text-accent">{s.n.split(' / ')[0]} / {s.title.toLowerCase()}</span>
           <span className="text-bg/55">{s.dur}</span>

@@ -366,22 +366,11 @@ export function Calculator() {
           </div>
 
           <div className="flex gap-2 flex-wrap mt-1.5">
-            <a
-              href="#contact"
-              className="group inline-flex items-center gap-2.5 px-4 py-3 bg-accent text-ink rounded-full text-[14px] font-medium hover:bg-bg transition-colors"
-            >
+            <a href="#contact" className="btn-lime">
               Оставить заявку
-              <ArrowRight
-                size={14}
-                strokeWidth={2}
-                className="transition-transform group-hover:translate-x-1"
-                aria-hidden="true"
-              />
+              <ArrowRight size={14} strokeWidth={2} className="arrow" aria-hidden="true" />
             </a>
-            <a
-              href="/price"
-              className="inline-flex items-center gap-2 px-4 py-3 bg-transparent text-bg border border-bg/[.22] rounded-full text-[14px] hover:bg-bg/[.08] hover:border-accent hover:text-accent transition-colors"
-            >
+            <a href="/price" className="btn-ghost-on-dark">
               Скачать прайс PDF
             </a>
           </div>

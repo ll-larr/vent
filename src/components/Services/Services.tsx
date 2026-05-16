@@ -83,13 +83,9 @@ export function Services() {
                 ₽ / пог.м
               </span>
             </div>
-            <a
-              href="#calculator"
-              data-calc-jump="grease"
-              className="group inline-flex items-center gap-2.5 px-4 py-3 rounded-full bg-accent text-ink text-[14px] font-medium hover:bg-bg transition-colors"
-            >
+            <a href="#calculator" data-calc-jump="grease" className="btn-lime">
               Рассчитать
-              <ArrowRight size={14} strokeWidth={2} className="transition-transform group-hover:translate-x-1" aria-hidden="true" />
+              <ArrowRight size={14} strokeWidth={2} className="arrow" aria-hidden="true" />
             </a>
           </div>
         </article>
@@ -177,17 +173,11 @@ export function Services() {
                 </p>
               </div>
               <div className="flex gap-2 flex-wrap">
-                <a
-                  href="#calculator"
-                  className="group inline-flex items-center gap-2.5 px-4 py-3 bg-accent text-ink rounded-full text-[14px] font-medium hover:bg-bg transition-colors"
-                >
+                <a href="#calculator" className="btn-lime">
                   Рассчитать
-                  <ArrowRight size={14} strokeWidth={2} className="transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                  <ArrowRight size={14} strokeWidth={2} className="arrow" aria-hidden="true" />
                 </a>
-                <a
-                  href="#process"
-                  className="inline-flex items-center gap-2 px-4 py-3 bg-transparent text-bg border border-bg/[.22] rounded-full text-[14px] hover:bg-bg/[.08] hover:border-accent hover:text-accent transition-colors"
-                >
+                <a href="#process" className="btn-ghost-on-dark">
                   Как это идёт
                 </a>
               </div>
