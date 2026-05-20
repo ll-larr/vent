@@ -149,7 +149,7 @@ export function Header({ variant = 'landing' }: { variant?: Variant }) {
             ref={headerCtaRef}
             href="/#calculator"
             data-magnet
-            className="hidden lg:inline-flex items-center gap-2 bg-accent text-ink px-[14px] py-[10px] rounded-full font-medium text-[12px] hover:bg-bg whitespace-nowrap transition-[transform,background-color,color] duration-200 ease-[cubic-bezier(.16,1,.3,1)] group"
+            className="hidden lg:inline-flex items-center gap-2 bg-accent text-ink px-[14px] py-[10px] rounded-full font-medium text-[12px] hover:bg-bg whitespace-nowrap transition-[background-color,color] duration-200 group"
           >
             Рассчитать
             <ArrowRight

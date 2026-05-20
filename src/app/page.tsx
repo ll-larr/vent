@@ -20,16 +20,16 @@ export default function HomePage() {
         <Hero />
         {/* 02 — Services */}
         <Services />
-        {/* 03 — Cases */}
-        <Cases />
-        {/* 04 — Venues */}
-        <BigVenues />
-        {/* 05 — Process */}
-        <HowWeWork />
-        {/* 06 — Trust + Reviews */}
-        <TrustSection />
-        {/* 07 — Calculator (full) */}
+        {/* 03 — Calculator (full) — moved up, right after Services */}
         <Calculator />
+        {/* 04 — Cases */}
+        <Cases />
+        {/* 05 — Venues */}
+        <BigVenues />
+        {/* 06 — Process */}
+        <HowWeWork />
+        {/* 07 — Trust + Reviews */}
+        <TrustSection />
         {/* 08 — Contact */}
         <ContactSection />
       </main>

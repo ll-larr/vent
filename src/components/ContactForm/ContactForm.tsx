@@ -270,7 +270,7 @@ export function ContactForm() {
           type="submit"
           data-magnet
           disabled={status === 'loading'}
-          className="btn-ink disabled:opacity-60 disabled:cursor-not-allowed transition-transform duration-300 ease-[cubic-bezier(.16,1,.3,1)]"
+          className="btn-ink disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {status === 'loading' ? 'Отправляем…' : 'Отправить заявку'}
           <ArrowRight size={14} strokeWidth={2} className="arrow" aria-hidden="true" />

@@ -368,12 +368,7 @@ export function Calculator() {
           </div>
 
           <div className="flex gap-2 flex-wrap mt-1.5">
-            <a
-              ref={submitCtaRef}
-              href="#contact"
-              data-magnet
-              className="btn-lime transition-transform duration-300 ease-[cubic-bezier(.16,1,.3,1)]"
-            >
+            <a ref={submitCtaRef} href="#contact" data-magnet className="btn-lime">
               Оставить заявку
               <ArrowRight size={14} strokeWidth={2} className="arrow" aria-hidden="true" />
             </a>

@@ -29,63 +29,120 @@ export function Services() {
         className="max-w-[1320px] mx-auto grid grid-cols-12 gap-3"
         style={{ gridAutoRows: 'minmax(96px, auto)' }}
       >
-        {/* svc-feature — Жир — 7 × 3 brand */}
+        {/* svc-feature — Pricelist — 7 × 3 brand */}
         <article
-          className="col-span-12 lg:col-span-7 row-span-3 bg-brand text-bg rounded-[28px] p-7 lg:p-[28px_28px_28px_28px] flex flex-col justify-between min-h-[320px] lg:min-h-[380px] relative overflow-hidden"
+          className="col-span-12 lg:col-span-7 row-span-3 text-bg rounded-[28px] p-7 lg:p-[26px_28px] flex flex-col justify-between gap-[22px] min-h-[320px] lg:min-h-[380px] relative overflow-hidden"
+          style={{
+            background:
+              'linear-gradient(180deg, rgba(200,255,62,.04), transparent 30%), #1e5c32',
+          }}
           data-anim
         >
           {/* Radial accent glow */}
           <div
             className="absolute pointer-events-none"
             style={{
-              right: '-20%',
-              bottom: '-50%',
-              width: '70%',
+              right: '-25%',
+              bottom: '-55%',
+              width: '60%',
               aspectRatio: '1 / 1',
               borderRadius: '50%',
-              background: 'radial-gradient(closest-side, rgba(200,255,62,.18), transparent 70%)',
+              background: 'radial-gradient(closest-side, rgba(200,255,62,.12), transparent 70%)',
             }}
             aria-hidden="true"
           />
+
           <div className="relative">
-            <div className="flex gap-3 items-baseline font-mono text-[11px] uppercase tracking-[.14em] text-bg/70 mb-4">
-              <span className="text-bg/85">01 / жир</span>
-              <span>· для кухонь общепита</span>
+            {/* Head: meta left + updated right */}
+            <div className="flex items-baseline justify-between gap-4 flex-wrap mb-[18px]">
+              <div className="flex gap-3 items-baseline font-mono text-[11px] uppercase tracking-[.14em] text-bg/70">
+                <span className="text-bg/85">00 / прайс</span>
+                <span>· все услуги одним документом</span>
+              </div>
+              <div className="inline-flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[.14em] text-bg/55">
+                <span
+                  className="w-1.5 h-1.5 rounded-full bg-accent"
+                  style={{ boxShadow: '0 0 0 3px rgba(200,255,62,.18)' }}
+                  aria-hidden="true"
+                />
+                обновлено 05.2026
+              </div>
             </div>
-            <h3 className="font-display font-light text-[clamp(36px,4.6vw,64px)] leading-none tracking-[-.025em] max-w-[18ch]">
-              Чистка <em className="italic text-accent">от жира</em>
+
+            <h3 className="font-display font-light text-[clamp(32px,3.8vw,52px)] leading-none tracking-[-.025em] max-w-[14ch]">
+              Полный прайс <em className="italic text-accent">на чистку</em>
               <br />
-              до металла.
+              и обслуживание.
             </h3>
             <p className="text-[15px] text-bg/[.78] max-w-[46ch] leading-[1.55] mt-3.5">
-              Снимаем зонты, разбираем воздуховоды, удаляем жировой нагар по протоколу СЭС.
-              После — дезинфекция и видеоотчёт по каждой ветке.
+              14 категорий работ, ставки за погонный метр, штуку и выезд, надбавки за высоту и
+              ночные смены — в одном PDF, который можно отправить тендерному отделу.
             </p>
-            <div className="flex flex-wrap gap-1.5 mt-4">
+
+            {/* Preview rows */}
+            <div className="grid grid-cols-1 mt-[22px] border-t border-bg/[.12]">
               {[
-                'труба Ø ≤ 600 — 300 ₽/пог.м',
-                'труба Ø > 600 — 400 ₽/пог.м',
-                'зонт — 1 000 ₽/шт',
-              ].map((t) => (
-                <span
-                  key={t}
-                  className="font-mono text-[10.5px] uppercase tracking-[.12em] px-2.5 py-1.5 border border-bg/[.22] rounded-full text-bg/85"
+                { idx: '01', name: 'Чистка от жира', sub: 'труба Ø ≤ 600 · общепит', pre: 'от ', val: '300', unit: '₽/пог.м' },
+                { idx: '02', name: 'Чистка от пыли', sub: 'офисы, склады, БЦ', pre: 'от ', val: '100', unit: '₽/пог.м' },
+                { idx: '03', name: 'Зонты и вытяжки', sub: 'с разбором и сборкой', pre: 'от ', val: '1 000', unit: '₽/шт' },
+                { idx: '04', name: 'Дезинфекция', sub: 'после чистки, по СЭС', pre: 'от ', val: '40', unit: '₽/м²' },
+              ].map((r) => (
+                <div
+                  key={r.idx}
+                  className="grid grid-cols-[24px_1fr_auto] items-baseline gap-3.5 py-[11px] border-b border-dashed border-bg/[.12]"
                 >
-                  {t}
-                </span>
+                  <span className="font-mono text-[10.5px] tracking-[.14em] text-bg/[.42]">{r.idx}</span>
+                  <span className="font-display font-normal text-[18px] tracking-[-.005em] text-bg">
+                    {r.name}
+                    <small className="block font-sans font-normal text-[12px] text-bg/55 tracking-normal mt-0.5">
+                      {r.sub}
+                    </small>
+                  </span>
+                  <span className="font-mono text-[13px] text-bg/95 whitespace-nowrap tracking-[.01em] text-right">
+                    {r.pre}
+                    <b className="font-display font-semibold text-[18px] tracking-[-.01em] text-accent mr-0.5">
+                      {r.val}
+                    </b>
+                    {r.unit}
+                  </span>
+                </div>
               ))}
+              {/* +10 more */}
+              <div className="grid grid-cols-[24px_1fr_auto] items-baseline gap-3.5 pt-3.5 font-mono text-[11px] uppercase tracking-[.14em] text-bg/50">
+                <span>+10</span>
+                <span>монтаж, ремонт, паспорт ВТЗ, аварийный выезд…</span>
+                <span className="text-right">в PDF</span>
+              </div>
             </div>
           </div>
-          <div className="flex items-end justify-between gap-4 relative">
-            <div className="font-display font-light text-[52px] leading-none tracking-[-.03em] text-accent inline-flex items-baseline gap-2 whitespace-nowrap">
-              300
-              <span className="font-mono text-[11px] uppercase tracking-[.14em] text-bg/70 self-end pb-1.5">
-                ₽ / пог.м
-              </span>
+
+          {/* Foot: doc meta + download CTA */}
+          <div className="relative flex items-end justify-between gap-[18px] flex-wrap">
+            <div className="flex items-center gap-3">
+              <div
+                className="relative w-11 h-14 rounded-md grid place-items-center font-mono text-[9px] tracking-[.14em] text-accent flex-shrink-0"
+                style={{ background: 'rgba(246,243,236,.06)', border: '1px solid rgba(246,243,236,.18)' }}
+                aria-hidden="true"
+              >
+                PDF
+                <span
+                  className="absolute top-0 right-0 w-3.5 h-3.5 rounded-bl-[3px]"
+                  style={{ background: 'linear-gradient(225deg, rgba(246,243,236,.18) 50%, transparent 50%)' }}
+                />
+              </div>
+              <div className="font-mono text-[10.5px] uppercase tracking-[.12em] text-bg/55 leading-[1.5]">
+                <b className="block text-bg font-medium tracking-[.14em]">Прайс_Vent_05·2026</b>
+                6 страниц · 412 КБ
+              </div>
             </div>
-            <a href="#calculator" data-calc-jump="grease" className="btn-lime">
-              Рассчитать
-              <ArrowRight size={14} strokeWidth={2} className="arrow" aria-hidden="true" />
+            <a href="/files/vent-pricelist-2026.pdf" download className="pl-cta">
+              скачать прайс-лист
+              <span className="pl-ext">PDF</span>
+              <svg className="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
             </a>
           </div>
         </article>
