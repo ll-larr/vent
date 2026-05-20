@@ -69,8 +69,7 @@ export function MiniCalculator() {
               id="area-mini"
               type="number"
               inputMode="numeric"
-              min={20}
-              max={20000}
+              min={0}
               value={state.areaM2 || ''}
               onChange={(e) => dispatch({ type: 'SET_AREA', value: parseInt(e.target.value) || 0 })}
               className="w-full bg-transparent border-0 outline-0 font-display font-light text-[28px] text-ink tracking-[-.02em] caret-brand"

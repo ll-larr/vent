@@ -19,14 +19,14 @@ export const SERVICES: Record<ServiceKey, Service> = {
   grease: {
     kind: 'linear',
     min: 300,
-    max: 400,
+    max: 450,
     label: 'Чистка вентиляции от жира',
     hint: 'для кухонь общепита',
     diameterTiers: [
       { code: 'pipe-small', label: 'труба Ø ≤ 600 мм',   rate: 300 },
       { code: 'box-small',  label: 'короб ≤ 600×400 мм', rate: 350 },
       { code: 'pipe-large', label: 'труба Ø > 600 мм',   rate: 400 },
-      { code: 'box-large',  label: 'короб > 600×400 мм', rate: 400 },
+      { code: 'box-large',  label: 'короб > 600×400 мм', rate: 450 },
     ],
   },
   dust: {
@@ -37,7 +37,7 @@ export const SERVICES: Record<ServiceKey, Service> = {
     hint: 'для офисов и складов',
     diameterTiers: [
       { code: 'pipe-small', label: 'труба Ø ≤ 600 мм',   rate: 100 },
-      { code: 'box-small',  label: 'короб ≤ 600×400 мм', rate: 120 },
+      { code: 'box-small',  label: 'короб ≤ 600×400 мм', rate: 150 },
       { code: 'pipe-large', label: 'труба Ø > 600 мм',   rate: 180 },
       { code: 'box-large',  label: 'короб > 600×400 мм', rate: 220 },
     ],
@@ -51,9 +51,9 @@ export const SERVICES: Record<ServiceKey, Service> = {
   },
   hood: {
     kind: 'unit',
-    price: 1000,
+    price: 2000,
     label: 'Чистка вытяжек / зонтов',
-    hint: 'за каждый зонт пищеблока',
+    hint: 'за зонт пищеблока до 1500×1500 мм',
   },
   diag: {
     kind: 'fixed',

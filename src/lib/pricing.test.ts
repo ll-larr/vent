@@ -46,7 +46,7 @@ describe('computePrice — linear services', () => {
 describe('computePrice — unit and fixed services', () => {
   it('hood multiplies by hoodCount', () => {
     const r = computePrice(['hood'], 0, 'restaurant', 3);
-    expect(r.totalMin).toBe(3000);
+    expect(r.totalMin).toBe(6000);
   });
 
   it('diag is a fixed 4500', () => {
@@ -56,9 +56,9 @@ describe('computePrice — unit and fixed services', () => {
 });
 
 describe('computePrice — combined', () => {
-  it('restaurant grease + 3 hoods at 180 m² = 27 300', () => {
+  it('restaurant grease + 3 hoods at 180 m² = 30 300', () => {
     const r = computePrice(['grease', 'hood'], 180, 'restaurant', 3);
-    expect(r.totalMin).toBe(27300);
+    expect(r.totalMin).toBe(30300);
     expect(r.breakdown).toHaveLength(2);
   });
 });

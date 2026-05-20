@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { submitSchema } from '@/lib/schemas';
 import { appendRow } from '@/lib/sheets';
-import { PACKAGES, SERVICES } from '@/lib/pricing';
+import { PACKAGES, SERVICES, computePrice, formatPrice } from '@/lib/pricing';
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,14 +17,24 @@ export async function POST(req: NextRequest) {
       minute: '2-digit',
     });
 
+    const { totalMin } = computePrice(
+      data.services,
+      data.areaM2,
+      data.packageKey,
+      data.hoodCount,
+    );
+
     const row = [
+      data.ticket,
       timestamp,
       data.name,
       data.phone,
+      data.objectName,
       PACKAGES[data.packageKey].label,
       `${data.areaM2} м²`,
       data.services.map((s) => SERVICES[s].label).join(', '),
       data.comment || '—',
+      `от ${formatPrice(totalMin)}`,
     ];
 
     await appendRow(row);

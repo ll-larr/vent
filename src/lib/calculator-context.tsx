@@ -27,11 +27,14 @@ function reducer(state: CalcState, action: CalcAction): CalcState {
   switch (action.type) {
     case 'SET_PACKAGE': {
       const pkg = PACKAGES[action.key];
+      const includesHood = pkg.default.includes('hood');
       return {
         ...state,
         packageKey: action.key,
         services: pkg.default.slice(),
-        hoodCount: pkg.default.includes('hood') ? state.hoodCount : 1,
+        // Keep current count when the package ships hoods, but never leave a
+        // hood-bearing package at 0 (that would mean "checked but empty").
+        hoodCount: includesHood ? Math.max(1, state.hoodCount) : 1,
       };
     }
     case 'TOGGLE_SERVICE': {
@@ -39,12 +42,25 @@ function reducer(state: CalcState, action: CalcAction): CalcState {
       const services = exists
         ? state.services.filter((s) => s !== action.key)
         : [...state.services, action.key];
-      return { ...state, services };
+      // Re-checking hoods with a 0 count should seed at least one.
+      const hoodCount =
+        action.key === 'hood' && !exists && state.hoodCount === 0 ? 1 : state.hoodCount;
+      return { ...state, services, hoodCount };
     }
     case 'SET_AREA':
       return { ...state, areaM2: action.value };
-    case 'SET_HOOD_COUNT':
-      return { ...state, hoodCount: Math.max(1, Math.min(20, action.value)) };
+    case 'SET_HOOD_COUNT': {
+      const hoodCount = Math.max(0, Math.min(40, action.value));
+      // 0 hoods means the service leaves the cart (and unchecks); any positive
+      // count keeps it selected.
+      let services = state.services;
+      if (hoodCount === 0) {
+        services = state.services.filter((s) => s !== 'hood');
+      } else if (!state.services.includes('hood')) {
+        services = [...state.services, 'hood'];
+      }
+      return { ...state, hoodCount, services };
+    }
   }
 }
 

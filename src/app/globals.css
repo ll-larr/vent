@@ -80,6 +80,16 @@
   @keyframes live-pulse {
     50% { box-shadow: 0 0 0 8px rgba(200,255,62,0); }
   }
+  /* Contact success-state — card slide-up + checkmark pop */
+  @keyframes ct-success-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0);    }
+  }
+  @keyframes ct-check-pop {
+    0%   { opacity: 0; transform: scale(0.4); }
+    70%  { opacity: 1; transform: scale(1.12); }
+    100% { opacity: 1; transform: scale(1);   }
+  }
 }
 
 @layer base {
@@ -106,6 +116,25 @@
   ::selection {
     background-color: #1e5c32;
     color: #f6f3ec;
+  }
+
+  /* Hide native number-input spinners (WebKit/Blink + Firefox) */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  /* Contact form / success-state toggle. We conditionally render only one in
+     React, but keep this so a future always-rendered refactor can't show both
+     (display:flex would otherwise override the `hidden` attribute). */
+  .ct-success[hidden],
+  .ct-form[hidden] {
+    display: none !important;
   }
 }
 

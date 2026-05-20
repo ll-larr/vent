@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useScrollAnim from '@/lib/useScrollAnim';
 import { useMagnet } from '@/lib/useMagnet';
 import { useCalculator } from '@/lib/calculator-context';
@@ -18,9 +18,10 @@ const fmt = (n: number) => new Intl.NumberFormat('ru-RU').format(n);
 const fmtFromRubles = (n: number) =>
   new Intl.NumberFormat('ru-RU').format(Math.round(n / 100) * 100);
 
-const QUICK_AREAS = [80, 220, 500, 1500];
-const AREA_MIN = 20;
-const AREA_MAX = 3000;
+const QUICK_AREAS = [50, 120, 200, 300];
+const AREA_MIN = 0;
+// Slider tops out at a realistic 300 m²; manual entry stays unbounded above.
+const SLIDER_MAX = 300;
 
 function serviceRateLabel(s: Service): string {
   if (s.kind === 'linear') return `${s.min} ₽/пог.м`;
@@ -52,6 +53,20 @@ export function Calculator() {
   useScrollAnim(ref);
   const { state, dispatch } = useCalculator();
   const submitCtaRef = useMagnet<HTMLAnchorElement>({ strength: 0.3 });
+  const [pdfLoading, setPdfLoading] = useState(false);
+
+  // Lazy-load jsPDF + fonts only on click → no weight on the initial bundle.
+  const handleDownloadPdf = async () => {
+    setPdfLoading(true);
+    try {
+      const { downloadPriceEstimate } = await import('@/lib/price-pdf');
+      await downloadPriceEstimate(state);
+    } catch (err) {
+      console.error('Не удалось сформировать PDF:', err);
+    } finally {
+      setPdfLoading(false);
+    }
+  };
 
   // Handle data-calc-jump links from anywhere on the page
   useEffect(() => {
@@ -91,7 +106,7 @@ export function Calculator() {
     };
   });
 
-  const fillPct = Math.max(0, Math.min(100, ((state.areaM2 - AREA_MIN) / (AREA_MAX - AREA_MIN)) * 100));
+  const fillPct = Math.max(0, Math.min(100, ((state.areaM2 - AREA_MIN) / (SLIDER_MAX - AREA_MIN)) * 100));
 
   const pkgKeys = Object.keys(PACKAGES) as PackageKey[];
   const svcKeys: ServiceKey[] = ['grease', 'hood', 'dust', 'disinfect', 'diag'];
@@ -204,13 +219,12 @@ export function Calculator() {
                   type="number"
                   inputMode="numeric"
                   min={AREA_MIN}
-                  max={AREA_MAX}
                   value={state.areaM2 || ''}
                   onChange={(e) => {
                     const v = parseInt(e.target.value, 10);
                     dispatch({
                       type: 'SET_AREA',
-                      value: Number.isNaN(v) ? AREA_MIN : Math.max(AREA_MIN, Math.min(AREA_MAX, v)),
+                      value: Number.isNaN(v) ? AREA_MIN : Math.max(AREA_MIN, v),
                     });
                   }}
                   aria-label="Площадь объекта в квадратных метрах"
@@ -269,9 +283,9 @@ export function Calculator() {
                 <input
                   type="range"
                   min={AREA_MIN}
-                  max={AREA_MAX}
-                  step={10}
-                  value={Math.min(AREA_MAX, Math.max(AREA_MIN, state.areaM2))}
+                  max={SLIDER_MAX}
+                  step={5}
+                  value={Math.min(SLIDER_MAX, Math.max(AREA_MIN, state.areaM2))}
                   onChange={(e) => dispatch({ type: 'SET_AREA', value: parseInt(e.target.value, 10) })}
                   aria-label="Площадь, ползунок"
                   className="calc-range absolute inset-0 w-full h-7 bg-transparent cursor-pointer appearance-none m-0 p-0 z-[2]"
@@ -282,10 +296,10 @@ export function Calculator() {
                 className="flex justify-between -mt-1 font-mono text-[10px] uppercase tracking-[.12em] text-ink/40"
                 style={{ gridArea: 'ticks' }}
               >
-                <span>20 м²</span>
-                <span>500</span>
-                <span>1500</span>
-                <span>3000+</span>
+                <span>0 м²</span>
+                <span>100</span>
+                <span>200</span>
+                <span>300+</span>
               </div>
             </div>
 
@@ -372,9 +386,14 @@ export function Calculator() {
               Оставить заявку
               <ArrowRight size={14} strokeWidth={2} className="arrow" aria-hidden="true" />
             </a>
-            <a href="/price" className="btn-ghost-on-dark">
-              Скачать прайс PDF
-            </a>
+            <button
+              type="button"
+              onClick={handleDownloadPdf}
+              disabled={pdfLoading || result.breakdown.length === 0}
+              className="btn-ghost-on-dark disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {pdfLoading ? 'Готовим PDF…' : 'Скачать расчёт PDF'}
+            </button>
           </div>
         </aside>
       </div>

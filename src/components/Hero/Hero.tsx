@@ -99,17 +99,27 @@ export function Hero() {
           </div>
         </div>
 
-        {/* STAT 2 — 2 × 1 lime tile, ink numeral */}
+        {/* STAT 2 — 2 × 1 lime tile, ink numeral — срок-диапазон 3ч → 4дн */}
         <div
           className="col-span-6 lg:col-span-2 bg-accent rounded-[22px] p-[18px] flex flex-col justify-between min-h-[96px]"
           data-anim
           style={{ ['--delay' as any]: '220ms' }}
         >
-          <div className="font-display font-light text-[56px] leading-[.85] tracking-[-.04em] text-ink">
-            4–6<span className="text-[24px]">дн</span>
+          <div
+            className="font-display font-light tracking-[-.03em] leading-[.95] text-ink inline-flex items-baseline gap-1.5 whitespace-nowrap"
+            style={{ fontSize: 'clamp(34px,3.4vw,44px)' }}
+          >
+            3<small className="font-light" style={{ fontSize: '0.55em', letterSpacing: 0 }}>ч</small>
+            <span
+              className="font-display font-light self-center px-1 text-ink"
+              style={{ fontSize: '0.75em', letterSpacing: 0 }}
+            >
+              →
+            </span>
+            4<small className="font-light" style={{ fontSize: '0.55em', letterSpacing: 0 }}>дн</small>
           </div>
           <div className="font-mono text-[10px] uppercase tracking-[.14em] text-ink/65">
-            средний срок под ключ
+            в зависимости от объекта и услуг
           </div>
         </div>
 
