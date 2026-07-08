@@ -6,8 +6,11 @@ export function localBusinessSchema(): JsonLd {
   return {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
+    '@id': `${SITE_URL}/#business`,
     name: 'Vent',
     description: 'Промышленная чистка вентиляции для бизнеса',
+    image: `${SITE_URL}/opengraph-image`,
+    priceRange: '₽₽',
     telephone: CONTACT_PHONE,
     email: CONTACT_EMAIL,
     address: {

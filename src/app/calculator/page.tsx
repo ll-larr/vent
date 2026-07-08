@@ -6,7 +6,8 @@ import { ContactSection } from '@/components/ContactSection/ContactSection';
 import { CalculatorProvider } from '@/lib/calculator-context';
 
 export const metadata: Metadata = {
-  title: 'Калькулятор стоимости чистки вентиляции — Vent',
+  // Root layout template appends "· Vent" — keep the page title bare.
+  title: 'Калькулятор стоимости чистки вентиляции',
   description:
     'Рассчитайте онлайн стоимость промышленной чистки вентиляции и вытяжек для общепита, офиса или производства. Цены от 100 ₽/пог.м.',
   alternates: { canonical: '/calculator' },

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Header } from '@/components/Header/Header';
 import { Hero } from '@/components/Hero/Hero';
 import { Services } from '@/components/Services/Services';
@@ -9,6 +10,21 @@ import { Calculator } from '@/components/Calculator/Calculator';
 import { ContactSection } from '@/components/ContactSection/ContactSection';
 import { Footer } from '@/components/Footer/Footer';
 import { CalculatorProvider } from '@/lib/calculator-context';
+import { serviceSchema, jsonLdScript } from '@/lib/schema';
+import { SERVICES } from '@/lib/pricing';
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+};
+
+// Service structured data mirrors the live pricing catalog — one source of truth.
+const serviceJsonLd = jsonLdScript([
+  serviceSchema(SERVICES.grease.label, 'от 300 ₽/пог.м', SERVICES.grease.hint),
+  serviceSchema(SERVICES.dust.label, 'от 100 ₽/пог.м', SERVICES.dust.hint),
+  serviceSchema(SERVICES.disinfect.label, 'от 30 ₽/пог.м', SERVICES.disinfect.hint),
+  serviceSchema(SERVICES.hood.label, 'от 2 000 ₽/шт', SERVICES.hood.hint),
+  serviceSchema(SERVICES.diag.label, '4 500 ₽', SERVICES.diag.hint),
+]);
 
 export default function HomePage() {
   return (
@@ -34,6 +50,7 @@ export default function HomePage() {
         <ContactSection />
       </main>
       <Footer />
+      <script type="application/ld+json" dangerouslySetInnerHTML={serviceJsonLd} />
     </CalculatorProvider>
   );
 }

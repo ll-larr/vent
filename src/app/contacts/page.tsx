@@ -7,8 +7,10 @@ import { Phone, Mail, MapPinned, Clock } from '@/lib/icons';
 import { CONTACT_PHONE, CONTACT_PHONE_HREF, CONTACT_EMAIL, CONTACT_EMAIL_HREF } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Контакты — Vent',
+  // Root layout template appends "· Vent" — keep the page title bare.
+  title: 'Контакты',
   description: 'Свяжитесь с Vent — промышленная чистка вентиляции для бизнеса. Москва и Подмосковье.',
+  alternates: { canonical: '/contacts' },
 };
 
 export default function ContactsPage() {
