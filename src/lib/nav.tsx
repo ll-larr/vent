@@ -16,10 +16,12 @@ export const navLinks: NavLink[] = [
 /** Extract section id from a nav href (e.g. "/#services" → "services"). */
 export const navHrefToId = (href: string): string => href.split('#')[1] ?? '';
 
-export const CONTACT_PHONE = '+7 (495) 120-04-04';
-export const CONTACT_PHONE_HREF = 'tel:+74951200404';
-export const CONTACT_EMAIL = 'hello@vent.team';
-export const CONTACT_EMAIL_HREF = 'mailto:hello@vent.team';
+export {
+  CONTACT_PHONE,
+  CONTACT_PHONE_HREF,
+  CONTACT_EMAIL,
+  CONTACT_EMAIL_HREF,
+} from './site';
 
 export const LogoMark = () => (
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">

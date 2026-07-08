@@ -4,6 +4,7 @@ import { Footer } from '@/components/Footer/Footer';
 import { ContactSection } from '@/components/ContactSection/ContactSection';
 import { CalculatorProvider } from '@/lib/calculator-context';
 import { Phone, Mail, MapPinned, Clock } from '@/lib/icons';
+import { CONTACT_PHONE, CONTACT_PHONE_HREF, CONTACT_EMAIL, CONTACT_EMAIL_HREF } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Контакты — Vent',
@@ -14,7 +15,7 @@ export default function ContactsPage() {
   return (
     <CalculatorProvider>
       <Header />
-      <main className="pt-32 bg-bg">
+      <main id="main" className="pt-32 bg-bg">
         <section className="px-5 md:px-[5vw] py-12">
           <div className="max-w-5xl mx-auto">
             <div className="font-mono text-[11px] uppercase tracking-[.15em] text-ink/50 mb-3">
@@ -30,8 +31,8 @@ export default function ContactsPage() {
                   <Phone size={13} strokeWidth={1.5} />
                   Телефон
                 </div>
-                <a href="tel:+74951234567" className="font-display text-[28px] hover:text-brand transition-colors">
-                  +7 (495) 123-45-67
+                <a href={CONTACT_PHONE_HREF} className="font-display text-[28px] hover:text-brand transition-colors">
+                  {CONTACT_PHONE}
                 </a>
                 <p className="text-[13px] text-ink/55 mt-2">Перезваниваем в течение 2 часов в рабочее время.</p>
               </div>
@@ -41,8 +42,8 @@ export default function ContactsPage() {
                   <Mail size={13} strokeWidth={1.5} />
                   Email
                 </div>
-                <a href="mailto:info@cleanvent.ru" className="font-display text-[28px] hover:text-brand transition-colors">
-                  info@cleanvent.ru
+                <a href={CONTACT_EMAIL_HREF} className="font-display text-[28px] hover:text-brand transition-colors">
+                  {CONTACT_EMAIL}
                 </a>
               </div>
 

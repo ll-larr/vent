@@ -1,0 +1,2808 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vent — bento modern</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /* ------- Tokens (from tailwind.config.ts) ------- */
+  :root{
+    --bg:        #f6f3ec;
+    --ink:       #141312;
+    --ink-2:     #1f1d1b;
+    --brand:     #1e5c32;
+    --brand-dk:  #0f3d22;
+    --brand-hv:  #2d7d46;
+    --brand-lt:  #eef5ef;
+    --accent:    #c8ff3e;
+    --surface:   #ffffff;
+    --stone:     #f4f4f2;
+    --line:      rgba(20,19,18,.08);
+    --line-2:    rgba(20,19,18,.14);
+    --muted:     #5a6b5e;
+
+    --display: "Fraunces", Georgia, serif;
+    --sans:    "Inter Tight", system-ui, -apple-system, sans-serif;
+    --mono:    "JetBrains Mono", ui-monospace, monospace;
+
+    --r-tile: 22px;
+    --r-tile-lg: 28px;
+    --r-chip: 999px;
+    --r-card: 14px;
+
+    --gap: 12px;
+    --maxw: 1320px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin:0; padding:0; }
+  html { scroll-behavior: smooth; }
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--brand); color: var(--bg); }
+
+  img { max-width:100%; display:block; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+  /* ------- Reusable atoms ------- */
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 16px; }
+  .mono { font-family: var(--mono); letter-spacing: .04em; text-transform: uppercase; font-size: 11px; }
+  .meta { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(20,19,18,.55); }
+  .meta.brand { color: var(--brand); }
+  .meta.light { color: rgba(246,243,236,.6); }
+  .meta.accent { color: var(--accent); }
+  .display { font-family: var(--display); font-weight: 300; letter-spacing: -0.025em; line-height: .96; }
+  .display em { font-style: italic; color: var(--brand); font-weight: 300; }
+  .stroke-text { color: transparent; -webkit-text-stroke: 1.5px currentColor; }
+
+  /* Bento tile base */
+  .tile{
+    background: var(--surface);
+    border-radius: var(--r-tile);
+    padding: 22px;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .tile.cream    { background: var(--bg); }
+  .tile.stone    { background: var(--stone); }
+  .tile.ink      { background: var(--ink); color: var(--bg); }
+  .tile.brand    { background: var(--brand); color: var(--bg); }
+  .tile.brand-dk { background: var(--brand-dk); color: var(--bg); }
+  .tile.accent   { background: var(--accent); color: var(--ink); }
+  .tile.outline  { background: transparent; border: 1px solid var(--line-2); }
+
+  .tile .corner-num{
+    position:absolute; top:18px; right:20px;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(20,19,18,.45);
+  }
+  .tile.ink .corner-num, .tile.brand .corner-num, .tile.brand-dk .corner-num { color: rgba(246,243,236,.55); }
+
+  .tile-cap{
+    display:flex; align-items:center; gap:10px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(20,19,18,.55);
+  }
+  .tile-cap .dash{ width: 18px; height: 1px; background: var(--brand); }
+  .tile.ink .tile-cap, .tile.brand .tile-cap, .tile.brand-dk .tile-cap { color: rgba(246,243,236,.65); }
+  .tile.ink .tile-cap .dash, .tile.brand .tile-cap .dash, .tile.brand-dk .tile-cap .dash { background: var(--accent); }
+
+  /* CTA chip / pill */
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding: 12px 18px; border-radius: var(--r-chip);
+    font-weight: 500; font-size: 14px;
+    background: var(--ink); color: var(--bg);
+    transition: background .25s, transform .25s;
+  }
+  .btn:hover { background: var(--brand); }
+  .btn.lime{
+    background: var(--accent);
+    color: var(--ink);
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    transition: color .3s ease, padding-right .3s ease;
+  }
+  .btn.lime::before{
+    content: "";
+    position: absolute; inset: 0;
+    background: var(--ink);
+    border-radius: var(--r-chip);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform .45s cubic-bezier(.65,0,.35,1);
+    z-index: -1;
+  }
+  .btn.lime:hover{
+    background: var(--accent);
+    color: var(--accent);
+    padding-right: 24px;
+  }
+  .btn.lime:hover::before{ transform: scaleX(1); }
+  .btn.lime:hover .arrow{ transform: translateX(4px); }
+  .btn.lime .arrow{ transition: transform .35s cubic-bezier(.65,0,.35,1); display: inline-block; }
+  .btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line-2); }
+  .btn.ghost:hover{ border-color: var(--ink); background: var(--ink); color: var(--bg); }
+  .btn .arrow { transition: transform .25s; }
+  .btn:not(.lime):hover .arrow { transform: translateX(3px); }
+
+  .pill {
+    display:inline-flex; align-items:center; gap:8px;
+    padding: 7px 11px; border-radius: var(--r-chip);
+    font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    border: 1px solid var(--line-2); background: transparent;
+  }
+  .pill .dot { width:6px; height:6px; border-radius:50%; background: var(--brand); }
+  .pill .dot.live { background: var(--accent); box-shadow: 0 0 0 4px rgba(200,255,62,.25); animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 50% { box-shadow: 0 0 0 8px rgba(200,255,62,0); } }
+
+  /* ------- Top bar ------- */
+  .topbar{
+    position: sticky; top: 12px; z-index: 50;
+    padding: 0 16px;
+  }
+  .topbar-inner{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    gap: 14px;
+    background: rgba(20,19,18,.92);
+    backdrop-filter: blur(10px);
+    color: var(--bg);
+    padding: 10px 12px 10px 18px;
+    border-radius: 999px;
+  }
+  .brand-mark { grid-column: 1; display:flex; align-items:center; gap: 10px; font-weight: 500; }
+  .topbar .nav-links { grid-column: 2; }
+  .topbar .topbar-contacts { grid-column: 3; }
+  .topbar > .topbar-inner > .btn { grid-column: 4; justify-self: end; }
+
+  .topbar-contacts{
+    display: flex; align-items: center; gap: 14px;
+    padding-right: 4px;
+    border-right: 1px solid rgba(246,243,236,.14);
+    padding-right: 14px;
+  }
+  .topbar-contacts a{
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    color: rgba(246,243,236,.8); transition: color .2s;
+  }
+  .topbar-contacts a:hover{ color: var(--accent); }
+  .topbar-contacts a svg{ stroke: currentColor; }
+  .topbar-contacts .ph{ font-size: 12.5px; letter-spacing: .04em; color: var(--bg); }
+  .topbar-contacts .ph:hover{ color: var(--accent); }
+  .brand-mark svg { display:block; }
+  .brand-mark .word { font-family: var(--display); font-size: 22px; font-weight: 400; letter-spacing: -0.02em; }
+  .brand-mark .word i { color: var(--accent); font-style: italic; }
+
+  .nav-links{
+    display: flex; gap: 4px; justify-self: center;
+    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  }
+  .nav-links a{
+    padding: 8px 12px;
+    border-radius: 999px;
+    color: rgba(246,243,236,.7);
+    transition: background .2s, color .2s;
+  }
+  .nav-links a:hover { background: rgba(246,243,236,.07); color: var(--bg); }
+  .nav-links a.active { color: var(--accent); }
+
+  .topbar .btn { padding: 10px 14px; font-size: 12px; background: var(--accent); color: var(--ink); }
+  .topbar .btn:hover { background: var(--bg); }
+
+  /* ------- HERO BENTO ------- */
+  .hero{
+    padding: 22px 16px 12px;
+  }
+  .hero .grid{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: minmax(96px, auto);
+    gap: var(--gap);
+  }
+  .h-headline{
+    grid-column: span 8;
+    grid-row: span 3;
+    background: var(--bg);
+    padding: 30px 32px 28px;
+    border-radius: var(--r-tile-lg);
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 540px;
+    position: relative;
+    overflow: hidden;
+  }
+  .h-headline .h1{
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: clamp(56px, 7.6vw, 124px);
+    line-height: .96;
+    letter-spacing: -0.028em;
+  }
+  .h-headline .h1 em{ color: var(--brand); font-style: italic; font-weight: 300; }
+  .h-headline .h1 .stroke{
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--ink);
+  }
+  .h-headline .lede{
+    max-width: 460px;
+    font-size: 16px;
+    color: rgba(20,19,18,.7);
+    line-height: 1.55;
+    margin-top: 18px;
+  }
+  .h-headline .corner-num{ top: 28px; right: 30px; }
+  .h-headline .marquee-tag{
+    position:absolute; right: -10px; bottom: 22px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(20,19,18,.35);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  .h-promo{
+    grid-column: span 4;
+    grid-row: span 2;
+    background: var(--brand);
+    color: var(--bg);
+    padding: 24px;
+    border-radius: var(--r-tile-lg);
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 220px;
+    position: relative;
+    overflow: hidden;
+  }
+  .h-promo h3{
+    font-family: var(--display); font-weight: 300; font-size: 30px; line-height: 1.05;
+    letter-spacing: -0.015em; max-width: 14ch;
+  }
+  .h-promo h3 em{ color: var(--accent); font-style: italic; }
+  .h-promo .vent-pattern{
+    position:absolute; right:-30px; bottom:-30px; width: 180px; height: 180px;
+    opacity:.18;
+  }
+  .h-promo .promo-meta{
+    display:flex; gap:12px;
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(246,243,236,.7);
+  }
+
+  .h-stat-1{
+    grid-column: span 2; grid-row: span 1;
+    background: var(--ink); color: var(--bg);
+    border-radius: var(--r-tile);
+    padding: 18px;
+    display:flex; flex-direction: column; justify-content: space-between;
+    min-height: 96px;
+  }
+  .h-stat-1 .num { font-family: var(--display); font-weight: 300; font-size: 56px; line-height: .85; color: var(--accent); letter-spacing: -0.04em; }
+  .h-stat-1 .lab { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(246,243,236,.6); }
+
+  .h-stat-2{
+    grid-column: span 2; grid-row: span 1;
+    background: var(--accent);
+    border-radius: var(--r-tile);
+    padding: 18px;
+    display:flex; flex-direction: column; justify-content: space-between;
+    min-height: 96px;
+  }
+  .h-stat-2 .num { font-family: var(--display); font-weight: 300; font-size: 56px; line-height: .85; color: var(--ink); letter-spacing: -0.04em; }
+  .h-stat-2 .lab { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(20,19,18,.65); }
+
+  .h-licenses{
+    grid-column: span 5; grid-row: span 1;
+    background: var(--surface);
+    border-radius: var(--r-tile);
+    padding: 18px;
+    display:flex; flex-direction: column; justify-content: space-between;
+    min-height: 96px;
+  }
+  .h-licenses .lic-row{ display:flex; flex-wrap: wrap; gap: 6px; }
+  .h-licenses .lic{
+    font-family: var(--mono); font-size: 11px; letter-spacing: .04em;
+    padding: 6px 10px; border: 1px solid var(--line-2); border-radius: 8px;
+    color: var(--ink);
+  }
+  .h-licenses .lic strong { color: var(--brand); font-weight: 500; }
+
+  .h-mini-calc{
+    grid-column: span 7; grid-row: span 2;
+    background: var(--surface);
+    border-radius: var(--r-tile-lg);
+    padding: 24px 26px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 14px;
+    min-height: 220px;
+  }
+  .mc-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .mc-head h3{ font-family: var(--display); font-weight: 300; font-size: 24px; line-height: 1; letter-spacing: -.015em; }
+  .mc-head h3 em{ color: var(--brand); font-style: italic; }
+
+  .mc-grid{
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+  }
+  .mc-field{
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .mc-field:nth-child(1){ flex: 1.2 1 0; }
+  .mc-field:nth-child(2){
+    flex: 1 1 0;
+    transition: flex-grow .45s cubic-bezier(.16,1,.3,1);
+  }
+  .mc-field--hood{
+    flex: 1 1 0;
+    transition:
+      flex-grow .45s cubic-bezier(.16,1,.3,1),
+      flex-basis .45s cubic-bezier(.16,1,.3,1),
+      opacity .25s ease,
+      padding .45s cubic-bezier(.16,1,.3,1),
+      margin-right .45s cubic-bezier(.16,1,.3,1),
+      transform .35s cubic-bezier(.16,1,.3,1);
+  }
+  .mc-result{ flex: 1.2 1 0; }
+
+  .mc-grid.no-hood .mc-field--hood{
+    flex: 0 0 0;
+    opacity: 0;
+    padding-left: 0;
+    padding-right: 0;
+    margin-right: -10px;
+    transform: scale(.92);
+    pointer-events: none;
+  }
+  .mc-grid.no-hood .mc-field:nth-child(2){ flex-grow: 2.1; }
+  .mc-field{
+    background: var(--stone);
+    border-radius: 14px;
+    padding: 12px 14px;
+    display:flex; flex-direction: column; gap: 6px;
+    min-height: 96px;
+    justify-content: space-between;
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .mc-field label{ font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(20,19,18,.5); }
+
+  /* Mini stepper (for hood field in hero calculator) */
+  .mc-stepper{
+    display: flex; align-items: center; gap: 4px;
+    background: var(--surface);
+    border-radius: 999px;
+    padding: 3px;
+    margin-top: 4px;
+    width: 100%;
+  }
+  .mc-stepper button{
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--stone); color: var(--ink); border: 0; cursor: pointer;
+    font-family: var(--display); font-weight: 300; font-size: 18px; line-height: 1;
+    display: grid; place-items: center;
+    transition: background .2s, color .2s, transform .15s;
+    flex-shrink: 0;
+  }
+  .mc-stepper button:hover{ background: var(--ink); color: var(--accent); }
+  .mc-stepper button:active{ transform: scale(.9); }
+  .mc-stepper button:disabled{ opacity: .35; cursor: not-allowed; }
+  .mc-stepper input{
+    flex: 1 1 0; min-width: 0;
+    text-align: center;
+    background: transparent; border: 0; outline: 0;
+    font-family: var(--display); font-weight: 300; font-size: 19px; color: var(--ink); letter-spacing: -.02em;
+    -moz-appearance: textfield;
+    padding: 0;
+  }
+  .mc-stepper input::-webkit-outer-spin-button,
+  .mc-stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .mc-stepper .unit{
+    font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(20,19,18,.5);
+    padding-right: 8px;
+    flex-shrink: 0;
+  }
+  .pkg-chips{ display:flex; gap: 6px; flex-wrap: wrap; }
+  .pkg{
+    padding: 7px 11px;
+    background: var(--surface);
+    border-radius: 999px;
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all .2s;
+  }
+  .pkg:hover { background: var(--bg); }
+  .pkg.on{ background: var(--ink); color: var(--bg); }
+  .area-input{
+    display:flex; align-items: baseline; gap: 6px;
+    padding: 8px 12px 9px;
+    background: var(--surface);
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: border-color .2s, box-shadow .2s;
+    cursor: text;
+  }
+  .area-input:hover{ border-color: var(--line-2); }
+  .area-input:focus-within{
+    border-color: var(--brand);
+    box-shadow: 0 0 0 2px rgba(30,92,50,.12);
+  }
+  .area-input input{
+    width: 100%; background: transparent; border: 0; outline: 0;
+    font-family: var(--display); font-weight: 300; font-size: 28px; color: var(--ink); letter-spacing: -.02em;
+    -moz-appearance: textfield;
+    caret-color: var(--brand);
+  }
+  .area-input input::-webkit-outer-spin-button,
+  .area-input input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .area-input .unit{ font-family: var(--display); font-weight: 300; font-size: 16px; letter-spacing: -.01em; text-transform: none; color: rgba(20,19,18,.4); flex-shrink: 0; }
+  .mc-result{
+    background: var(--ink); color: var(--bg);
+    border-radius: 14px;
+    padding: 12px 14px;
+    display:flex; flex-direction: column; gap: 4px;
+    min-height: 96px; justify-content: space-between;
+  }
+  .mc-result .lbl{ font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(246,243,236,.55); }
+  .mc-result .price{ font-family: var(--display); font-weight: 300; font-size: 30px; color: var(--accent); letter-spacing: -.02em; }
+  .mc-result .note { font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: rgba(246,243,236,.5); }
+  .mc-foot{ display:flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .mc-foot .checks{ display:flex; gap:6px; flex-wrap: wrap; }
+  .mc-foot .chk{ font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(20,19,18,.55); padding: 5px 9px; background: var(--bg); border-radius: 999px; }
+
+  .h-status{
+    grid-column: span 5; grid-row: span 1;
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: var(--r-tile-lg);
+    padding: 22px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 96px;
+    position: relative;
+    overflow:hidden;
+  }
+  .h-status .live-row{ display:flex; align-items:center; gap:10px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: rgba(246,243,236,.65); }
+  .h-status .live-dot{ width:7px; height:7px; border-radius:50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(200,255,62,.18); animation: pulse 1.6s ease-in-out infinite; }
+  .h-status .now-quote{
+    font-family: var(--display); font-weight: 300; font-style: italic; font-size: 19px; line-height: 1.2; letter-spacing: -.005em;
+  }
+  .h-status .now-quote em{ font-style: normal; color: var(--accent); }
+  .h-status .now-foot{ display:flex; justify-content: space-between; align-items: end; gap:12px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: rgba(246,243,236,.55); }
+
+  .h-status .now-foot a.now-cta{
+    position: relative;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent);
+    padding: 8px 14px 8px 16px;
+    border-radius: 999px;
+    overflow: hidden;
+    isolation: isolate;
+    transition: color .3s ease, padding-right .3s ease;
+  }
+  .h-status .now-foot a.now-cta::before{
+    content: "";
+    position: absolute; inset: 0;
+    background: var(--accent);
+    border-radius: 999px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform .45s cubic-bezier(.65,0,.35,1);
+    z-index: -1;
+  }
+  .h-status .now-foot a.now-cta::after{
+    content: "";
+    position: absolute; left: 0; right: 0; bottom: 0;
+    height: 1px;
+    background: rgba(200,255,62,.3);
+    transition: background .3s ease;
+  }
+  .h-status .now-foot a.now-cta:hover{
+    color: var(--ink);
+    padding-right: 22px;
+  }
+  .h-status .now-foot a.now-cta:hover::before{
+    transform: scaleX(1);
+  }
+  .h-status .now-foot a.now-cta:hover::after{ background: transparent; }
+  .h-status .now-foot a.now-cta .arrow{
+    transition: transform .35s cubic-bezier(.65,0,.35,1);
+    display: inline-block;
+  }
+  .h-status .now-foot a.now-cta:hover .arrow{ transform: translateX(4px); }
+
+  /* hero base waveform glyph */
+  .vent-bars{ display:flex; gap:3px; align-items: flex-end; height: 18px; }
+  .vent-bars span{ display:block; width:3px; background: currentColor; border-radius: 1px; }
+
+  /* ------- Section frame ------- */
+  section{ scroll-margin-top: 80px; }
+  .section-head{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 56px 16px 18px;
+    display:grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: end;
+  }
+  .section-head .meta{ margin-bottom: 6px !important; }
+  .section-head .ttl{ font-family: var(--display); font-weight: 300; font-size: clamp(40px, 5.2vw, 76px); line-height: .98; letter-spacing: -.025em; }
+  .section-head .ttl em { font-style: italic; color: var(--brand); font-weight: 300; }
+  .section-head .ttl .stroke{ color: transparent; -webkit-text-stroke: 1.4px var(--ink); }
+  .section-head .num{ font-family: var(--mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: rgba(20,19,18,.5); align-self: start; }
+  .section-head .desc{ font-family: var(--sans); font-size: 14px; color: rgba(20,19,18,.6); max-width: 38ch; text-align: right; line-height: 1.5; }
+
+  .bento{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 16px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: minmax(96px, auto);
+    gap: var(--gap);
+  }
+
+  /* ===== SERVICES bento ===== */
+  .svc-feature{
+    grid-column: span 7;
+    grid-row: span 3;
+    background: var(--brand);
+    color: var(--bg);
+    border-radius: var(--r-tile-lg);
+    padding: 26px 28px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 380px;
+    position: relative;
+    overflow: hidden;
+  }
+  .svc-feature::after{
+    content:""; position:absolute; inset: auto -20% -50% auto; width: 70%; aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(200,255,62,.18), transparent 70%);
+  }
+  .svc-feature .price-row{ display:flex; gap:12px; align-items: baseline; font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(246,243,236,.7); }
+  .svc-feature h3{ font-family: var(--display); font-weight: 300; font-size: clamp(36px, 4.6vw, 64px); line-height: 1; letter-spacing: -.025em; max-width: 18ch; }
+  .svc-feature h3 em{ font-style: italic; color: var(--accent); }
+  .svc-feature p{ font-size: 15px; color: rgba(246,243,236,.78); max-width: 46ch; line-height: 1.55; margin-top: 14px; }
+  .svc-feature .feat-list{ display:flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+  .svc-feature .feat-list span{
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+    padding: 6px 10px;
+    border: 1px solid rgba(246,243,236,.22); border-radius: 999px;
+    color: rgba(246,243,236,.85);
+  }
+  .svc-feature .price-tag{
+    display: inline-flex; align-items: baseline; gap: 8px; white-space: nowrap;
+    font-family: var(--display); font-weight: 300; font-size: 52px; line-height: 1; color: var(--accent); letter-spacing: -.03em;
+    flex-shrink: 0;
+  }
+  .svc-feature .price-tag span{
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    font-family: var(--mono); color: rgba(246,243,236,.7);
+    align-self: flex-end; padding-bottom: 6px;
+    white-space: nowrap;
+  }
+
+  .svc-card{
+    grid-column: span 5;
+    grid-row: span 2;
+    background: var(--surface);
+    border-radius: var(--r-tile-lg);
+    padding: 24px;
+    display:flex; flex-direction: column; justify-content: space-between;
+    min-height: 250px;
+    position: relative; overflow: hidden;
+  }
+  .svc-card .head{ display:flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .svc-card .idx{ font-family: var(--display); font-weight: 300; font-size: 80px; line-height: .8; letter-spacing: -.04em; color: rgba(20,19,18,.08); }
+  .svc-card h3{ font-family: var(--display); font-weight: 400; font-size: 26px; line-height: 1.05; letter-spacing: -.012em; }
+  .svc-card p{ font-size: 14px; color: rgba(20,19,18,.65); line-height: 1.55; margin-top: 8px; }
+  .svc-card .price-line{ display:flex; justify-content: space-between; align-items: end; gap: 10px; margin-top: 14px; }
+  .svc-card .price{ font-family: var(--display); font-weight: 400; font-size: 22px; color: var(--brand); }
+  .svc-card .more{
+    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink); display:inline-flex; align-items:center; gap:8px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: var(--stone);
+    border: 1px solid transparent;
+    transition: background .2s, color .2s, gap .2s, border-color .2s;
+    cursor: pointer;
+  }
+  .svc-card .more:hover{
+    background: var(--ink);
+    color: var(--accent);
+    gap: 12px;
+  }
+  .svc-card .more .arrow{ transition: transform .2s; }
+  .svc-card .more:hover .arrow{ transform: translateX(3px); }
+
+  .svc-photo{
+    grid-column: span 5;
+    grid-row: span 1;
+    border-radius: var(--r-tile);
+    background: var(--ink);
+    min-height: 210px;
+    overflow: hidden;
+    position: relative;
+    color: var(--bg);
+    display: flex; align-items: flex-end;
+    padding: 20px;
+  }
+  .svc-photo img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit: cover;
+    opacity: .58;
+    filter: grayscale(.2) contrast(1.05);
+  }
+  .svc-photo::after{
+    content:""; position:absolute; inset:0;
+    background: linear-gradient(180deg, rgba(20,19,18,0) 0%, rgba(20,19,18,.85) 90%);
+  }
+  .svc-photo .ph-cap{ position: relative; z-index: 1; display:flex; flex-direction: column; gap: 10px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; line-height: 1.4; color: rgba(246,243,236,.7); }
+  .svc-photo .ph-cap em{ font-style: italic; font-family: var(--display); font-weight: 400; font-size: 22px; line-height: 1.05; letter-spacing: -.01em; display:block; text-transform: none; color: var(--bg); margin: 0; }
+
+  .svc-cards-row{
+    grid-column: span 12;
+    display:grid; grid-template-columns: repeat(12, 1fr); gap: var(--gap);
+  }
+  .svc-flat{
+    grid-column: span 4;
+    background: var(--surface);
+    border-radius: var(--r-tile);
+    padding: 20px;
+    min-height: 160px;
+    display:flex; flex-direction: column; justify-content: space-between;
+  }
+  .svc-flat .head{ display:flex; justify-content: space-between; align-items: baseline; }
+  .svc-flat .idx{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(20,19,18,.5); }
+  .svc-flat .price{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--brand); }
+  .svc-flat h4{ font-family: var(--display); font-weight: 400; font-size: 22px; line-height: 1.1; letter-spacing: -.012em; margin-top: 12px; }
+  .svc-flat p{ font-size: 13.5px; color: rgba(20,19,18,.6); line-height: 1.5; margin-top: 6px; }
+
+  /* ===== Services "What's included" tile (fills bottom-right hole) ===== */
+  .svc-included{
+    grid-column: span 7;
+    grid-row: span 2;
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: var(--r-tile-lg);
+    padding: 24px 26px;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 22px;
+    position: relative;
+    overflow: hidden;
+    min-height: 250px;
+  }
+  .svc-included::after{
+    content:""; position:absolute; right: -40px; bottom: -40px;
+    width: 220px; height: 220px;
+    background: radial-gradient(closest-side, rgba(200,255,62,.10), transparent 70%);
+    pointer-events: none;
+  }
+  .svc-included .left{ display:flex; flex-direction: column; justify-content: space-between; gap: 14px; position: relative; z-index: 1; }
+  .svc-included .meta-row{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(246,243,236,.6); display:flex; gap: 10px; align-items: center; }
+  .svc-included .meta-row .dash{ width: 18px; height: 1px; background: var(--accent); display:inline-block; }
+  .svc-included h3{
+    font-family: var(--display); font-weight: 300; font-size: clamp(28px, 3.2vw, 42px); line-height: 1.02; letter-spacing: -.02em;
+    color: var(--bg);
+  }
+  .svc-included h3 em{ font-style: italic; color: var(--accent); }
+  .svc-included p{ font-size: 14px; color: rgba(246,243,236,.65); line-height: 1.55; max-width: 32ch; }
+  .svc-included .cta-row{ display:flex; gap: 8px; flex-wrap: wrap; }
+  .svc-included .cta-row .btn{ background: var(--accent); color: var(--ink); }
+  .svc-included .cta-row .btn:hover{ background: var(--bg); color: var(--ink); }
+  .svc-included .cta-row .btn.ghost{ background: transparent; color: var(--bg); border: 1px solid rgba(246,243,236,.22); }
+  .svc-included .cta-row .btn.ghost:hover{ background: rgba(246,243,236,.08); border-color: var(--accent); color: var(--accent); }
+
+  .svc-included .list{
+    display: flex; flex-direction: column; gap: 0;
+    justify-content: space-between;
+    position: relative; z-index: 1;
+    height: 100%;
+  }
+  .svc-included .list .row{
+    display: grid; grid-template-columns: 32px 1fr auto; gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid rgba(246,243,236,.1);
+    align-items: baseline;
+    flex: 1 0 auto;
+  }
+  .svc-included .list .row:first-child{ border-top: 0; padding-top: 2px; }
+  .svc-included .list .n{ font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; color: var(--accent); }
+  .svc-included .list .ttl{ font-size: 14px; color: var(--bg); line-height: 1.3; }
+  .svc-included .list .note{ font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(246,243,236,.4); white-space: nowrap; }
+
+  /* ===== CASES bento ===== */
+  .case-tile{
+    background: var(--ink);
+    border-radius: var(--r-tile-lg);
+    overflow: hidden;
+    min-height: 460px;
+    display: block;
+    position: relative;
+    color: var(--bg);
+    isolation: isolate;
+  }
+  .case-tile.big   { grid-column: span 12; min-height: 520px; }
+  .case-tile.mid   { grid-column: span 6;  min-height: 460px; }
+  .case-tile.sm    { grid-column: span 6;  min-height: 460px; }
+
+  .compare{
+    position: absolute;
+    inset: 0;
+    background: var(--ink);
+    user-select: none;
+    overflow: hidden;
+    cursor: crosshair;
+  }
+  .compare img{
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  }
+  .compare .img-before-wrap{
+    position: absolute; inset: 0;
+    overflow: hidden;
+    will-change: clip-path;
+  }
+  .compare .handle-line{
+    position: absolute; top: 0; bottom: 0; width: 2px; background: var(--accent); pointer-events: none;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 0 28px rgba(200,255,62,.45);
+    will-change: left;
+  }
+  .compare .handle-grip{
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--accent); color: var(--ink);
+    display: grid; place-items: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 0 0 4px rgba(255,255,255,.18);
+    pointer-events: none;
+    will-change: left;
+  }
+  .compare .handle-grip::after{
+    content:""; position:absolute; inset: -10px; border-radius: 50%;
+    border: 1px dashed rgba(200,255,62,.55);
+    animation: ringspin 9s linear infinite;
+  }
+  @keyframes ringspin { to { transform: rotate(360deg); } }
+
+  .compare .tag{
+    position:absolute; top: 18px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
+    backdrop-filter: blur(8px);
+    z-index: 2;
+  }
+  .compare .tag.before{ left: 18px; background: rgba(20,19,18,.7); color: var(--bg); }
+  .compare .tag.after { right: 18px; background: rgba(200,255,62,.92); color: var(--ink); }
+
+  /* Floating glass info panel — full-width always */
+  .case-info{
+    position: absolute;
+    left: 18px; right: 18px; bottom: 18px;
+    z-index: 3;
+    display: flex; flex-direction: column; gap: 10px;
+    padding: 14px 18px;
+    background: rgba(20,19,18,.72);
+    backdrop-filter: blur(14px) saturate(1.1);
+    border: 1px solid rgba(246,243,236,.08);
+    border-radius: 16px;
+    color: var(--bg);
+    transition: background .25s;
+  }
+  .case-tile:hover .case-info{ background: rgba(20,19,18,.85); }
+  .case-info .case-head{ display:flex; flex-direction: column; gap: 4px; }
+  .case-info .ven{ font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+  .case-info h4{
+    font-family: var(--display); font-weight: 400; font-size: clamp(20px, 1.9vw, 26px); line-height: 1.1; letter-spacing: -.012em;
+    color: var(--bg); margin: 0;
+  }
+  .case-info .case-expand{
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows .35s cubic-bezier(.16,1,.3,1), opacity .25s ease;
+  }
+  .case-tile:hover .case-info .case-expand{
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+  .case-info .case-expand > div{ overflow: hidden; display:flex; flex-direction: column; gap: 10px; }
+  .case-info p{
+    font-size: 13px; color: rgba(246,243,236,.78); line-height: 1.5; margin: 0; max-width: 100%;
+  }
+  .case-info .case-foot{ display:flex; gap: 6px; flex-wrap: wrap; }
+  .case-info .case-foot span{
+    font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+    padding: 5px 10px; border-radius: 999px;
+    background: rgba(246,243,236,.08);
+    color: rgba(246,243,236,.85);
+    border: 1px solid rgba(246,243,236,.12);
+  }
+
+  /* Corner monogram */
+  .case-tile .case-corner{
+    position: absolute; top: 18px; left: 18px;
+    z-index: 3;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 12px;
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
+    background: rgba(20,19,18,.7);
+    color: var(--bg);
+    border-radius: 999px;
+    backdrop-filter: blur(8px);
+  }
+  .case-tile .case-corner .dot{ width:6px; height:6px; border-radius:50%; background: var(--accent); }
+  /* Pull "До" tag to a 2nd row to avoid overlap with case-corner */
+  .compare .tag.before{ top: 60px; }
+
+  .cases-note{
+    grid-column: span 12;
+    background: transparent;
+    text-align: center;
+    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(20,19,18,.45);
+    padding: 4px;
+  }
+
+  /* ===== VENUES bento ===== */
+  .ven-tile{
+    grid-column: span 3;
+    grid-row: span 2;
+    border-radius: var(--r-tile-lg);
+    overflow:hidden;
+    position: relative;
+    min-height: 260px;
+    background: var(--ink);
+    color: var(--bg);
+    cursor: pointer;
+  }
+  .ven-tile img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    filter: grayscale(.3) contrast(1.06);
+    opacity:.88;
+    transition: filter .35s, opacity .35s, transform .8s;
+  }
+  .ven-tile:hover img{ filter: grayscale(0); opacity:1; transform: scale(1.03); }
+  .ven-tile .vtxt{
+    position: absolute; left:0; right:0; bottom:0;
+    padding: 16px 18px;
+    background: linear-gradient(180deg, rgba(20,19,18,0) 0%, rgba(20,19,18,.9) 90%);
+    transition: opacity .25s, transform .35s cubic-bezier(.16,1,.3,1);
+    z-index: 1;
+  }
+  .ven-tile .vtxt .vcat{ font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(246,243,236,.7); }
+  .ven-tile .vtxt h4{ font-family: var(--display); font-weight: 400; font-size: 22px; letter-spacing: -.01em; margin-top: 4px; }
+  .ven-tile .vtag{
+    position:absolute; top: 12px; left: 12px;
+    padding: 5px 9px; border-radius: 6px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+    background: rgba(246,243,236,.92); color: var(--ink);
+    z-index: 2;
+    transition: opacity .25s, transform .25s;
+  }
+
+  /* Hover popup */
+  .ven-popup{
+    position: absolute; inset: 0;
+    z-index: 3;
+    padding: 18px 18px 16px;
+    background: linear-gradient(180deg, rgba(20,19,18,.78) 0%, rgba(20,19,18,.92) 60%, rgba(20,19,18,.96) 100%);
+    backdrop-filter: blur(10px) saturate(1.1);
+    display: flex; flex-direction: column; gap: 10px;
+    opacity: 0;
+    transform: translateY(6px);
+    pointer-events: none;
+    transition: opacity .3s ease, transform .35s cubic-bezier(.16,1,.3,1);
+  }
+  .ven-tile:hover .ven-popup{ opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .ven-tile:hover .vtxt{ opacity: 0; transform: translateY(20px); }
+  .ven-tile:hover .vtag{ opacity: 0; transform: translateY(-6px); }
+
+  .ven-popup .vp-head{
+    display:flex; justify-content: space-between; align-items: baseline; gap: 10px;
+  }
+  .ven-popup .vp-cat{ font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+  .ven-popup .vp-date{ font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(246,243,236,.55); }
+  .ven-popup h5{ font-family: var(--display); font-weight: 400; font-size: 20px; line-height: 1.05; letter-spacing: -.012em; color: var(--bg); margin: 0; }
+
+  .ven-popup .vp-row{ display:flex; flex-direction: column; gap: 3px; }
+  .ven-popup .vp-lbl{ font-family: var(--mono); font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: rgba(246,243,236,.5); }
+  .ven-popup .vp-val{ font-size: 12.5px; line-height: 1.45; color: rgba(246,243,236,.85); }
+
+  .ven-popup .vp-quote{
+    margin-top: 4px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(246,243,236,.14);
+  }
+  .ven-popup .vp-quote p{
+    font-family: var(--display); font-style: italic; font-weight: 300;
+    font-size: 13px; line-height: 1.35; color: rgba(246,243,236,.92);
+    text-indent: 0;
+    margin: 0;
+  }
+  .ven-popup .vp-quote p::before{
+    content: "«";
+    font-family: var(--display); font-style: italic; color: var(--accent);
+    font-size: 18px; line-height: 1; vertical-align: -2px;
+    margin-right: 4px;
+  }
+  .ven-popup .vp-quote p::after{
+    content: "»";
+    font-family: var(--display); font-style: italic; color: var(--accent);
+    font-size: 18px; line-height: 1; vertical-align: -2px;
+    margin-left: 2px;
+  }
+  .ven-intro{
+    grid-column: span 6; grid-row: span 2;
+    background: var(--bg);
+    border-radius: var(--r-tile-lg);
+    padding: 24px 26px;
+    display:flex; flex-direction: column; justify-content: space-between;
+    min-height: 260px;
+    border: 1px dashed var(--line-2);
+  }
+  .ven-intro h3{ font-family: var(--display); font-weight: 300; font-size: clamp(28px, 3.5vw, 48px); line-height: 1; letter-spacing: -.02em; }
+  .ven-intro h3 em{ font-style: italic; color: var(--brand); }
+  .ven-intro .meta-row{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(20,19,18,.5); display:flex; gap: 14px; }
+  .ven-intro .meta-row b{ color: var(--brand); font-weight: 500; }
+  .ven-intro p{ font-size: 14px; color: rgba(20,19,18,.65); max-width: 42ch; line-height: 1.55; }
+
+  .ven-row-2{
+    grid-column: span 12;
+    display:grid; grid-template-columns: repeat(12, 1fr); gap: var(--gap);
+  }
+
+  /* ===== PROCESS bento ===== */
+  .pr-step{
+    grid-column: span 3;
+    background: var(--surface);
+    border-radius: var(--r-tile-lg);
+    padding: 22px;
+    min-height: 240px;
+    display:flex; flex-direction: column; gap: 14px;
+    position: relative; overflow: hidden;
+    cursor: pointer;
+    transition: transform .35s cubic-bezier(.16,1,.3,1);
+  }
+  .pr-step:hover{ transform: translateY(-2px); }
+  .pr-step .pr-n{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--brand); transition: opacity .25s; }
+  .pr-step h4{ font-family: var(--display); font-weight: 400; font-size: 28px; letter-spacing: -.012em; line-height: 1.05; transition: opacity .25s; }
+  .pr-step > p{ font-size: 13.5px; color: rgba(20,19,18,.65); line-height: 1.55; transition: opacity .25s; }
+  .pr-step.alt{ background: var(--ink); color: var(--bg); }
+  .pr-step.alt > p{ color: rgba(246,243,236,.7); }
+  .pr-step.alt .pr-n{ color: var(--accent); }
+  .pr-step .glyph{
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    border: 1px solid var(--line-2);
+    display: grid; place-items: center;
+    color: var(--ink);
+    transition: opacity .25s, transform .35s cubic-bezier(.16,1,.3,1);
+  }
+  .pr-step.alt .glyph{ border-color: rgba(246,243,236,.2); color: var(--bg); }
+
+  /* Hover popup for process steps */
+  .pr-popup{
+    position: absolute; inset: 0;
+    z-index: 3;
+    padding: 20px 22px 18px;
+    background: var(--ink);
+    color: var(--bg);
+    display: flex; flex-direction: column; gap: 12px;
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    transition: opacity .3s ease, transform .35s cubic-bezier(.16,1,.3,1);
+  }
+  .pr-step:hover .pr-popup,
+  .pr-step[data-hint="open"] .pr-popup{ opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .pr-step:hover .pr-n,
+  .pr-step:hover > h4,
+  .pr-step:hover > p,
+  .pr-step:hover > .glyph,
+  .pr-step[data-hint="open"] .pr-n,
+  .pr-step[data-hint="open"] > h4,
+  .pr-step[data-hint="open"] > p,
+  .pr-step[data-hint="open"] > .glyph{ opacity: 0; }
+
+  .pr-popup .pp-head{
+    display:flex; justify-content: space-between; align-items: baseline; gap: 10px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  }
+  .pr-popup .pp-head .pp-n{ color: var(--accent); }
+  .pr-popup .pp-head .pp-dur{ color: rgba(246,243,236,.55); }
+  .pr-popup h5{ font-family: var(--display); font-weight: 400; font-size: 22px; line-height: 1; letter-spacing: -.012em; color: var(--bg); margin: 0; }
+
+  .pr-popup ul{
+    list-style: none; padding: 0; margin: 4px 0 0;
+    display:flex; flex-direction: column; gap: 7px;
+  }
+  .pr-popup li{
+    display:flex; gap: 8px; align-items: baseline;
+    font-size: 12.5px; line-height: 1.4; color: rgba(246,243,236,.86);
+  }
+  .pr-popup li::before{
+    content: "";
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    position: relative; top: 6px;
+  }
+
+  .pr-popup .pp-out{
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid rgba(246,243,236,.14);
+    display:flex; flex-direction: column; gap: 4px;
+  }
+  .pr-popup .pp-out .lbl{ font-family: var(--mono); font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: rgba(246,243,236,.5); }
+  .pr-popup .pp-out .val{ font-family: var(--display); font-style: italic; font-weight: 300; font-size: 14px; line-height: 1.3; color: var(--accent); }
+
+  /* ===== TRUST + REVIEW bento ===== */
+  .quote-tile{
+    grid-column: span 7; grid-row: span 2;
+    background: var(--bg);
+    border-radius: var(--r-tile-lg);
+    padding: 30px 32px;
+    display:flex; flex-direction: column; justify-content: space-between;
+    min-height: 320px;
+    border: 1px solid var(--line-2);
+  }
+  .quote-tile .q{
+    font-family: var(--display); font-weight: 300; font-size: clamp(22px, 2.4vw, 34px); line-height: 1.25; letter-spacing: -.01em;
+  }
+  .quote-tile .q em{ color: var(--brand); font-style: italic; }
+  .quote-tile .q .qmark{ font-family: var(--display); font-style: italic; color: var(--brand); }
+  .quote-tile .who{ display:grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; }
+  .quote-tile .ava{ width: 42px; height: 42px; border-radius: 50%; background: var(--brand); color: var(--bg); display: grid; place-items: center; font-family: var(--display); font-weight: 400; font-size: 17px; }
+  .quote-tile .who-name{ font-family: var(--display); font-size: 18px; font-weight: 400; }
+  .quote-tile .who-role{ font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: rgba(20,19,18,.5); margin-top: 2px; }
+  .quote-tile .who-metric{ font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--brand); }
+
+  .trust-num{
+    grid-column: span 5; grid-row: span 1;
+    background: var(--surface);
+    border-radius: var(--r-tile);
+    padding: 22px;
+    min-height: 140px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+    align-items: end;
+  }
+  .trust-num .one{ display:flex; flex-direction: column; gap: 6px; }
+  .trust-num .num{ font-family: var(--display); font-weight: 300; font-size: clamp(48px, 6vw, 78px); color: var(--brand); line-height: .9; letter-spacing: -.03em; }
+  .trust-num .lab{ font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: rgba(20,19,18,.55); }
+
+  .trust-lic{
+    grid-column: span 5; grid-row: span 1;
+    background: var(--ink); color: var(--bg);
+    border-radius: var(--r-tile);
+    padding: 20px 22px;
+    min-height: 140px;
+    display:flex; flex-direction: column; justify-content: space-between;
+  }
+  .trust-lic .grid-chips{ display:flex; gap: 6px; flex-wrap: wrap; }
+  .trust-lic .grid-chips span{
+    font-family: var(--mono); font-size: 11px; letter-spacing: .06em;
+    padding: 6px 10px;
+    border: 1px solid rgba(246,243,236,.18); border-radius: 8px;
+    color: var(--bg);
+  }
+  .trust-lic p{ font-size: 13px; color: rgba(246,243,236,.65); line-height: 1.55; max-width: 36ch; }
+
+  /* ===== CALCULATOR section ===== */
+  .calc-wrap{ background: var(--ink); padding: 80px 16px 90px; margin-top: 64px; }
+  .calc-card{
+    max-width: var(--maxw); margin: 0 auto;
+    background: var(--bg);
+    border-radius: 32px;
+    padding: 28px 32px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 28px;
+  }
+  .calc-card .left { padding-right: 8px; }
+  .calc-card h3{ font-family: var(--display); font-weight: 300; font-size: clamp(36px, 4.5vw, 60px); letter-spacing: -.02em; line-height: 1; }
+  .calc-card h3 em{ font-style: italic; color: var(--brand); }
+  .calc-card .calc-meta{ display:flex; gap:10px; align-items:center; font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(20,19,18,.55); margin-bottom: 10px; }
+  .calc-card .calc-meta .dash{ width:14px; height:1px; background: var(--brand); }
+  .calc-card .step{ display:flex; flex-direction: column; gap: 10px; margin-top: 22px; }
+  .calc-card .step .step-l{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(20,19,18,.55); }
+  .calc-card .opt-row { display:flex; gap: 8px; flex-wrap: wrap; }
+  .opt{
+    padding: 9px 14px;
+    background: var(--surface);
+    border-radius: 999px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all .2s;
+  }
+  .opt:hover{ background: var(--stone); }
+  .opt.on { background: var(--ink); color: var(--bg); }
+  .opt .pcheck { width: 12px; height: 12px; border-radius: 3px; background: rgba(20,19,18,.1); display:inline-grid; place-items: center; margin-right: 6px; }
+  .opt.on .pcheck{ background: var(--accent); color: var(--ink); }
+  .opt.on .pcheck::after { content:"✓"; font-size: 10px; }
+
+  .calc-area{
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 16px 18px;
+    display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 12px;
+  }
+  .calc-area input{
+    background: transparent; border: 0; outline: 0;
+    font-family: var(--display); font-weight: 300; font-size: 36px; color: var(--ink); width: 100%; letter-spacing: -.02em;
+  }
+  .calc-area .quick{ display:flex; gap: 6px; }
+  .calc-area .quick button{
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+    padding: 6px 10px; border-radius: 999px; background: var(--stone); color: rgba(20,19,18,.6);
+  }
+  .calc-area .quick button:hover{ background: var(--ink); color: var(--bg); }
+  .calc-area .unit{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(20,19,18,.5); }
+
+  /* ---- Area slider (range + manual input) ---- */
+  .calc-slider{
+    background: var(--surface);
+    border-radius: 18px;
+    padding: 18px 20px 18px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "value quick"
+      "range range"
+      "ticks ticks";
+    align-items: center;
+    gap: 12px;
+    border: 1px solid transparent;
+    transition: border-color .2s;
+  }
+  .calc-slider:focus-within{ border-color: var(--line-2); }
+  .calc-slider .value-wrap{
+    grid-area: value;
+    display: inline-flex; align-items: baseline; gap: 6px;
+    position: relative;
+    padding: 8px 14px 10px;
+    border-radius: 14px;
+    background: var(--stone);
+    transition: background .25s, box-shadow .25s, transform .15s;
+    width: fit-content;
+    cursor: text;
+  }
+  .calc-slider .value-wrap:hover{ background: var(--bg); }
+  .calc-slider .value-wrap:focus-within{
+    background: var(--bg);
+    box-shadow: 0 0 0 2px var(--brand);
+  }
+  .calc-slider .value-input{
+    background: transparent; border: 0; outline: 0;
+    font-family: var(--display); font-weight: 300; font-size: 44px; color: var(--ink); letter-spacing: -.02em;
+    width: 5ch; min-width: 80px; max-width: 140px;
+    padding: 0;
+    text-align: left;
+    -moz-appearance: textfield;
+    caret-color: var(--brand);
+  }
+  .calc-slider .value-input::-webkit-outer-spin-button,
+  .calc-slider .value-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .calc-slider .value-wrap .unit-inline{
+    font-family: var(--display); font-weight: 300; font-size: 24px; color: rgba(20,19,18,.45);
+    letter-spacing: -.01em;
+  }
+  .calc-slider .edit-hint{
+    position: absolute; top: -10px; right: -10px;
+    width: 24px; height: 24px;
+    background: var(--brand); color: var(--bg);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    opacity: 0;
+    transform: scale(.7) translateY(2px);
+    transition: opacity .2s, transform .2s cubic-bezier(.16,1,.3,1);
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(30,92,50,.25);
+  }
+  .calc-slider .value-wrap:hover .edit-hint,
+  .calc-slider .value-wrap:focus-within .edit-hint{
+    opacity: 1; transform: scale(1) translateY(0);
+  }
+  .calc-slider .quick{ grid-area: quick; display:flex; gap: 5px; align-self: end; padding-bottom: 2px; }
+  .calc-slider .quick button{
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+    padding: 6px 9px; border-radius: 999px; background: var(--stone); color: rgba(20,19,18,.6); border: 0; cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  .calc-slider .quick button:hover{ background: var(--ink); color: var(--bg); }
+  .calc-slider .quick button.on{ background: var(--brand); color: var(--bg); }
+  .calc-slider .range{
+    grid-area: range; position: relative; height: 28px;
+    margin-top: 4px;
+  }
+  .calc-slider input[type="range"]{
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 28px; background: transparent;
+    margin: 0; padding: 0;
+    cursor: pointer; position: relative; z-index: 2;
+  }
+  /* Static track */
+  .calc-slider .range::before{
+    content:""; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%);
+    height: 6px; border-radius: 999px;
+    background: var(--stone);
+    pointer-events: none;
+  }
+  /* Animated fill */
+  .calc-slider .range .fill{
+    position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    height: 6px; border-radius: 999px;
+    background: linear-gradient(90deg, var(--brand) 0%, var(--brand-hv, #2d7d46) 100%);
+    pointer-events: none;
+    transition: width .08s linear;
+  }
+  /* WebKit thumb */
+  .calc-slider input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance: none; appearance: none;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--surface);
+    border: 0;
+    box-shadow:
+      inset 0 0 0 7px var(--brand),
+      0 4px 14px rgba(30,92,50,.22),
+      0 1px 3px rgba(0,0,0,.18);
+    cursor: grab;
+    transition: transform .15s ease, box-shadow .25s ease;
+  }
+  .calc-slider input[type="range"]:hover::-webkit-slider-thumb{
+    transform: scale(1.08);
+    box-shadow:
+      inset 0 0 0 6px var(--brand-hv, #2d7d46),
+      0 6px 18px rgba(30,92,50,.3),
+      0 1px 3px rgba(0,0,0,.2);
+  }
+  .calc-slider input[type="range"]:active::-webkit-slider-thumb{
+    cursor: grabbing; transform: scale(1.15);
+    box-shadow:
+      inset 0 0 0 5px var(--brand),
+      0 0 0 8px rgba(30,92,50,.16),
+      0 8px 22px rgba(30,92,50,.35);
+  }
+  .calc-slider input[type="range"]:focus{ outline: none; }
+  /* Firefox thumb */
+  .calc-slider input[type="range"]::-moz-range-thumb{
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--surface);
+    border: 0;
+    box-shadow:
+      inset 0 0 0 7px var(--brand),
+      0 4px 14px rgba(30,92,50,.22),
+      0 1px 3px rgba(0,0,0,.18);
+    cursor: grab;
+  }
+  .calc-slider input[type="range"]::-moz-range-track{ background: transparent; height: 28px; }
+  /* Tick marks below */
+  .calc-slider .ticks{
+    grid-area: ticks;
+    display: flex; justify-content: space-between;
+    margin-top: -4px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+    color: rgba(20,19,18,.4);
+  }
+
+  /* ---- Stepper (− / value / +) ---- */
+  .calc-stepper{
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 14px 16px 14px 22px;
+    display:flex; align-items: center; justify-content: space-between; gap: 14px;
+  }
+  .calc-stepper .label{
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: rgba(20,19,18,.5);
+  }
+  .calc-stepper .stepper{
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--bg);
+    border-radius: 999px;
+    padding: 4px;
+  }
+  .calc-stepper .stepper .value-group{
+    display: inline-flex; align-items: baseline; gap: 4px;
+    padding: 0 10px;
+  }
+  .calc-stepper .stepper .unit-label{
+    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(20,19,18,.5);
+  }
+  .calc-stepper .stepper button{
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--surface); color: var(--ink); border: 0; cursor: pointer;
+    font-family: var(--display); font-weight: 300; font-size: 22px; line-height: 1;
+    display: grid; place-items: center;
+    transition: background .2s, color .2s, transform .15s;
+  }
+  .calc-stepper .stepper button:hover{ background: var(--ink); color: var(--accent); }
+  .calc-stepper .stepper button:active{ transform: scale(.92); }
+  .calc-stepper .stepper button:disabled{ opacity: .35; cursor: not-allowed; }
+  .calc-stepper .stepper .val-input{
+    width: auto; min-width: 24px; text-align: right;
+    background: transparent; border: 0; outline: 0;
+    font-family: var(--display); font-weight: 300; font-size: 28px; color: var(--ink); letter-spacing: -.02em;
+    -moz-appearance: textfield;
+    field-sizing: content;
+  }
+  .calc-stepper .stepper .val-input::-webkit-outer-spin-button,
+  .calc-stepper .stepper .val-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+  .calc-card .right{
+    background: var(--ink); color: var(--bg);
+    border-radius: 20px;
+    padding: 22px 24px;
+    display:flex; flex-direction: column; gap: 14px;
+  }
+  .calc-card .right h4{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(246,243,236,.6); }
+  .calc-card .price-total{
+    font-family: var(--display); font-weight: 300; font-size: clamp(48px, 6.5vw, 84px); color: var(--accent); line-height: .9; letter-spacing: -.03em;
+  }
+  .calc-card .price-total small{ font-size: 18px; vertical-align: super; color: rgba(246,243,236,.7); margin-left: 4px; }
+  .calc-card .breakdown{ display:flex; flex-direction: column; gap: 6px; border-top: 1px solid rgba(246,243,236,.12); padding-top: 14px; margin-top: 4px; }
+  .calc-card .br-row{ display:flex; justify-content: space-between; font-family: var(--mono); font-size: 11.5px; letter-spacing: .04em; color: rgba(246,243,236,.75); }
+  .calc-card .br-row b{ color: var(--bg); font-weight: 500; }
+  .calc-card .right .ctas{ display:flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+  .calc-card .right .btn{ background: var(--accent); color: var(--ink); }
+  .calc-card .right .btn:hover{ background: var(--bg); }
+  .calc-card .right .btn.ghost{ background: transparent; color: var(--bg); border: 1px solid rgba(246,243,236,.22); }
+  .calc-card .right .btn.ghost:hover{ background: rgba(246,243,236,.08); }
+
+  /* ===== CONTACT / FOOTER bento ===== */
+  .contact-wrap{ padding: 88px 16px 48px; }
+  .ct-form{
+    grid-column: span 7; grid-row: span 3;
+    background: var(--bg);
+    border-radius: var(--r-tile-lg);
+    padding: 28px 30px;
+    min-height: 460px;
+    display:flex; flex-direction: column; gap: 14px;
+    border: 1px solid var(--line-2);
+  }
+  .ct-form .head h3{ font-family: var(--display); font-weight: 300; font-size: clamp(34px, 4.4vw, 56px); line-height: 1; letter-spacing: -.022em; }
+  .ct-form .head h3 em{ color: var(--brand); font-style: italic; }
+  .ct-form .head p{ color: rgba(20,19,18,.6); font-size: 14px; margin-top: 10px; max-width: 44ch; }
+  .form-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; }
+  .field{ background: var(--surface); border-radius: 14px; padding: 12px 14px; }
+  .field.full{ grid-column: 1 / -1; }
+  .field-phone{ display:flex; align-items: baseline; gap: 6px; margin-top: 4px; }
+  .field-phone .prefix{ font-family: var(--sans); font-size: 15px; color: var(--ink); }
+  .field-phone input{ margin-top: 0 !important; flex: 1; }
+  .field label{ font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(20,19,18,.5); display:block; }
+  .field input, .field textarea{
+    width:100%; border: 0; outline: 0; background: transparent;
+    font-family: var(--sans); font-size: 15px; color: var(--ink);
+    margin-top: 4px;
+  }
+  .field textarea{ resize: vertical; min-height: 56px; }
+  .form-foot{ display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-top: 6px; }
+  .form-foot .note{ font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(20,19,18,.45); flex: 1 1 360px; line-height: 1.5; max-width: none; }
+  .form-foot .note a{ color: rgba(20,19,18,.7); border-bottom: 1px solid rgba(20,19,18,.25); transition: color .2s, border-color .2s; }
+  .form-foot .note a:hover{ color: var(--brand); border-bottom-color: var(--brand); }
+
+  .ct-info-1{
+    grid-column: span 5; grid-row: span 1;
+    background: var(--brand); color: var(--bg);
+    border-radius: var(--r-tile-lg);
+    padding: 22px 24px;
+    min-height: 150px;
+    display:flex; flex-direction: column; justify-content: space-between;
+  }
+  .ct-info-1 h5{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(246,243,236,.7); }
+  .ct-info-1 .ph{ font-family: var(--display); font-weight: 300; font-size: clamp(28px, 3.2vw, 40px); letter-spacing: -.015em; line-height: 1; }
+  .ct-info-1 .em{ font-family: var(--mono); font-size: 12.5px; color: rgba(246,243,236,.85); }
+
+  .ct-hours{
+    grid-column: span 5; grid-row: span 1;
+    background: var(--surface);
+    border-radius: var(--r-tile-lg);
+    padding: 22px 24px;
+    min-height: 150px;
+    display:flex; flex-direction: column; justify-content: space-between;
+  }
+  .ct-hours h5{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(20,19,18,.5); }
+  .ct-hours .h-big{ font-family: var(--display); font-weight: 300; font-size: 38px; line-height: 1; letter-spacing: -.02em; }
+  .ct-hours .h-big em{ font-style: italic; color: var(--brand); }
+  .ct-hours .lines{ font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: rgba(20,19,18,.55); display:flex; flex-direction: column; gap: 3px; }
+
+  .ct-area{
+    grid-column: span 5; grid-row: span 1;
+    background: var(--accent);
+    border-radius: var(--r-tile-lg);
+    padding: 22px 24px;
+    min-height: 150px;
+    display:flex; flex-direction: column; justify-content: space-between;
+  }
+  .ct-area h5{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(20,19,18,.6); }
+  .ct-area .h-big{ font-family: var(--display); font-weight: 300; font-size: 30px; line-height: 1.05; letter-spacing: -.015em; }
+  .ct-area .lines{ font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: rgba(20,19,18,.6); }
+
+  /* ===== Footer ===== */
+  footer{
+    background: var(--ink);
+    color: var(--bg);
+    margin-top: 24px;
+  }
+  .footer-grid{
+    max-width: var(--maxw); margin: 0 auto;
+    padding: 60px 16px 28px;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 30px;
+    align-items: start;
+  }
+  footer h6{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(246,243,236,.55); margin-bottom: 14px; }
+  footer ul{ list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  footer ul a{ font-family: var(--mono); font-size: 12px; letter-spacing: .06em; color: rgba(246,243,236,.85); text-transform: uppercase; }
+  footer ul a:hover{ color: var(--accent); }
+  .footer-bottom{
+    max-width: var(--maxw); margin: 0 auto;
+    padding: 18px 16px 32px;
+    display:flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    border-top: 1px solid rgba(246,243,236,.1);
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: rgba(246,243,236,.5);
+  }
+  .footer-bottom a{
+    color: rgba(246,243,236,.7);
+    transition: color .2s;
+    border-bottom: 1px solid rgba(246,243,236,.15);
+  }
+  .footer-bottom a:hover{ color: var(--accent); border-bottom-color: var(--accent); }
+
+  .footer-mark{ display:flex; flex-direction:column; gap: 16px; max-width: 360px; }
+  .footer-mark .big{
+    font-family: var(--display); font-weight: 300; font-size: clamp(40px, 5vw, 76px); line-height: .95; letter-spacing: -.025em;
+  }
+  .footer-mark .big em{ font-style: italic; color: var(--accent); }
+  .footer-mark p{ font-size: 13px; color: rgba(246,243,236,.65); max-width: 36ch; line-height: 1.5; }
+
+  /* ===== Responsiveness ===== */
+  @media (max-width: 1100px){
+    .h-headline{ grid-column: span 12; grid-row: span 2; min-height: 380px; }
+    .h-promo{ grid-column: span 6; }
+    .h-stat-1{ grid-column: span 3; }
+    .h-stat-2{ grid-column: span 3; }
+    .h-licenses{ grid-column: span 6; }
+    .h-mini-calc{ grid-column: span 12; }
+    .h-status{ grid-column: span 12; min-height: 180px; }
+    .svc-feature{ grid-column: span 12; grid-row: auto; min-height: 320px; }
+    .svc-card{ grid-column: span 6; }
+    .svc-photo{ grid-column: span 6; }
+    .svc-flat{ grid-column: span 6; }
+    .svc-included{ grid-column: span 12; grid-row: auto; min-height: 280px; }
+    .case-tile.big, .case-tile.mid, .case-tile.sm{ grid-column: span 6; }
+    .ven-tile{ grid-column: span 6; }
+    .ven-intro{ grid-column: span 12; }
+    .pr-step{ grid-column: span 6; }
+    .quote-tile{ grid-column: span 12; }
+    .trust-num, .trust-lic{ grid-column: span 6; }
+    .calc-card{ grid-template-columns: 1fr; }
+    .ct-form{ grid-column: span 12; }
+    .ct-info-1, .ct-hours, .ct-area{ grid-column: span 6; }
+    .footer-grid{ grid-template-columns: 1fr 1fr; }
+    .section-head{ grid-template-columns: 1fr; }
+    .section-head .desc{ text-align: left; }
+    .mc-grid{ grid-template-columns: 1fr 1fr; }
+    .topbar-inner{ grid-template-columns: auto 1fr auto; padding: 10px 12px 10px 18px; gap: 10px; }
+    .topbar .topbar-contacts{ display: none; }
+    .topbar > .topbar-inner > .btn { grid-column: 3; }
+    .topbar .nav-links{ display: none; }
+  }
+  @media (max-width: 640px){
+    .h-promo, .h-stat-1, .h-stat-2, .h-licenses, .svc-card, .svc-photo, .svc-flat,
+    .case-tile.big, .case-tile.mid, .case-tile.sm, .ven-tile, .pr-step,
+    .trust-num, .trust-lic, .ct-info-1, .ct-hours, .ct-area, .footer-grid > *{
+      grid-column: span 12;
+    }
+    .footer-grid{ grid-template-columns: 1fr; }
+    .mc-grid{ grid-template-columns: 1fr; }
+    .form-grid{ grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== TOP BAR ===================== -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand-mark" href="#top">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="13" stroke="#c8ff3e" stroke-width="1.5" />
+        <circle cx="14" cy="14" r="3" fill="#c8ff3e" />
+      </svg>
+      <span class="word">vent<i>.</i></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#services" class="active">Услуги</a>
+      <a href="#cases">Кейсы</a>
+      <a href="#venues">Объекты</a>
+      <a href="#process">Процесс</a>
+      <a href="#calculator">Цены</a>
+      <a href="#contact">Контакты</a>
+    </nav>
+    <div class="topbar-contacts">
+      <a class="ph" href="tel:+74951200404" aria-label="Позвонить">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+        +7 (495) 120-04-04
+      </a>
+      <a href="mailto:hello@vent.team" aria-label="Написать">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        hello@vent.team
+      </a>
+    </div>
+    <a class="btn" href="#calculator">
+      Рассчитать
+      <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+</header>
+
+<a id="top"></a>
+
+<!-- ===================== HERO BENTO ===================== -->
+<section class="hero" aria-label="Hero">
+  <div class="grid">
+
+    <!-- HEADLINE -->
+    <div class="h-headline">
+      <div class="tile-cap"><span class="dash"></span> 01 / vent — промышленная чистка вентсистем</div>
+      <div class="h1" style="margin-top: 24px;">
+        Чистим то,<br />
+        <em>что никто</em><br />
+        <span class="stroke">не видит.</span>
+      </div>
+      <p class="lede">
+        Спецсервис по чистке вентканалов, вытяжек и зонтов для общепита, офисов и складов. Видеоинспекция перед работой, фото-отчёт и протокол СЭС после.
+      </p>
+    </div>
+
+    <!-- BRAND PROMO -->
+    <div class="h-promo">
+      <div class="tile-cap" style="color: rgba(246,243,236,.7);"><span class="dash" style="background: var(--accent);"></span> 02 / о сервисе</div>
+      <h3>Видеоинспекция <em>до.</em><br />Протокол СЭС <em>после.</em></h3>
+      <div class="promo-meta">
+        <span>● ночные смены</span>
+        <span>● без остановки бизнеса</span>
+      </div>
+      <svg class="vent-pattern" viewBox="0 0 200 200" fill="none">
+        <g stroke="#c8ff3e" stroke-width="1.5">
+          <circle cx="100" cy="100" r="92" />
+          <circle cx="100" cy="100" r="62" />
+          <circle cx="100" cy="100" r="34" />
+          <path d="M100 8 V192 M8 100 H192 M30 30 L170 170 M170 30 L30 170" />
+        </g>
+      </svg>
+    </div>
+
+    <!-- STAT 1 (ink + lime numeral) -->
+    <div class="h-stat-1">
+      <div class="num">200<small style="font-size: 24px;">+</small></div>
+      <div class="lab">объектов / 5 лет работы</div>
+    </div>
+
+    <!-- STAT 2 (lime tile) -->
+    <div class="h-stat-2">
+      <div class="num">4–6<small style="font-size: 24px;">дн</small></div>
+      <div class="lab">средний срок под ключ</div>
+    </div>
+
+    <!-- MINI CALC -->
+    <div class="h-mini-calc" id="mini-calc-anchor">
+      <div class="mc-head">
+        <h3>Прикинуть <em>стоимость.</em></h3>
+        <span class="pill"><span class="dot"></span> 30 секунд</span>
+      </div>
+
+      <div class="mc-grid">
+        <div class="mc-field">
+          <label>Тип объекта</label>
+          <div class="pkg-chips" id="pkg-chips">
+            <button class="pkg on" data-pkg="restaurant" data-coef="0.45">Общепит</button>
+            <button class="pkg" data-pkg="office" data-coef="0.30">Офис</button>
+            <button class="pkg" data-pkg="warehouse" data-coef="0.25">Производство</button>
+            <button class="pkg" data-pkg="storage" data-coef="0.20">Склад</button>
+          </div>
+        </div>
+        <div class="mc-field">
+          <label>Площадь</label>
+          <div class="area-input">
+            <input id="area-mini" type="number" min="20" max="20000" value="220" />
+            <span class="unit">м²</span>
+          </div>
+        </div>
+        <div class="mc-field mc-field--hood">
+          <label>Зонты</label>
+          <div class="mc-stepper">
+            <button type="button" id="hood-mini-minus" aria-label="Меньше">−</button>
+            <input id="hood-mini" type="number" min="0" max="40" value="3" inputmode="numeric" />
+            <button type="button" id="hood-mini-plus" aria-label="Больше">+</button>
+            <span class="unit">шт</span>
+          </div>
+        </div>
+        <div class="mc-result">
+          <div>
+            <div class="lbl">от</div>
+            <div class="price" id="mini-price">42 000 ₽</div>
+          </div>
+          <div class="note">ТОЧНАЯ СУММА — ПОСЛЕ ОСМОТРА</div>
+        </div>
+      </div>
+
+      <div class="mc-foot">
+        <div class="checks">
+          <span class="chk">● осмотр инженера</span>
+          <span class="chk">● договор</span>
+          <span class="chk">● оплата по факту</span>
+        </div>
+        <a class="btn" href="#calculator">Полный расчёт <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </div>
+    </div>
+
+    <!-- LICENSES -->
+    <div class="h-licenses">
+      <div class="tile-cap"><span class="dash"></span> 03 / лицензии</div>
+      <div class="lic-row">
+        <span class="lic"><strong>МЧС</strong> · противопожарные</span>
+        <span class="lic"><strong>СЭС</strong> · протокол</span>
+        <span class="lic"><strong>СРО</strong></span>
+        <span class="lic">ГОСТ Р 53300</span>
+      </div>
+    </div>
+
+    <!-- RESPONSE / SLA -->
+    <div class="h-status">
+      <div class="live-row">ЕСТЬ СВОБОДНАЯ БРИГАДА · ЗАВТРА</div>
+      <div class="now-quote">Ответ на заявку — от 30 мин,
+осмотр перед началом работ — бесплатно</div>
+      <div class="now-foot">
+        <span>пн–вс · 24/7</span>
+        <a class="now-cta" href="#contact">оставить заявку <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== SERVICES ===================== -->
+<section id="services">
+  <div class="section-head">
+    <div>
+      <div class="meta brand" style="margin-bottom: 10px;">02 / услуги</div>
+      <h2 class="ttl">Что мы <em>делаем.</em></h2>
+    </div>
+    <p class="desc">Четыре направления плюс диагностика. Каждое — отдельный протокол СЭС и фото-отчёт.</p>
+  </div>
+
+  <div class="bento">
+
+    <!-- Feature: Жир -->
+    <div class="svc-feature">
+      <div>
+        <div class="price-row" style="margin-bottom: 16px;">
+          <span style="color: rgba(246,243,236,.85);">01 / жир</span>
+          <span>· для кухонь общепита</span>
+        </div>
+        <h3>Чистка <em>от жира</em><br />до металла.</h3>
+        <p>
+          Снимаем зонты, разбираем воздуховоды, удаляем жировой нагар по протоколу СЭС. После — дезинфекция и видеоотчёт по каждой ветке.
+        </p>
+        <div class="feat-list">
+          <span>труба Ø ≤ 600 — 300 ₽/пог.м</span>
+          <span>труба Ø &gt; 600 — 400 ₽/пог.м</span>
+          <span>зонт — 1 000 ₽/шт</span>
+        </div>
+      </div>
+      <div style="display:flex; align-items: end; justify-content: space-between; gap: 16px;">
+        <div class="price-tag">300<span>₽ / пог.м</span></div>
+        <a class="btn lime" href="#calculator" data-calc-jump="grease">Рассчитать <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </div>
+    </div>
+
+    <!-- Service card: Пыль -->
+    <div class="svc-card">
+      <div class="head">
+        <div class="idx">02</div>
+        <div class="meta">100–220 ₽/пог.м</div>
+      </div>
+      <div>
+        <h3>Чистка <em>от пыли</em></h3>
+        <p>Для офисов и складов. Восстанавливаем воздухообмен, убираем аллергены и микробиологию.</p>
+      </div>
+      <div class="price-line">
+        <div class="price">от 100 ₽/пог.м</div>
+        <a class="more" href="#calculator" data-calc-jump="dust">в расчёт <svg class="arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </div>
+    </div>
+
+    <!-- Photo: Service ventilation -->
+    <div class="svc-photo">
+      <img src="images/service-ventilation.jpg" alt="вентиляционные каналы" />
+      <div class="ph-cap">
+        <em>Каналы, короба, колодцы.</em>
+        <span>работаем со всеми типами систем</span>
+      </div>
+    </div>
+
+    <!-- Service card: Зонты -->
+    <div class="svc-card">
+      <div class="head">
+        <div class="idx">03</div>
+        <div class="meta">1 000 ₽/шт</div>
+      </div>
+      <div>
+        <h3>Вытяжки <em>и зонты</em></h3>
+        <p>Профессиональная мойка зонтов пищеблока — с разбором, ванной и сборкой. Не повреждаем металл.</p>
+      </div>
+      <div class="price-line">
+        <div class="price">1 000 ₽/шт</div>
+        <a class="more" href="#calculator" data-calc-jump="hood">в расчёт <svg class="arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </div>
+    </div>
+
+    <!-- What's included in every job (fills bottom-right hole) -->
+    <div class="svc-included">
+      <div class="left">
+        <div>
+          <div class="meta-row"><span class="dash"></span> входит в любую услугу</div>
+          <h3 style="margin-top: 14px;">Без <em>скрытых</em><br />доплат и сюрпризов.</h3>
+          <p style="margin-top: 12px;">Цена фиксируется после видеоосмотра и не меняется. Документы и гарантия — по договору.</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn" href="#calculator">Рассчитать <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          <a class="btn ghost" href="#process">Как это идёт</a>
+        </div>
+      </div>
+      <div class="list">
+        <div class="row">
+          <span class="n">01</span>
+          <span class="ttl">Видеоинспекция до и после работ</span>
+          <span class="note">эндоскоп</span>
+        </div>
+        <div class="row">
+          <span class="n">02</span>
+          <span class="ttl">Фото-отчёт по каждой ветке</span>
+          <span class="note">ПОСЛЕ РАБОТ</span>
+        </div>
+        <div class="row">
+          <span class="n">03</span>
+          <span class="ttl">Протокол СЭС и акт выполненных работ</span>
+          <span class="note">договор</span>
+        </div>
+        <div class="row">
+          <span class="n">04</span>
+          <span class="ttl">Ночные смены — без остановки бизнеса</span>
+          <span class="note">0 дней простоя</span>
+        </div>
+        <div class="row">
+          <span class="n">05</span>
+          <span class="ttl">Гарантия 12 мес на выполненные работы</span>
+          <span class="note">гост 53300</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flat row -->
+    <div class="svc-cards-row">
+      <div class="svc-flat">
+        <div class="head">
+          <div class="idx">04 / дезинфекция</div>
+          <div class="price">30 ₽/пог.м</div>
+        </div>
+        <h4>Дезинфекция воздуховодов</h4>
+        <p>Противомикробная обработка после чистки. Для производства, ресторанов и медицинских объектов.</p>
+      </div>
+      <div class="svc-flat">
+        <div class="head">
+          <div class="idx">05 / диагностика</div>
+          <div class="price">4 500 ₽</div>
+        </div>
+        <h4>Видеоинспекция каналов</h4>
+        <p>Видеоконтроль каналов до и после чистки. Отчёт с фото, метражом и состоянием каждой ветки.</p>
+      </div>
+      <div class="svc-flat" style="background: var(--ink); color: var(--bg);">
+        <div class="head">
+          <div class="idx" style="color: rgba(246,243,236,.55);">06 / договор</div>
+          <div class="price" style="color: var(--accent);">от 6 мес</div>
+        </div>
+        <h4 style="color: var(--bg);">Регулярное обслуживание</h4>
+        <p style="color: rgba(246,243,236,.65);">График раз в 3–6 месяцев под нормативы СЭС. Фиксированная цена, протокол к каждому визиту.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== CASES ===================== -->
+<section id="cases">
+  <div class="section-head">
+    <div>
+      <div class="meta brand" style="margin-bottom: 10px;">03 / кейсы</div>
+      <h2 class="ttl">Не описания — <em>снимки.</em></h2>
+    </div>
+    <p class="desc">Двигайте бегунок и сравните «до / после». Без ретуши, без подмены ракурса.</p>
+  </div>
+
+  <div class="bento">
+
+    <article class="case-tile big">
+      <div class="compare" data-pos="50">
+        <img class="img-after" src="images/compare-grease2-after.jpg" alt="после" />
+        <div class="img-before-wrap"><img src="images/compare-grease2-before.jpg" alt="до" /></div>
+        <span class="tag before">До</span>
+        <span class="tag after">После</span>
+        <div class="handle-line"></div>
+        <div class="handle-grip">
+          <svg width="20" height="16" viewBox="0 0 18 14" fill="none"><path d="M5 1L1 7l4 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /><path d="M13 1l4 6-4 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </div>
+      </div>
+      <div class="case-corner"><span class="dot"></span> кейс 01 · жир</div>
+      <div class="case-info">
+        <div class="case-head">
+          <div class="ven">Сеть кафе · 150 м²</div>
+          <h4>Плановая чистка раз в полгода</h4>
+        </div>
+        <div class="case-expand"><div>
+          <p>Регулярное обслуживание кухонной вытяжки. Один день, без остановки точки.</p>
+          <div class="case-foot">
+            <span>каждые 6 мес</span>
+            <span>смена 8 ч</span>
+          </div>
+        </div></div>
+      </div>
+    </article>
+
+    <article class="case-tile mid">
+      <div class="compare" data-pos="50">
+        <img class="img-after" src="images/compare-grease1-after.jpg" alt="после" />
+        <div class="img-before-wrap"><img src="images/compare-grease1-before.jpg" alt="до" /></div>
+        <span class="tag before">До</span>
+        <span class="tag after">После</span>
+        <div class="handle-line"></div>
+        <div class="handle-grip">
+          <svg width="20" height="16" viewBox="0 0 18 14" fill="none"><path d="M5 1L1 7l4 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /><path d="M13 1l4 6-4 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </div>
+      </div>
+      <div class="case-corner"><span class="dot"></span> кейс 02 · жир</div>
+      <div class="case-info">
+        <div class="case-head">
+          <div class="ven">Общепит · 220 м² · БЦ Москва-Сити</div>
+          <h4>Ресторан в БЦ — три года жира</h4>
+        </div>
+        <div class="case-expand"><div>
+          <p>Чистка вытяжных зонтов и воздуховодов от жира после трёх лет без обслуживания. Разобрали, почистили и собрали обратно за две ночные смены.</p>
+          <div class="case-foot">
+            <span>2 ночные смены</span>
+            <span>протокол СЭС</span>
+            <span>видеоотчёт</span>
+          </div>
+        </div></div>
+      </div>
+    </article>
+
+    <article class="case-tile sm">
+      <div class="compare" data-pos="50">
+        <img class="img-after" src="images/compare-dust-after.jpg" alt="после" />
+        <div class="img-before-wrap"><img src="images/compare-dust-before.jpg" alt="до" /></div>
+        <span class="tag before">До</span>
+        <span class="tag after">После</span>
+        <div class="handle-line"></div>
+        <div class="handle-grip">
+          <svg width="20" height="16" viewBox="0 0 18 14" fill="none"><path d="M5 1L1 7l4 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /><path d="M13 1l4 6-4 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </div>
+      </div>
+      <div class="case-corner"><span class="dot"></span> кейс 03 · пыль</div>
+      <div class="case-info">
+        <div class="case-head">
+          <div class="ven">Офис · 480 м² · БЦ</div>
+          <h4>Пыль за пять лет</h4>
+        </div>
+        <div class="case-expand"><div>
+          <p>Чистка приточно-вытяжных каналов после 5 лет эксплуатации без обслуживания.</p>
+          <div class="case-foot">
+            <span>3 ночи</span>
+            <span>дезинфекция</span>
+          </div>
+        </div></div>
+      </div>
+    </article>
+
+    <div class="cases-note">⇔ ползунок движется сам · наведите, чтобы взять управление</div>
+
+  </div>
+</section>
+
+<!-- ===================== VENUES ===================== -->
+<section id="venues">
+  <div class="section-head">
+    <div>
+      <div class="meta brand" style="margin-bottom: 10px;">04 / объекты</div>
+      <h2 class="ttl">Среди наших — <em>крупные.</em></h2>
+    </div>
+    <p class="desc">Стадионы, мясопереработка, фабрики, ледовые арены. Работа в окнах между матчами и сменами.</p>
+  </div>
+
+  <div class="bento">
+
+    <div class="ven-intro">
+      <div>
+        <div class="meta brand" style="margin-bottom: 14px;">04.A / география</div>
+        <h3>200+ <em>объектов</em><br /> по&nbsp;48 регионам.</h3>
+      </div>
+      <p>От ресторана на 80 м² до пищевого комбината на 22 000 м². Ниже — четыре, о которых нам разрешили говорить.</p>
+      <div class="meta-row">
+        <span><b>48</b> регионов</span>
+        <span><b>14</b> городов</span>
+        <span>5 ЛЕТ</span>
+      </div>
+    </div>
+
+    <div class="ven-tile">
+      <img src="images/trust-gazprom.jpg" alt="Газпром Арена" />
+      <span class="vtag">сентябрь 2023</span>
+      <div class="vtxt">
+        <div class="vcat">Стадион · Санкт-Петербург</div>
+        <h4>Газпром Арена</h4>
+      </div>
+      <div class="ven-popup">
+        <div class="vp-head">
+          <div class="vp-cat">Стадион · СПб</div>
+          <div class="vp-date">сен 2023</div>
+        </div>
+        <h5>Газпром Арена</h5>
+        <div class="vp-row">
+          <span class="vp-lbl">задачи</span>
+          <span class="vp-val">Чистка вытяжных систем VIP-лож и фуд-кортов от жира, дезинфекция перед серией матчей.</span>
+        </div>
+        <div class="vp-row">
+          <span class="vp-lbl">срок · результат</span>
+          <span class="vp-val">6 ночных смен между матчами · протокол СЭС в день сдачи.</span>
+        </div>
+        <div class="vp-quote">
+          <p>Зашли точно в окно — к утру всё готово, протокол СЭС в день сдачи. Без сорванных стартов матчей.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ven-tile">
+      <img src="images/trust-miratorg.jpg" alt="Мираторг" />
+      <span class="vtag">март 2024</span>
+      <div class="vtxt">
+        <div class="vcat">Мясопереработка · Брянская обл.</div>
+        <h4>Мираторг</h4>
+      </div>
+      <div class="ven-popup">
+        <div class="vp-head">
+          <div class="vp-cat">Мясопереработка</div>
+          <div class="vp-date">март 2024</div>
+        </div>
+        <h5>Мираторг</h5>
+        <div class="vp-row">
+          <span class="vp-lbl">задачи</span>
+          <span class="vp-val">Чистка промышленной вентиляции цеха разделки + дезинфекция под Россельхознадзор.</span>
+        </div>
+        <div class="vp-row">
+          <span class="vp-lbl">срок · результат</span>
+          <span class="vp-val">Плановая остановка · 3 смены · принято без замечаний.</span>
+        </div>
+        <div class="vp-quote">
+          <p>Уложились в технологическое окно с запасом. Россельхознадзор принял протокол без замечаний.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ven-row-2">
+      <div class="ven-tile" style="grid-column: span 6; min-height: 240px;">
+        <img src="images/trust-multon.jpg" alt="Мультон" />
+        <span class="vtag">июль 2024</span>
+        <div class="vtxt">
+          <div class="vcat">Пищевое производство · Москва</div>
+          <h4>Мультон</h4>
+        </div>
+        <div class="ven-popup">
+          <div class="vp-head">
+            <div class="vp-cat">Пищевое производство</div>
+            <div class="vp-date">июл 2024</div>
+          </div>
+          <h5>Мультон</h5>
+          <div class="vp-row">
+            <span class="vp-lbl">задачи</span>
+            <span class="vp-val">Чистка приточно-вытяжной вентиляции линии розлива + протокол для аудита HACCP.</span>
+          </div>
+          <div class="vp-row">
+            <span class="vp-lbl">срок · результат</span>
+            <span class="vp-val">4 дня · аудит HACCP пройдён с первого раза.</span>
+          </div>
+          <div class="vp-quote">
+            <p>Сработали в условиях ограниченного доступа, не сорвали аудит. Протокол подходящего качества с первого раза.</p>
+          </div>
+        </div>
+      </div>
+      <div class="ven-tile" style="grid-column: span 6; min-height: 240px;">
+        <img src="images/trust-ska.jpg" alt="СКА" />
+        <span class="vtag">май 2024</span>
+        <div class="vtxt">
+          <div class="vcat">Ледовая арена · Санкт-Петербург</div>
+          <h4>СКА Арена</h4>
+        </div>
+        <div class="ven-popup">
+          <div class="vp-head">
+            <div class="vp-cat">Ледовая арена · СПб</div>
+            <div class="vp-date">май 2024</div>
+          </div>
+          <h5>СКА Арена</h5>
+          <div class="vp-row">
+            <span class="vp-lbl">задачи</span>
+            <span class="vp-val">Общеобменная вентиляция зрительских зон + дезинфекция + видеоинспекция труднодоступных каналов.</span>
+          </div>
+          <div class="vp-row">
+            <span class="vp-lbl">срок · результат</span>
+            <span class="vp-val">Межсезонье · 2 недели · видеоотчёт по каждой ветке.</span>
+          </div>
+          <div class="vp-quote">
+            <p>Подняли качество воздуха в сложной геометрии каналов. Видеоотчёт по каждой ветке — редкость в индустрии.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== PROCESS ===================== -->
+<section id="process">
+  <div class="section-head">
+    <div>
+      <div class="meta brand" style="margin-bottom: 10px;">05 / процесс</div>
+      <h2 class="ttl">Как мы <em>работаем.</em></h2>
+    </div>
+    <p class="desc">Четыре этапа. От заявки до протокола СЭС — обычно 3–4 дня.</p>
+  </div>
+
+  <div class="bento">
+
+    <div class="pr-step">
+      <div class="pr-n">01 / 1–2 ч</div>
+      <div class="glyph">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="5" width="14" height="16" rx="2"/><path d="M8 3h6l2 2H6l2-2z"/><path d="M8 11h6M8 15h6"/></svg>
+      </div>
+      <h4>Заявка</h4>
+      <p>Связываетесь — обсуждаем объём и согласуем выезд инженера на осмотр.</p>
+      <div class="pr-popup">
+        <div class="pp-head"><span class="pp-n">01 / заявка</span><span class="pp-dur">1–2 часа</span></div>
+        <h5>Как это идёт</h5>
+        <ul>
+          <li>Звонок, форма на сайте или telegram — выбираете удобный канал.</li>
+          <li>Короткий опрос по объекту: тип, площадь, желаемые даты.</li>
+          <li>Ориентировочный расчёт и бронь времени осмотра.</li>
+        </ul>
+        <div class="pp-out">
+          <span class="lbl">на выходе</span>
+          <span class="val">Дата выезда и вилка цены</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pr-step alt">
+      <div class="pr-n">02 / 1 день</div>
+      <div class="glyph">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+      </div>
+      <h4>Осмотр</h4>
+      <p>Инженер выезжает с эндоскопом и тепловизором. Видеодиагностика, точная цена.</p>
+      <div class="pr-popup">
+        <div class="pp-head"><span class="pp-n">02 / осмотр</span><span class="pp-dur">1–2 часа на объекте</span></div>
+        <h5>Что делает инженер</h5>
+        <ul>
+          <li>Видеоинспекция каналов эндоскопом Ø 4–12 мм — фиксируем состояние каждой ветки.</li>
+          <li>Замер метража и диаметра, осмотр зонтов и вентустановок.</li>
+          <li>Составляем фиксированный счёт без скрытых доплат.</li>
+        </ul>
+        <div class="pp-out">
+          <span class="lbl">на выходе</span>
+          <span class="val">Счёт + фото до · фикс цены</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pr-step">
+      <div class="pr-n">03 / ночь</div>
+      <div class="glyph">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+      </div>
+      <h4>Чистка</h4>
+      <p>Работаем ночью или в нерабочее время. Бизнес не останавливается, гости не замечают.</p>
+      <div class="pr-popup">
+        <div class="pp-head"><span class="pp-n">03 / чистка</span><span class="pp-dur">1–6 ночных смен</span></div>
+        <h5>Как работаем</h5>
+        <ul>
+          <li>Бригада 2–4 чел., привозим оборудование, щётки и средства.</li>
+          <li>Чистим каналы вращающимися щётками, при необходимости разбираем зонты и узлы вентустановок.</li>
+          <li>Собираем обратно, вывозим отходы. К открытию объекта всё работает.</li>
+        </ul>
+        <div class="pp-out">
+          <span class="lbl">на выходе</span>
+          <span class="val">Чистые каналы · 0 дней простоя</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pr-step alt">
+      <div class="pr-n">04 / + 24 ч</div>
+      <div class="glyph">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9 14 11 16 15 12"/></svg>
+      </div>
+      <h4>Протокол</h4>
+      <p>Фото-отчёт, видеоконтроль и протокол СЭС. Храните для проверок — пригодится.</p>
+      <div class="pr-popup">
+        <div class="pp-head"><span class="pp-n">04 / протокол</span><span class="pp-dur">в течение 24 ч</span></div>
+        <h5>Что вы получаете</h5>
+        <ul>
+          <li>Фотографии «до/после» по каждой ветке.</li>
+          <li>Осмотр внутри каналов после чистки.</li>
+          <li>Протокол СЭС с подписами и акт выполненных работ.</li>
+        </ul>
+        <div class="pp-out">
+          <span class="lbl">для чего</span>
+          <span class="val">Под проверки СЭС · МЧС · HACCP</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== TRUST + REVIEW ===================== -->
+<section id="trust">
+  <div class="section-head">
+    <div>
+      <div class="meta brand" style="margin-bottom: 10px;">06 / отзывы и доверие</div>
+      <h2 class="ttl">Говорят <em>заказчики.</em></h2>
+    </div>
+    <p class="desc">Три реальных истории из общепита, склада и пищевого производства.</p>
+  </div>
+
+  <div class="bento">
+
+    <div class="quote-tile">
+      <div>
+        <div class="meta brand" style="margin-bottom: 14px;">отзыв 01 · общепит</div>
+        <p class="q">
+          <span class="qmark">«</span>У нас 6 точек в Москве, каждая со своей кухонной вытяжкой. До&nbsp;Vent инспекция СЭС каждый раз была <em>событием</em>. Теперь по графику раз в полгода — спокойно и без скрытых сюрпризов в&nbsp;актах.<span class="qmark">»</span>
+        </p>
+      </div>
+      <div class="who">
+        <div class="ava">АГ</div>
+        <div>
+          <div class="who-name">Анна Городничук</div>
+          <div class="who-role">управляющая · сеть кофеен «Молочный путь»</div>
+        </div>
+        <div class="who-metric">6 точек / 6 мес</div>
+      </div>
+    </div>
+
+    <div class="trust-num">
+      <div class="one">
+        <div class="num"><span data-counter="200">200</span>+</div>
+        <div class="lab">объектов</div>
+      </div>
+      <div class="one">
+        <div class="num"><span data-counter="5">5</span></div>
+        <div class="lab">лет опыта</div>
+      </div>
+    </div>
+
+    <div class="trust-lic">
+      <div class="meta accent" style="margin-bottom: 14px;">лицензии и допуски</div>
+      <div class="grid-chips">
+        <span>МЧС</span><span>СЭС</span><span>СРО</span><span>ГОСТ Р 53300-2009</span>
+      </div>
+      <p>Работаем по протоколу СЭС и нормативам МЧС. Документы — при заключении договора.</p>
+    </div>
+
+    <!-- second row of reviews as compact tiles -->
+    <div class="quote-tile" style="grid-column: span 6; min-height: 250px;">
+      <div>
+        <div class="meta brand" style="margin-bottom: 10px;">отзыв 02 · склад / логистика</div>
+        <p class="q" style="font-size: 22px;">
+          <span class="qmark">«</span>Холодный склад 8 000 м² — приточно-вытяжная система годами без серьёзной чистки. Почистили всё за <em>5 ночных смен</em>, не остановили склад ни на час. Видеоотчёт по каждой ветке — это редкость.<span class="qmark">»</span>
+        </p>
+      </div>
+      <div class="who">
+        <div class="ava">ДМ</div>
+        <div>
+          <div class="who-name">Дмитрий Маслов</div>
+          <div class="who-role">главный инженер · СК «Север-Логистик»</div>
+        </div>
+        <div class="who-metric">8 000 м² / 5 смен</div>
+      </div>
+    </div>
+
+    <div class="quote-tile" style="grid-column: span 6; min-height: 250px; background: var(--ink); color: var(--bg); border-color: transparent;">
+      <div>
+        <div class="meta accent" style="margin-bottom: 10px;">отзыв 03 · производство</div>
+        <p class="q" style="font-size: 22px; color: var(--bg);">
+          <span class="qmark" style="color: var(--accent);">«</span>Готовились к аудиту <em style="color: var(--accent);">FSSC 22000</em> — нужен был протокол по вентиляции и подтверждённая дезинфекция. Vent сделали за 4 дня под ключ, протокол прошёл аудит без вопросов.<span class="qmark" style="color: var(--accent);">»</span>
+        </p>
+      </div>
+      <div class="who">
+        <div class="ava" style="background: var(--accent); color: var(--ink);">ЕС</div>
+        <div>
+          <div class="who-name" style="color: var(--bg);">Елена Соколова</div>
+          <div class="who-role" style="color: rgba(246,243,236,.55);">директор по качеству · фабрика «Аркадия»</div>
+        </div>
+        <div class="who-metric" style="color: var(--accent);">FSSC 22000 / 4 дня</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== CALCULATOR FULL ===================== -->
+<section id="calculator" class="calc-wrap">
+  <div class="calc-card">
+    <div class="left">
+      <div class="calc-meta"><span class="dash"></span> 07 / калькулятор</div>
+      <h3>Сколько это <em>стоит?</em></h3>
+      <p style="color: rgba(20,19,18,.6); margin-top: 10px; max-width: 44ch;">
+        Выберите тип объекта, отметьте услуги и площадь — получите вилку до выезда. Точная цена — после видеоосмотра.
+      </p>
+
+      <div class="step">
+        <div class="step-l">1 / тип объекта</div>
+        <div class="opt-row" id="pkg-full">
+          <button class="opt on" data-coef="0.45" data-pkg="restaurant">Общепит</button>
+          <button class="opt" data-coef="0.30" data-pkg="office">Офис</button>
+          <button class="opt" data-coef="0.25" data-pkg="warehouse">Производство</button>
+          <button class="opt" data-coef="0.30" data-pkg="custom">Своё</button>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-l">2 / услуги</div>
+        <div class="opt-row" id="svc-full">
+          <button class="opt on" data-svc="grease" data-rate="300" data-kind="lin">
+            <span class="pcheck"></span>Чистка от жира · 300 ₽/пог.м
+          </button>
+          <button class="opt on" data-svc="hood" data-rate="1000" data-kind="unit">
+            <span class="pcheck"></span>Зонты · 1 000 ₽/шт
+          </button>
+          <button class="opt" data-svc="dust" data-rate="100" data-kind="lin">
+            <span class="pcheck"></span>Пыль · 100 ₽/пог.м
+          </button>
+          <button class="opt" data-svc="disinfect" data-rate="30" data-kind="lin">
+            <span class="pcheck"></span>Дезинфекция · 30 ₽/пог.м
+          </button>
+          <button class="opt" data-svc="diag" data-rate="4500" data-kind="fix">
+            <span class="pcheck"></span>Диагностика · 4 500 ₽
+          </button>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-l">3 / площадь и зонты</div>
+        <div class="calc-slider" id="area-slider">
+          <div class="value-wrap" onclick="this.querySelector('input').focus()">
+            <input class="value-input" id="area-full" type="number" min="20" max="5000" value="220" inputmode="numeric" aria-label="Площадь объекта в квадратных метрах" />
+            <span class="unit-inline">м²</span>
+            <span class="edit-hint" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </span>
+          </div>
+          <div class="quick">
+            <button type="button" data-set="80">80</button>
+            <button type="button" data-set="220">220</button>
+            <button type="button" data-set="500">500</button>
+            <button type="button" data-set="1500">1500</button>
+          </div>
+          <div class="range">
+            <div class="fill" id="area-fill"></div>
+            <input id="area-range" type="range" min="20" max="3000" step="10" value="220" />
+          </div>
+          <div class="ticks">
+            <span>20 м²</span>
+            <span>500</span>
+            <span>1500</span>
+            <span>3000+</span>
+          </div>
+        </div>
+        <div class="calc-stepper" id="hood-stepper" style="margin-top: 10px;">
+          <span class="label">зонты</span>
+          <div class="stepper">
+            <button type="button" id="hood-minus" aria-label="Меньше">−</button>
+            <span class="value-group">
+              <input class="val-input" id="hood-full" type="number" min="0" max="40" value="3" inputmode="numeric" />
+              <span class="unit-label">шт</span>
+            </span>
+            <button type="button" id="hood-plus" aria-label="Больше">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right">
+      <h4>итоговая вилка</h4>
+      <div class="price-total"><span id="full-price">73 000</span><small>₽</small></div>
+      <div class="meta" style="color: rgba(246,243,236,.55);">от · до выезда инженера</div>
+
+      <div class="breakdown" id="breakdown">
+        <div class="br-row"><span>чистка от жира · 99 пог.м</span><b>30 000 ₽</b></div>
+        <div class="br-row"><span>зонты · 3 шт</span><b>3 000 ₽</b></div>
+      </div>
+
+      <div class="ctas" style="margin-top: 10px;">
+        <a class="btn" href="#contact">Оставить заявку <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        <a class="btn ghost" href="#">Скачать прайс PDF</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section id="contact" class="contact-wrap">
+  <div class="section-head" style="padding-top: 0;">
+    <div>
+      <div class="meta brand" style="margin-bottom: 10px;">08 / связаться</div>
+      <h2 class="ttl">Оставьте номер — <em>перезвоним.</em></h2>
+    </div>
+    <p class="desc">В рабочее время — за 30 минут. После — на следующее утро.</p>
+  </div>
+
+  <div class="bento">
+
+    <form class="ct-form" onsubmit="event.preventDefault(); alert('Спасибо! Это демо-форма.');">
+      <div class="head">
+        <h3>Заявка <em>на выезд.</em></h3>
+        <p>Осмотр специалистом — с видеодиагностикой, фиксированным счётом и без обязательств.</p>
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label>как к вам обращаться</label>
+          <input type="text" placeholder="Иван Иванов" />
+        </div>
+        <div class="field">
+          <label>телефон</label>
+          <div class="field-phone">
+            <span class="prefix">+7</span>
+            <input id="phone-input" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="13" placeholder="999 888 77 66" />
+          </div>
+        </div>
+        <div class="field">
+          <label>тип объекта</label>
+          <input type="text" placeholder="ресторан / офис / склад" />
+        </div>
+        <div class="field">
+          <label>площадь объекта, м²</label>
+          <input type="number" placeholder="220" />
+        </div>
+        <div class="field full">
+          <label>комментарий</label>
+          <textarea rows="3" placeholder="что нужно почистить, когда удобно, есть ли срочность"></textarea>
+        </div>
+      </div>
+      <div class="form-foot">
+        <span class="note">Отправляя форму, вы соглашаетесь на <a href="privacy.html">обработку персональных данных</a> в соответствии с офертой.</span>
+        <button type="submit" class="btn">Отправить заявку
+          <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+    </form>
+
+    <div class="ct-info-1">
+      <h5>прямой контакт</h5>
+      <div>
+        <div class="ph">+7 (495) 120-04-04</div>
+        <div class="em" style="margin-top: 6px;">hello@vent.team</div>
+      </div>
+      <span class="meta light">пн–вс · круглосуточно по заявкам</span>
+    </div>
+
+    <div class="ct-hours">
+      <h5>часы дежурства</h5>
+      <div class="h-big"><em>24 / 7</em> диспетчер</div>
+      <div class="lines">
+        <span>пн–пт · выезд за 1 день</span>
+        <span>сб–вс · аварийные за 4 часа</span>
+      </div>
+    </div>
+
+    <div class="ct-area">
+      <h5>география</h5>
+      <div class="h-big">Москва, СПб,<br />48 регионов РФ</div>
+      <div class="lines">база ↗ мск / спб / казань / екатеринбург</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="footer-grid">
+      <div class="footer-mark">
+        <div class="big">vent<em>.</em><br />чистим то,<br />что <em>не&nbsp;видно.</em></div>
+        <p>Промышленный сервис по чистке вентиляции, вытяжек и зонтов. Москва · СПб · регионы РФ с 2021 года.</p>
+      </div>
+    <div>
+      <h6>услуги</h6>
+      <ul>
+        <li><a href="#services">Чистка от жира</a></li>
+        <li><a href="#services">Чистка от пыли</a></li>
+        <li><a href="#services">Зонты и вытяжки</a></li>
+        <li><a href="#services">Дезинфекция</a></li>
+        <li><a href="#services">Диагностика</a></li>
+      </ul>
+    </div>
+    <div>
+      <h6>компания</h6>
+      <ul>
+        <li><a href="#cases">Кейсы</a></li>
+        <li><a href="#venues">Объекты</a></li>
+        <li><a href="#process">Процесс</a></li>
+        <li><a href="#trust">Лицензии</a></li>
+        <li><a href="#">Команда</a></li>
+      </ul>
+    </div>
+    <div>
+      <h6>контакты</h6>
+      <ul>
+        <li><a href="#">+7 (495) 120-04-04</a></li>
+        <li><a href="#">hello@vent.team</a></li>
+        <li><a href="#">Telegram</a></li>
+        <li><a href="#">WhatsApp</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2021–2026 Vent</span>
+    <span><a href="privacy.html">Политика конфиденциальности</a></span>
+  </div>
+</footer>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script>
+  // ------- Compare slider (auto-anim + hover tracking) -------
+  function initCompare(el){
+    const beforeWrap = el.querySelector('.img-before-wrap');
+    const handle     = el.querySelector('.handle-line');
+    const grip       = el.querySelector('.handle-grip');
+    let pct = 50;
+    let userControl = false;
+    let visible = false;
+    let t0 = performance.now();
+
+    const apply = (p) => {
+      pct = Math.max(0, Math.min(100, p));
+      beforeWrap.style.clipPath = `inset(0 ${100-pct}% 0 0)`;
+      handle.style.left = pct + '%';
+      grip.style.left   = pct + '%';
+    };
+    apply(50);
+
+    // Visibility gate (don't animate offscreen)
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => visible = e.isIntersecting);
+    }, { threshold: 0.2 });
+    io.observe(el);
+
+    // Auto-animation: smooth ping-pong between 28% and 72%
+    const tick = (t) => {
+      if(!userControl && visible){
+        const phase = ((t - t0) % 4800) / 4800;       // 0..1 every 4.8s
+        const eased = 0.5 - 0.5 * Math.cos(phase * Math.PI * 2); // smooth ease
+        apply(28 + eased * 44);
+      }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+
+    // Hover (without click) takes control
+    const move = (clientX) => {
+      const r = el.getBoundingClientRect();
+      apply(((clientX - r.left) / r.width) * 100);
+    };
+    el.addEventListener('mouseenter', () => { userControl = true; });
+    el.addEventListener('mouseleave', () => { userControl = false; t0 = performance.now() - (pct - 28) / 44 * 4800 * 0.5; });
+    el.addEventListener('mousemove',  (e) => { userControl = true; move(e.clientX); });
+    el.addEventListener('touchstart', (e) => { userControl = true; move(e.touches[0].clientX); }, {passive:true});
+    el.addEventListener('touchmove',  (e) => { userControl = true; move(e.touches[0].clientX); }, {passive:true});
+    el.addEventListener('touchend',   () => { setTimeout(() => userControl = false, 1500); });
+  }
+  document.querySelectorAll('.compare').forEach(initCompare);
+
+  // ------- Mini calc -------
+  const fmt = (n) => new Intl.NumberFormat('ru-RU').format(Math.round(n/100)*100) + ' ₽';
+
+  function bindToggleGroup(rootSel, onChange){
+    const root = document.querySelector(rootSel);
+    if(!root) return;
+    root.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      [...root.children].forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      onChange(btn);
+    });
+  }
+  function recalcMini(){
+    const pkgBtn = document.querySelector('#pkg-chips .pkg.on');
+    const coef = pkgBtn ? parseFloat(pkgBtn.dataset.coef) : 0.45;
+    const pkg = pkgBtn ? pkgBtn.dataset.pkg : 'restaurant';
+    const area = parseFloat(document.getElementById('area-mini').value) || 0;
+    const hoods = parseFloat(document.getElementById('hood-mini').value) || 0;
+    const isRestaurant = pkg === 'restaurant';
+    // Показываем/скрываем поле зонтов
+    const mcGrid = document.querySelector('.mc-grid');
+    if (mcGrid) mcGrid.classList.toggle('no-hood', !isRestaurant);
+    let total = 0;
+    if(isRestaurant){
+      total += area * coef * 300; // grease
+      total += hoods * 1000;
+    } else if(pkg === 'warehouse'){
+      total += area * coef * 100; // dust
+      total += area * coef * 30;  // disinfect
+    } else if(pkg === 'storage'){
+      total += area * coef * 100; // dust only
+    } else {
+      total += area * coef * 100; // dust (office)
+    }
+    document.getElementById('mini-price').textContent = fmt(total);
+  }
+  bindToggleGroup('#pkg-chips', recalcMini);
+  document.getElementById('area-mini').addEventListener('input', recalcMini);
+  document.getElementById('hood-mini').addEventListener('input', recalcMini);
+
+  // Mini stepper for hood-mini
+  (function(){
+    const inp = document.getElementById('hood-mini');
+    const minus = document.getElementById('hood-mini-minus');
+    const plus  = document.getElementById('hood-mini-plus');
+    if(!inp || !minus || !plus) return;
+    const clamp = (v) => Math.max(+inp.min, Math.min(+inp.max, v));
+    const refresh = () => {
+      minus.disabled = +inp.value <= +inp.min;
+      plus.disabled  = +inp.value >= +inp.max;
+    };
+    minus.addEventListener('click', () => { inp.value = clamp(+inp.value - 1); refresh(); recalcMini(); });
+    plus.addEventListener('click',  () => { inp.value = clamp(+inp.value + 1); refresh(); recalcMini(); });
+    inp.addEventListener('input', () => {
+      let v = parseInt(inp.value, 10);
+      if (isNaN(v)) v = 0;
+      inp.value = clamp(v);
+      refresh();
+    });
+    refresh();
+  })();
+  recalcMini();
+
+  // ------- Full calc -------
+  function recalcFull(){
+    const pkgBtn = document.querySelector('#pkg-full .opt.on');
+    const coef = pkgBtn ? parseFloat(pkgBtn.dataset.coef) : 0.45;
+    const area = parseFloat(document.getElementById('area-full').value) || 0;
+    const hoods = parseFloat(document.getElementById('hood-full').value) || 0;
+    const lm = area * coef;
+    const lines = [];
+    document.querySelectorAll('#svc-full .opt.on').forEach(btn => {
+      const rate = parseFloat(btn.dataset.rate);
+      const kind = btn.dataset.kind;
+      const svc  = btn.dataset.svc;
+      let amount = 0;
+      let label = btn.textContent.trim().split('·')[0].trim();
+      if(kind === 'lin')  { amount = Math.round((lm * rate) / 100) * 100; label = `${label} · ${Math.round(lm)} пог.м`; }
+      if(kind === 'unit') { amount = hoods * rate; label = `${label} · ${hoods} шт`; }
+      if(kind === 'fix')  { amount = rate; }
+      lines.push({label, amount});
+    });
+    const total = lines.reduce((s,l) => s+l.amount, 0);
+    document.getElementById('full-price').textContent = new Intl.NumberFormat('ru-RU').format(total);
+    const bk = document.getElementById('breakdown');
+    bk.innerHTML = lines.map(l => `<div class="br-row"><span>${l.label}</span><b>${new Intl.NumberFormat('ru-RU').format(l.amount)} ₽</b></div>`).join('');
+  }
+  // package toggle (radio)
+  document.querySelector('#pkg-full').addEventListener('click', (e)=>{
+    const btn = e.target.closest('button.opt');
+    if(!btn) return;
+    document.querySelectorAll('#pkg-full .opt').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    recalcFull();
+  });
+  // services toggle (multi)
+  document.querySelector('#svc-full').addEventListener('click', (e)=>{
+    const btn = e.target.closest('button.opt');
+    if(!btn) return;
+    btn.classList.toggle('on');
+    recalcFull();
+  });
+  // quick fills + slider sync
+  const areaInput  = document.getElementById('area-full');
+  const areaRange  = document.getElementById('area-range');
+  const areaFill   = document.getElementById('area-fill');
+  const updateAreaFill = () => {
+    const min = +areaRange.min, max = +areaRange.max;
+    const pct = ((+areaRange.value - min) / (max - min)) * 100;
+    areaFill.style.width = Math.max(0, Math.min(100, pct)) + '%';
+  };
+  const highlightQuick = () => {
+    document.querySelectorAll('.calc-slider .quick button[data-set]').forEach(b => {
+      b.classList.toggle('on', +b.dataset.set === +areaInput.value);
+    });
+  };
+  areaRange.addEventListener('input', () => {
+    areaInput.value = areaRange.value;
+    updateAreaFill();
+    highlightQuick();
+    recalcFull();
+  });
+  areaInput.addEventListener('input', () => {
+    let v = parseInt(areaInput.value, 10);
+    if (isNaN(v)) v = +areaRange.min;
+    const clamped = Math.max(+areaRange.min, Math.min(+areaRange.max, v));
+    areaRange.value = clamped;
+    updateAreaFill();
+    highlightQuick();
+    recalcFull();
+  });
+  document.querySelectorAll('.calc-slider .quick button[data-set]').forEach(b => b.addEventListener('click', ()=>{
+    areaInput.value = b.dataset.set;
+    areaRange.value = b.dataset.set;
+    updateAreaFill();
+    highlightQuick();
+    recalcFull();
+  }));
+  updateAreaFill();
+  highlightQuick();
+
+  // Hood stepper
+  const hoodInput = document.getElementById('hood-full');
+  const hoodMinus = document.getElementById('hood-minus');
+  const hoodPlus  = document.getElementById('hood-plus');
+  const clampHood = (v) => Math.max(+hoodInput.min, Math.min(+hoodInput.max, v));
+  const updateHoodButtons = () => {
+    hoodMinus.disabled = +hoodInput.value <= +hoodInput.min;
+    hoodPlus.disabled  = +hoodInput.value >= +hoodInput.max;
+  };
+  hoodMinus.addEventListener('click', () => { hoodInput.value = clampHood(+hoodInput.value - 1); updateHoodButtons(); recalcFull(); });
+  hoodPlus.addEventListener('click',  () => { hoodInput.value = clampHood(+hoodInput.value + 1); updateHoodButtons(); recalcFull(); });
+  hoodInput.addEventListener('input', () => {
+    let v = parseInt(hoodInput.value, 10);
+    if (isNaN(v)) v = 0;
+    hoodInput.value = clampHood(v);
+    updateHoodButtons();
+    recalcFull();
+  });
+  updateHoodButtons();
+  recalcFull();
+
+  // Кнопки «Рассчитать» в сервисах — предвыбор пакета и услуг в калькуляторе
+  const SVC_TO_PKG = { grease: 'restaurant', hood: 'restaurant', dust: 'office', disinfect: 'warehouse', diag: 'custom' };
+  document.querySelectorAll('[data-calc-jump]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const svc = a.dataset.calcJump;
+      const pkg = SVC_TO_PKG[svc] || 'restaurant';
+      // переключаем пакет
+      document.querySelectorAll('#pkg-full .opt').forEach(b => b.classList.toggle('on', b.dataset.pkg === pkg));
+      // включаем выбранную услугу (без сброса остальных в этом пакете)
+      const targetSvc = document.querySelector(`#svc-full .opt[data-svc="${svc}"]`);
+      if (targetSvc) targetSvc.classList.add('on');
+      recalcFull();
+    });
+  });
+
+  // ------- Counters -------
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en => {
+      if(en.isIntersecting){
+        const el = en.target;
+        const target = parseInt(el.dataset.counter, 10);
+        const dur = 1100;
+        const t0 = performance.now();
+        const step = (t)=>{
+          const p = Math.min(1, (t-t0)/dur);
+          const ease = 1 - Math.pow(1-p, 3);
+          el.textContent = Math.round(target * ease);
+          if(p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+        io.unobserve(el);
+      }
+    });
+  }, {threshold: .4});
+  document.querySelectorAll('[data-counter]').forEach(el => io.observe(el));
+
+  // ------- Phone mask: +7 prefix, digits only, max 10 digits, format "999 888 77 66" -------
+  const phoneEl = document.getElementById('phone-input');
+  if (phoneEl) {
+    const formatPhone = (digits) => {
+      digits = digits.slice(0, 10);
+      const p = [
+        digits.slice(0, 3),
+        digits.slice(3, 6),
+        digits.slice(6, 8),
+        digits.slice(8, 10),
+      ].filter(Boolean);
+      return p.join(' ');
+    };
+    const onPhone = () => {
+      let v = phoneEl.value.replace(/\D/g, '');
+      // If user types leading 7 or 8 (country code), strip it
+      if (v.length === 11 && (v[0] === '7' || v[0] === '8')) v = v.slice(1);
+      phoneEl.value = formatPhone(v);
+      phoneEl.dataset.fullNumber = v.length ? '+7' + v : '';
+    };
+    phoneEl.addEventListener('input', onPhone);
+    phoneEl.addEventListener('paste', () => setTimeout(onPhone, 0));
+    phoneEl.addEventListener('keypress', (e) => {
+      if (e.key.length === 1 && !/\d/.test(e.key)) e.preventDefault();
+    });
+  }
+
+  // ------- Auto-demo of first process step popup (one-time, 5s after section is seen) -------
+  const procSection = document.getElementById('process');
+  const firstStep = procSection && procSection.querySelector('.pr-step');
+  if (procSection && firstStep) {
+    let played = false;
+    const procIO = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting && !played) {
+          played = true;
+          procIO.unobserve(en.target);
+          // 5s after section appears — open popup
+          setTimeout(() => {
+            // Не показывать, если карточка уже под курсором или пользователь взаимодействует с другой
+            const anyHovered = procSection.querySelector('.pr-step:hover');
+            if (anyHovered) return;
+            firstStep.setAttribute('data-hint', 'open');
+            // Через 1.5s — закрыть
+            setTimeout(() => firstStep.removeAttribute('data-hint'), 1500);
+          }, 500);
+        }
+      });
+    }, { threshold: 0.3 });
+    procIO.observe(procSection);
+    // Если пользователь сам навёл на любую карточку — убираем подсказку раньше
+    procSection.addEventListener('mouseover', (e) => {
+      if (e.target.closest('.pr-step')) firstStep.removeAttribute('data-hint');
+    });
+  }
+
+  // ------- Active nav on scroll -------
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const navMap = new Map([...navLinks].map(a => [a.getAttribute('href').slice(1), a]));
+  const sections = [...document.querySelectorAll('section[id]')].map(s => ({id: s.id, el: s}));
+  const ioNav = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if(en.isIntersecting && en.intersectionRatio > .3){
+        navLinks.forEach(a => a.classList.remove('active'));
+        const link = navMap.get(en.target.id);
+        if(link) link.classList.add('active');
+      }
+    });
+  }, {threshold: [.3]});
+  sections.forEach(s => ioNav.observe(s.el));
+</script>
+</body>
+</html>

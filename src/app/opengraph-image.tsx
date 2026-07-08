@@ -1,6 +1,5 @@
 import { ImageResponse } from 'next/og';
 
-export const runtime = 'edge';
 export const alt = 'Vent — промышленная чистка вентиляции';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
@@ -31,7 +30,7 @@ export default async function OG() {
             display: 'flex',
           }}
         >
-          Vent — est. 2014
+          Vent — est. 2021
         </div>
         <div
           style={{

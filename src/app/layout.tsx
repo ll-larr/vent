@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter_Tight, JetBrains_Mono } from 'next/font/google';
 import { localBusinessSchema, jsonLdScript } from '@/lib/schema';
+import { SITE_URL } from '@/lib/site';
 import CustomCursor from '@/components/CustomCursor/CustomCursor';
 import './globals.css';
 
@@ -30,7 +31,7 @@ const FRAUNCES_HREF =
   '&display=swap';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://cleanvent.ru'),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'Vent — промышленная чистка вентиляции для общепита, офисов и складов',
     template: '%s · Vent',
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'ru_RU',
-    url: 'https://cleanvent.ru',
+    url: SITE_URL,
     siteName: 'Vent',
     title: 'Vent — промышленная чистка вентиляции',
     description:

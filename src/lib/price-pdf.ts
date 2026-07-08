@@ -8,6 +8,7 @@ import {
   SERVICES,
 } from './pricing';
 import type { CalcState } from './calculator-context';
+import { CONTACT_PHONE, CONTACT_EMAIL, SITE_HOST } from './site';
 
 const BRAND: [number, number, number] = [30, 92, 50];
 const INK: [number, number, number] = [20, 19, 18];
@@ -193,9 +194,9 @@ export async function downloadPriceEstimate(state: CalcState): Promise<void> {
   doc.line(L, 281, R, 281);
   doc.setFontSize(9);
   doc.setTextColor(...INK);
-  doc.text('+7 (495) 120-04-04', L, 287);
+  doc.text(CONTACT_PHONE, L, 287);
   doc.setTextColor(...GREY);
-  doc.text('hello@vent.team   ·   vent.team', R, 287, { align: 'right' });
+  doc.text(`${CONTACT_EMAIL}   ·   ${SITE_HOST}`, R, 287, { align: 'right' });
 
   doc.save('Vent-raschet.pdf');
 }

@@ -1,5 +1,29 @@
+# dependencies
 node_modules/
-.next/
-.superpowers/
-.env.local
 
+# next.js build output
+.next/
+out/
+
+# env files — never commit secrets
+.env
+.env.local
+.env*.local
+
+# build caches
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# tooling artifacts
+.superpowers/
+.understand-anything/
+.playwright-mcp/
+.claude/worktrees/
+
+# logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db

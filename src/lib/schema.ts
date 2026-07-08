@@ -1,3 +1,5 @@
+import { SITE_URL, CONTACT_PHONE, CONTACT_EMAIL } from './site';
+
 export type JsonLd = Record<string, unknown>;
 
 export function localBusinessSchema(): JsonLd {
@@ -6,8 +8,8 @@ export function localBusinessSchema(): JsonLd {
     '@type': 'LocalBusiness',
     name: 'Vent',
     description: 'Промышленная чистка вентиляции для бизнеса',
-    telephone: '+7 (495) 123-45-67',
-    email: 'info@cleanvent.ru',
+    telephone: CONTACT_PHONE,
+    email: CONTACT_EMAIL,
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Москва',
@@ -23,7 +25,7 @@ export function localBusinessSchema(): JsonLd {
         closes: '20:00',
       },
     ],
-    url: 'https://cleanvent.ru',
+    url: SITE_URL,
   };
 }
 
@@ -40,5 +42,7 @@ export function serviceSchema(name: string, priceRange: string, description?: st
 }
 
 export function jsonLdScript(data: JsonLd | JsonLd[]): { __html: string } {
-  return { __html: JSON.stringify(data) };
+  // Escape `<` so a literal "</script>" inside any value can't break out of the
+  // JSON-LD script tag (defence in depth — current data is static).
+  return { __html: JSON.stringify(data).replace(/</g, '\\u003c') };
 }

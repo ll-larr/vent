@@ -16,7 +16,7 @@ export default function CalculatorPage() {
   return (
     <CalculatorProvider>
       <Header />
-      <main className="pt-32 bg-bg">
+      <main id="main" className="pt-32 bg-bg">
         <div className="px-5 md:px-[5vw] max-w-7xl mx-auto mb-12">
           <div className="font-mono text-[11px] uppercase tracking-[.15em] text-ink/50 mb-4">
             калькулятор · /calculator

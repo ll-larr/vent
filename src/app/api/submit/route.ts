@@ -2,11 +2,38 @@ import { NextRequest, NextResponse } from 'next/server';
 import { submitSchema } from '@/lib/schemas';
 import { appendRow } from '@/lib/sheets';
 import { PACKAGES, SERVICES, computePrice, formatPrice } from '@/lib/pricing';
+import { rateLimitOk } from '@/lib/rate-limit';
+
+const MAX_BODY_BYTES = 10_000;
 
 export async function POST(req: NextRequest) {
   try {
+    const ip =
+      req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+      req.headers.get('x-real-ip') ??
+      'unknown';
+    if (!rateLimitOk(ip)) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
+
+    const contentLength = Number(req.headers.get('content-length') ?? 0);
+    if (contentLength > MAX_BODY_BYTES) {
+      return NextResponse.json({ error: 'Payload too large' }, { status: 413 });
+    }
+
     const body = await req.json();
-    const data = submitSchema.parse(body);
+
+    // Honeypot tripped — pretend success so bots get no validation signal,
+    // and nothing is written to the sheet.
+    if (typeof body?.website === 'string' && body.website.length > 0) {
+      return NextResponse.json({ ok: true });
+    }
+
+    const parsed = submitSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Validation failed' }, { status: 400 });
+    }
+    const data = parsed.data;
 
     const timestamp = new Date().toLocaleString('ru-RU', {
       timeZone: 'Europe/Moscow',
@@ -42,9 +69,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error('Submit error:', err);
-    if (err instanceof Error && err.name === 'ZodError') {
-      return NextResponse.json({ error: 'Validation failed' }, { status: 400 });
-    }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

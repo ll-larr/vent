@@ -8,6 +8,7 @@ import { useCalculator } from '@/lib/calculator-context';
 import { useMagnet } from '@/lib/useMagnet';
 import { PACKAGES, SERVICES } from '@/lib/pricing';
 import { ArrowRight } from '@/lib/icons';
+import { CONTACT_PHONE, CONTACT_PHONE_TEL } from '@/lib/site';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
@@ -20,8 +21,8 @@ function generateTicket(): string {
   return `VNT-${mm}${dd}-${rand}`;
 }
 
-const PHONE_TEL = '+74951200404';
-const PHONE_HUMAN = '+7 (495) 120-04-04';
+const PHONE_TEL = CONTACT_PHONE_TEL;
+const PHONE_HUMAN = CONTACT_PHONE;
 
 const NEXT_STEPS = [
   { n: '01', label: 'Звонок инженера', desc: 'уточним адрес, объект и удобное окно для выезда', when: '~ 30 мин' },
@@ -441,7 +442,7 @@ export function ContactForm() {
       {status === 'error' && (
         <p role="alert" className="text-red-700 text-[13px] mt-2">
           Не удалось отправить. Попробуйте ещё раз или позвоните{' '}
-          <a href="tel:+74951200404" className="underline">+7 (495) 120-04-04</a>.
+          <a href={`tel:${PHONE_TEL}`} className="underline">{PHONE_HUMAN}</a>.
         </p>
       )}
     </form>

@@ -19,12 +19,16 @@ export async function appendRow(values: string[]): Promise<void> {
   const sheetId = process.env.GOOGLE_SHEET_ID;
   if (!sheetId) throw new Error('Missing GOOGLE_SHEET_ID');
 
+  // Russian-locale Google Sheets name the first tab "Лист1", not "Sheet1" —
+  // override via env when the target sheet uses a different tab name.
+  const range = process.env.GOOGLE_SHEET_RANGE || 'Sheet1!A:J';
+
   const auth = getAuth();
   const sheets = google.sheets({ version: 'v4', auth });
 
   await sheets.spreadsheets.values.append({
     spreadsheetId: sheetId,
-    range: 'Sheet1!A:J',
+    range,
     valueInputOption: 'USER_ENTERED',
     requestBody: { values: [values] },
   });

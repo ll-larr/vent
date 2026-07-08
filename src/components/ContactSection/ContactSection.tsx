@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import useScrollAnim from '@/lib/useScrollAnim';
 import { ContactForm } from '@/components/ContactForm/ContactForm';
+import { CONTACT_PHONE, CONTACT_PHONE_HREF, CONTACT_EMAIL, CONTACT_EMAIL_HREF } from '@/lib/site';
 
 export function ContactSection() {
   const ref = useRef<HTMLElement>(null);
@@ -34,16 +35,16 @@ export function ContactSection() {
           <h5 className="font-mono text-[11px] uppercase tracking-[.14em] text-bg/70">прямой контакт</h5>
           <div>
             <a
-              href="tel:+74951200404"
+              href={CONTACT_PHONE_HREF}
               className="block font-display font-light text-[clamp(28px,3.2vw,40px)] tracking-[-.015em] leading-none hover:text-accent transition-colors"
             >
-              +7 (495) 120-04-04
+              {CONTACT_PHONE}
             </a>
             <a
-              href="mailto:hello@vent.team"
+              href={CONTACT_EMAIL_HREF}
               className="block font-mono text-[12.5px] text-bg/85 mt-1.5 hover:text-accent transition-colors"
             >
-              hello@vent.team
+              {CONTACT_EMAIL}
             </a>
           </div>
           <span className="font-mono text-[11px] uppercase tracking-[.14em] text-bg/60">

@@ -398,58 +398,6 @@ export function Calculator() {
         </aside>
       </div>
 
-      {/* Slider thumb styles (WebKit + Firefox) — inlined here because Tailwind has no pseudo-element util for ::-webkit-slider-thumb */}
-      <style jsx global>{`
-        .calc-range::-webkit-slider-thumb {
-          -webkit-appearance: none;
-          appearance: none;
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
-          background: var(--color-surface);
-          border: 0;
-          box-shadow:
-            inset 0 0 0 7px var(--color-brand),
-            0 4px 14px rgba(30, 92, 50, 0.22),
-            0 1px 3px rgba(0, 0, 0, 0.18);
-          cursor: grab;
-          transition: transform 0.15s ease, box-shadow 0.25s ease;
-        }
-        .calc-range:hover::-webkit-slider-thumb {
-          transform: scale(1.08);
-          box-shadow:
-            inset 0 0 0 6px #2d7d46,
-            0 6px 18px rgba(30, 92, 50, 0.3),
-            0 1px 3px rgba(0, 0, 0, 0.2);
-        }
-        .calc-range:active::-webkit-slider-thumb {
-          cursor: grabbing;
-          transform: scale(1.15);
-          box-shadow:
-            inset 0 0 0 5px var(--color-brand),
-            0 0 0 8px rgba(30, 92, 50, 0.16),
-            0 8px 22px rgba(30, 92, 50, 0.35);
-        }
-        .calc-range::-moz-range-thumb {
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
-          background: var(--color-surface);
-          border: 0;
-          box-shadow:
-            inset 0 0 0 7px var(--color-brand),
-            0 4px 14px rgba(30, 92, 50, 0.22),
-            0 1px 3px rgba(0, 0, 0, 0.18);
-          cursor: grab;
-        }
-        .calc-range::-moz-range-track {
-          background: transparent;
-          height: 28px;
-        }
-        .calc-range:focus {
-          outline: none;
-        }
-      `}</style>
     </section>
   );
 }
