@@ -1,0 +1,24 @@
+Copyright (c) 2026 Clean Vent. All rights reserved.
+
+This repository and its contents — including source code, design, layout,
+copy, images, and brand materials — are the proprietary property of Clean Vent.
+
+The source is published for viewing and reference only. No license, express or
+implied, is granted to any person or entity to use, copy, modify, merge,
+publish, distribute, sublicense, sell, or create derivative works from any part
+of this repository, in whole or in part, without prior written permission from
+the copyright holder.
+
+Third-party dependencies declared in package.json remain subject to their own
+respective licenses.
+
+Trademarks, logos, and brand names of third parties appearing in this
+repository are the property of their respective owners and are used for
+identification purposes only. Their presence does not imply endorsement.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
