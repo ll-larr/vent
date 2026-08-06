@@ -27,13 +27,13 @@ const SECTIONS: Array<{ n: string; title: string; body: React.ReactNode }> = [
             'Имя или то, как к вам обращаться.',
             'Номер телефона.',
             'Тип объекта и площадь, если вы их указали.',
-            'Комментарий к заявке (что нужно почистить, желаемые сроки).',
+            'Комментарий к заявке.',
             'Технические данные браузера: IP, user-agent, страница, с которой пришла заявка — для защиты от спама и аналитики.',
           ]}
         />
         <p>
-          Мы не запрашиваем паспортные данные, ИНН, банковские реквизиты или фотографии — для
-          расчёта и выезда инженера они не нужны.
+          Мы не запрашиваем паспортные данные, ИНН или банковские реквизиты — для расчёта и
+          выезда инженера они не нужны.
         </p>
       </>
     ),
@@ -67,7 +67,7 @@ const SECTIONS: Array<{ n: string; title: string; body: React.ReactNode }> = [
         <p>
           Заявки попадают в защищённую таблицу Google Sheets, доступ к которой имеет только команда
           Vent. Резервные копии хранятся на серверах в РФ. Данные передаются по защищённому
-          соединению (HTTPS, TLS 1.3).
+          соединению.
         </p>
         <p>Мы передаём данные третьим лицам только в трёх случаях:</p>
         <BulletList
@@ -107,7 +107,6 @@ const SECTIONS: Array<{ n: string; title: string; body: React.ReactNode }> = [
             'Запросить, какие именно данные о вас мы храним.',
             'Попросить нас исправить неточные данные.',
             'Отозвать согласие — мы удалим вашу заявку и контакт в течение 10 рабочих дней.',
-            'Пожаловаться в Роскомнадзор, если считаете, что мы нарушили закон.',
           ]}
         />
         <p>
@@ -129,8 +128,7 @@ const SECTIONS: Array<{ n: string; title: string; body: React.ReactNode }> = [
     body: (
       <p>
         На сайте работают только функциональные cookies (запоминают согласие на cookies, тему
-        интерфейса) и обезличенная веб-аналитика. Мы не используем рекламные трекеры и пиксели
-        социальных сетей.
+        интерфейса) и обезличенная веб-аналитика.
       </p>
     ),
   },
@@ -176,28 +174,10 @@ export default function PrivacyPage() {
           <h1 className="font-display font-light text-[clamp(40px,5.5vw,76px)] leading-[.98] tracking-[-.025em] mt-3.5 mb-4.5">
             Согласие на обработку <em className="italic text-brand">персональных данных.</em>
           </h1>
-          <p className="text-[17px] text-ink/70 max-w-[60ch] mb-9 leading-[1.55]">
+          <p className="text-[17px] text-ink/70 max-w-[60ch] mb-14 leading-[1.55]">
             Этот документ описывает, какие данные мы собираем через форму заявки на сайте, зачем
             они нам и сколько мы их храним. Коротко и по делу, без скрытых пунктов мелким шрифтом.
           </p>
-
-          <div
-            className="flex flex-wrap gap-2.5 mb-12 p-4 bg-surface rounded-[14px] font-mono text-[10.5px] uppercase tracking-[.14em] text-ink/55"
-            style={{ border: '1px solid rgba(20,19,18,.08)' }}
-          >
-            <span>
-              Оператор: <b className="text-brand font-medium">ООО «Вент»</b>
-            </span>
-            <span>
-              Редакция: <b className="text-brand font-medium">15.05.2026</b>
-            </span>
-            <span>
-              Юрисдикция: <b className="text-brand font-medium">152-ФЗ РФ</b>
-            </span>
-            <span>
-              Контакт: <b className="text-brand font-medium">privacy@vent.team</b>
-            </span>
-          </div>
 
           {SECTIONS.map((s) => (
             <section key={s.n} className="mt-14 first:mt-0">
@@ -230,14 +210,29 @@ export default function PrivacyPage() {
           </div>
         </div>
       </main>
-      <footer className="bg-ink text-bg py-8 text-center font-mono text-[10.5px] uppercase tracking-[.12em] text-bg/50">
-        © 2021–2026 Vent ·{' '}
-        <Link
-          href="/privacy"
-          className="text-bg/70 border-b border-bg/[.15] hover:text-accent hover:border-accent"
-        >
-          политика
-        </Link>
+      <footer className="bg-ink text-bg py-8 font-mono text-[10.5px] uppercase tracking-[.12em] text-bg/50">
+        <div className="max-w-[880px] mx-auto px-6 flex flex-col items-center gap-4">
+          <div className="flex flex-wrap justify-center gap-x-5 gap-y-2">
+            <span>
+              Оператор: <b className="text-accent font-medium">ООО «Вент»</b>
+            </span>
+            <span>
+              Редакция: <b className="text-accent font-medium">15.05.2026</b>
+            </span>
+            <span>
+              Контакт: <b className="text-accent font-medium">privacy@vent.team</b>
+            </span>
+          </div>
+          <div>
+            © 2021–2026 Vent ·{' '}
+            <Link
+              href="/privacy"
+              className="text-bg/70 border-b border-bg/[.15] hover:text-accent hover:border-accent"
+            >
+              политика
+            </Link>
+          </div>
+        </div>
       </footer>
     </CalculatorProvider>
   );

@@ -65,7 +65,7 @@ export function Header({ variant = 'landing' }: { variant?: Variant }) {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  // BACK variant: brand + "На главную" — matches HTML privacy.html topbar
+  // BACK variant: brand + "Назад" — matches HTML privacy.html topbar
   if (variant === 'back') {
     return (
       <>
@@ -81,7 +81,7 @@ export function Header({ variant = 'landing' }: { variant?: Variant }) {
               className="group inline-flex items-center gap-2 bg-accent text-ink px-3.5 py-2.5 rounded-full font-mono text-[11px] uppercase tracking-[.14em] hover:bg-bg transition-colors whitespace-nowrap"
             >
               <ChevronLeft size={14} strokeWidth={2} aria-hidden="true" />
-              На главную
+              Назад
             </a>
           </div>
         </header>
