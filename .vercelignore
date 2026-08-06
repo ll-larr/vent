@@ -1,0 +1,16 @@
+# Deploys from this directory go up through the Vercel CLI, which uploads every
+# file git doesn't ignore — including untracked local material. Keep that out.
+
+# Investor financial model — private, never leaves this machine
+finmodel/
+
+# Legacy duplicate of the site kept for reference (~250 MB)
+cleanvent-nextjs/
+
+# Internal notes and editor state
+docs/
+*.code-workspace
+
+# Source .ttf of the wordmark face. Anything under public/ is served publicly;
+# the site loads the subset woff2 from src/fonts instead.
+public/fonts/Marggraff Kursiv Zarte.ttf

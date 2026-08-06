@@ -8,7 +8,7 @@ export function Footer() {
         {/* Mark */}
         <div className="flex flex-col gap-4 max-w-[360px]">
           <div className="font-display font-light text-[clamp(40px,5vw,76px)] leading-[.95] tracking-[-.025em]">
-            vent<em className="not-italic font-logo text-accent">.team</em>
+            vent<em className="not-italic font-logo text-accent text-[.85em]">.team</em>
             <br />
             чистим то,
             <br />

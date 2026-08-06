@@ -38,6 +38,6 @@ export const LogoMark = () => (
 
 export const LogoWord = () => (
   <span className="font-display font-normal text-[22px] tracking-[-.02em]">
-    vent<i className="not-italic font-logo text-accent">.team</i>
+    vent<i className="not-italic font-logo text-accent text-[.85em]">.team</i>
   </span>
 );
