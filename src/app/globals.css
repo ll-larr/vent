@@ -18,12 +18,15 @@
   --color-stone:        #f4f4f2;
   --color-ink-2:        #1f1d1b;
 
-  /* Fonts. Inter Tight + JetBrains Mono come from next/font in layout.tsx.
-     Fraunces is loaded via <link> tag in layout.tsx (so we get the full
-     opsz + italic + Cyrillic subset that next/font doesn't expose). */
-  --font-display: "Fraunces", Georgia, serif;
+  /* Fonts — all three come from next/font in layout.tsx and are self-hosted.
+     Fraunces ships no Cyrillic, so Georgia is the real face of every Russian
+     heading here; Fraunces covers the Latin wordmark, prices and counters. */
+  --font-display: var(--font-fraunces), Georgia, serif;
   --font-sans:    var(--font-inter-tight), system-ui, -apple-system, sans-serif;
   --font-mono:    var(--font-jetbrains-mono), ui-monospace, monospace;
+  /* Wordmark tail ".team" — Marggraff Kursiv Zarte, self-hosted via next/font
+     in layout.tsx (Basic Latin subset only, so it covers the wordmark alone). */
+  --font-logo:    var(--font-marggraff), var(--font-fraunces), Georgia, serif;
 
   --max-width-content: 1320px;
 

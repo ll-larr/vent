@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { Inter_Tight, JetBrains_Mono } from 'next/font/google';
+import { Inter_Tight, JetBrains_Mono, Fraunces } from 'next/font/google';
+import localFont from 'next/font/local';
 import { localBusinessSchema, jsonLdScript } from '@/lib/schema';
 import { SITE_URL } from '@/lib/site';
 import CustomCursor from '@/components/CustomCursor/CustomCursor';
@@ -22,19 +23,40 @@ const jetMono = JetBrains_Mono({
   weight: ['400', '500'],
 });
 
-// Fraunces is loaded via <link> so we can request the full opsz + ital +
-// Cyrillic subset matching the bento reference exactly. next/font for Fraunces
-// doesn't expose the Cyrillic subset in v14.2 types.
-const FRAUNCES_HREF =
-  'https://fonts.googleapis.com/css2' +
-  '?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500' +
-  '&display=swap';
+// Fraunces has no Cyrillic subset — Google only ships latin, latin-ext and
+// vietnamese for it, so Russian headings have always fallen back to Georgia.
+// That makes the old external <link> to fonts.googleapis.com a render-blocking
+// request on the critical path for Latin glyphs only (the wordmark, prices,
+// counters). Self-hosting via next/font keeps the same look and drops two
+// cross-origin round trips before the LCP heading can paint.
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-fraunces',
+  style: ['normal', 'italic'],
+  axes: ['opsz'],
+  weight: 'variable',
+});
+
+// Marggraff Kursiv Zarte (Schriftguß AG, 1929) — used for the ".team" tail of
+// the wordmark and nothing else. Subset to Basic Latin and repacked as woff2,
+// which takes the shipped file from 324 KB to 21 KB. The source .ttf is not in
+// the repo; regenerate with:
+//   python -m fontTools.subset "<source>.ttf" \
+//     --output-file=src/fonts/marggraff-kursiv-zarte.woff2 \
+//     --flavor=woff2 --unicodes=U+0020-007E --layout-features=kern,liga,calt
+const marggraff = localFont({
+  src: '../fonts/marggraff-kursiv-zarte.woff2',
+  display: 'swap',
+  variable: '--font-marggraff',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Vent — промышленная чистка вентиляции для общепита, офисов и складов',
-    template: '%s · Vent',
+    // Keep under ~60 chars — longer titles get truncated in the SERP.
+    default: 'Промышленная чистка вентиляции в Москве — Vent.team',
+    template: '%s · Vent.team',
   },
   description:
     'Промышленная чистка вентканалов, вытяжек и зонтов для общепита, офисов и складов. По протоколу МЧС и СЭС. Расчёт онлайн.',
@@ -42,8 +64,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ru_RU',
     url: SITE_URL,
-    siteName: 'Vent',
-    title: 'Vent — промышленная чистка вентиляции',
+    siteName: 'Vent.team',
+    title: 'Vent.team — промышленная чистка вентиляции',
     description:
       'Промышленная чистка вентканалов, вытяжек и зонтов для общепита, офисов и складов.',
   },
@@ -52,12 +74,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" className={`${interTight.variable} ${jetMono.variable}`}>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="stylesheet" href={FRAUNCES_HREF} />
-      </head>
+    <html
+      lang="ru"
+      className={`${interTight.variable} ${jetMono.variable} ${fraunces.variable} ${marggraff.variable}`}
+    >
       <body className="font-sans bg-bg text-ink antialiased">
         <CustomCursor />
         {children}

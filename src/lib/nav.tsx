@@ -4,12 +4,18 @@ export interface NavLink {
   anchor?: boolean;
 }
 
+// "Услуги" and "Статьи" point at real routes now that /uslugi and /blog exist —
+// an in-page anchor can't be crawled as a destination, and these are the two
+// sections search traffic actually lands on.
 export const navLinks: NavLink[] = [
-  { href: '/#services',   label: 'Услуги',   anchor: true },
+  { href: '/uslugi',      label: 'Услуги' },
   { href: '/#cases',      label: 'Кейсы',    anchor: true },
-  { href: '/#venues',     label: 'Объекты',  anchor: true },
+  // "Объекты" (#venues) dropped from the header — a seventh item pushed the CTA
+  // out of the pill at the lg breakpoint. The section is still linked from the
+  // footer and reachable by scrolling.
   { href: '/#process',    label: 'Процесс',  anchor: true },
   { href: '/#calculator', label: 'Цены',     anchor: true },
+  { href: '/blog',        label: 'Статьи' },
   { href: '/#contact',    label: 'Контакты', anchor: true },
 ];
 
@@ -32,6 +38,6 @@ export const LogoMark = () => (
 
 export const LogoWord = () => (
   <span className="font-display font-normal text-[22px] tracking-[-.02em]">
-    vent<i className="not-italic text-accent">.</i>
+    vent<i className="not-italic font-logo text-accent">.team</i>
   </span>
 );

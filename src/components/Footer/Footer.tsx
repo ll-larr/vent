@@ -8,25 +8,25 @@ export function Footer() {
         {/* Mark */}
         <div className="flex flex-col gap-4 max-w-[360px]">
           <div className="font-display font-light text-[clamp(40px,5vw,76px)] leading-[.95] tracking-[-.025em]">
-            vent<em className="italic text-accent">.</em>
+            vent<em className="not-italic font-logo text-accent">.team</em>
             <br />
             чистим то,
             <br />
             что <em className="italic text-accent">не&nbsp;видно.</em>
           </div>
           <p className="font-sans text-[13px] text-bg/65 max-w-[36ch] leading-[1.5]">
-            Промышленный сервис по чистке вентиляции, вытяжек и зонтов. Москва · СПб · регионы РФ с 2021 года.
+            Промышленный сервис по чистке вентиляции, вытяжек и зонтов. Москва и область в радиусе 100 км, с 2021 года.
           </p>
         </div>
 
         <FooterCol
           title="услуги"
           items={[
-            { label: 'Чистка от жира', href: '#services' },
-            { label: 'Чистка от пыли', href: '#services' },
-            { label: 'Зонты и вытяжки', href: '#services' },
-            { label: 'Дезинфекция', href: '#services' },
-            { label: 'Диагностика', href: '#services' },
+            { label: 'Чистка от жира', href: '/uslugi/chistka-ot-zhira' },
+            { label: 'Чистка от пыли', href: '/uslugi/chistka-ot-pyli' },
+            { label: 'Зонты и вытяжки', href: '/uslugi/vytyazhki-i-zonty' },
+            { label: 'Дезинфекция', href: '/uslugi/dezinfekciya' },
+            { label: 'Видеоинспекция', href: '/uslugi/videoinspekciya' },
           ]}
         />
         <FooterCol
@@ -36,6 +36,8 @@ export function Footer() {
             { label: 'Объекты', href: '#venues' },
             { label: 'Процесс', href: '#process' },
             { label: 'Лицензии', href: '#trust' },
+            { label: 'Статьи', href: '/blog' },
+            { label: 'Калькулятор', href: '/calculator' },
             { label: 'Контакты', href: '/contacts' },
           ]}
         />
@@ -54,7 +56,7 @@ export function Footer() {
         className="max-w-[1320px] mx-auto px-4 pt-4.5 pb-8 flex justify-between gap-3 flex-wrap font-mono text-[10.5px] uppercase tracking-[.12em] text-bg/50"
         style={{ borderTop: '1px solid rgba(246,243,236,.1)' }}
       >
-        <span>© 2021–2026 Vent</span>
+        <span>© 2021–2026 Vent.team</span>
         <Link
           href="/privacy"
           className="text-bg/70 border-b border-bg/[.15] hover:text-accent hover:border-accent transition-colors"

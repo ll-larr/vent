@@ -21,11 +21,15 @@ export function Hero() {
           className="col-span-12 lg:col-span-8 row-span-2 lg:row-span-3 bg-bg rounded-[28px] px-6 py-7 md:px-8 md:py-8 flex flex-col justify-between relative overflow-hidden min-h-[380px] lg:min-h-[540px]"
           data-anim
         >
-          <div className="inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[.14em] text-ink/55">
-            <span className="w-[18px] h-px bg-brand inline-block" />
-            01 / vent — промышленная чистка вентсистем
-          </div>
-          <h1
+          {/* The eyebrow carries the H1: it's the only visible line on the page
+              that names the service and the city, which is what search engines
+              read off the top-level heading. The display block below stays the
+              visual hero but is semantically a paragraph. */}
+          <h1 className="inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[.14em] text-ink/55">
+            <span className="w-[18px] h-px bg-brand inline-block" aria-hidden="true" />
+            01 / vent — промышленная чистка вентиляции в Москве
+          </h1>
+          <p
             className="font-display font-light text-[clamp(56px,7.6vw,124px)] leading-[.96] tracking-[-.028em] mt-6"
             data-anim
             style={{ ['--delay' as any]: '70ms' }}
@@ -39,7 +43,7 @@ export function Hero() {
             >
               не видит.
             </span>
-          </h1>
+          </p>
           <p
             className="max-w-[460px] font-sans text-[16px] leading-[1.55] text-ink/70 mt-4"
             data-anim
