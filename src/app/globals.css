@@ -116,6 +116,8 @@
 
   html {
     scroll-behavior: smooth;
+    /* Anchor jumps must clear the fixed topbar. */
+    scroll-padding-top: 76px;
     font-size: 16px;
   }
 

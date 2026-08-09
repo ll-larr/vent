@@ -1,55 +1,44 @@
 import type { Metadata } from 'next';
-import { Header } from '@/components/Header/Header';
-import { Hero } from '@/components/Hero/Hero';
-import { Services } from '@/components/Services/Services';
-import { Cases } from '@/components/Cases/Cases';
-import { BigVenues } from '@/components/BigVenues/BigVenues';
-import { HowWeWork } from '@/components/HowWeWork/HowWeWork';
-import { TrustSection } from '@/components/TrustSection/TrustSection';
-import { Calculator } from '@/components/Calculator/Calculator';
-import { ContactSection } from '@/components/ContactSection/ContactSection';
-import { Footer } from '@/components/Footer/Footer';
-import { CalculatorProvider } from '@/lib/calculator-context';
-import { serviceSchema, jsonLdScript } from '@/lib/schema';
+import { Topbar } from '@/components/story/Topbar';
+import { ProgressBar } from '@/components/story/ProgressBar';
+import { StoryEngine } from '@/components/story/StoryEngine';
+import { Process } from '@/components/story/Process';
+import { Advantages } from '@/components/story/Advantages';
+import { Discounts } from '@/components/story/Discounts';
+import { StoryFaq } from '@/components/story/StoryFaq';
+import { StoryFooter } from '@/components/story/StoryFooter';
+import { FAQ } from '@/data/story';
+import { serviceSchema, faqSchema, jsonLdScript } from '@/lib/schema';
 import { SERVICES } from '@/lib/pricing';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
 };
 
-// Service structured data mirrors the live pricing catalog — one source of truth.
-const serviceJsonLd = jsonLdScript([
+// Structured data mirrors what the page actually offers — the four calculator
+// services and the six questions rendered in section 08.
+const homeJsonLd = jsonLdScript([
   serviceSchema(SERVICES.grease.label, 'от 300 ₽/пог.м', SERVICES.grease.hint),
   serviceSchema(SERVICES.dust.label, 'от 100 ₽/пог.м', SERVICES.dust.hint),
   serviceSchema(SERVICES.hood.label, 'от 2 000 ₽/шт', SERVICES.hood.hint),
   serviceSchema(SERVICES.diag.label, '4 500 ₽', SERVICES.diag.hint),
+  faqSchema(FAQ),
 ]);
 
 export default function HomePage() {
   return (
-    <CalculatorProvider>
-      <Header />
+    <>
+      <ProgressBar />
+      <Topbar />
       <main id="main">
-        {/* 01 — Hero */}
-        <span id="top" className="sr-only" aria-hidden="true" />
-        <Hero />
-        {/* 02 — Services */}
-        <Services />
-        {/* 03 — Calculator (full) — moved up, right after Services */}
-        <Calculator />
-        {/* 04 — Cases */}
-        <Cases />
-        {/* 05 — Venues */}
-        <BigVenues />
-        {/* 06 — Process */}
-        <HowWeWork />
-        {/* 07 — Trust + Reviews */}
-        <TrustSection />
-        {/* 08 — Contact */}
-        <ContactSection />
+        <Process />
+        <Advantages />
+        <Discounts />
+        <StoryFaq />
       </main>
-      <Footer />
-      <script type="application/ld+json" dangerouslySetInnerHTML={serviceJsonLd} />
-    </CalculatorProvider>
+      <StoryFooter />
+      <StoryEngine />
+      <script type="application/ld+json" dangerouslySetInnerHTML={homeJsonLd} />
+    </>
   );
 }
