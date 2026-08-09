@@ -551,6 +551,100 @@ html.story-reveal [data-reveal]:not([data-revealed]) {
   letter-spacing: 0.14em;
 }
 
+/* ===========================================================================
+   STORY — states painted by the scroll engine (src/lib/story-scroll.ts).
+
+   The engine writes a single attribute per element and the rules below do the
+   rest. Every default is the "no JS" state: the topbar is readable, all track
+   rows are lit, the first frame is on top.
+   =========================================================================== */
+
+/* --- topbar: transparent over the hero, solid once scrolled --------------- */
+.story-topbar {
+  transition:
+    background-color 0.45s ease,
+    border-color 0.45s ease,
+    color 0.45s ease;
+}
+.story-topbar[data-solid='1'] {
+  background-color: rgba(246, 243, 236, 0.9);
+  backdrop-filter: blur(14px);
+  border-bottom-color: rgba(20, 19, 18, 0.1);
+  color: var(--color-ink);
+}
+.story-topbar[data-solid='1'] .story-logo-tail {
+  color: var(--color-brand);
+}
+.story-topbar[data-solid='1'] .story-topbar-soft {
+  color: rgba(20, 19, 18, 0.6);
+}
+.story-topbar[data-solid='1'] .story-topbar-soft[data-active='1'] {
+  color: var(--color-ink);
+}
+.story-topbar-soft:hover {
+  color: var(--color-accent);
+}
+.story-topbar[data-solid='1'] .story-topbar-soft:hover {
+  color: var(--color-ink);
+}
+
+/* --- topbar nav: active item + underline ---------------------------------- */
+.story-nav-item {
+  color: rgba(246, 243, 236, 0.72);
+  transition: color 0.35s ease;
+}
+.story-nav-item[data-on='1'] {
+  color: var(--color-accent);
+}
+.story-nav-underline {
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.story-nav-item[data-on='1'] .story-nav-underline {
+  transform: scaleX(1);
+}
+.story-topbar[data-solid='1'] .story-nav-item {
+  color: rgba(20, 19, 18, 0.6);
+}
+.story-topbar[data-solid='1'] .story-nav-item[data-on='1'] {
+  color: var(--color-ink);
+}
+.story-topbar[data-solid='1'] .story-nav-underline {
+  background: var(--color-brand);
+}
+
+/* --- section 02 track: active step and its indicator line ----------------- */
+[data-item] {
+  transition: opacity 0.5s ease;
+}
+[data-item][data-on='0'] {
+  opacity: 0.32;
+}
+[data-bar] {
+  transform-origin: left;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-item][data-on='0'] [data-bar] {
+  transform: scaleX(0);
+}
+
+/* --- section 02 frames: stacked photos, one visible ----------------------- */
+[data-frame] {
+  opacity: 0;
+  transform: scale(1.04);
+  z-index: 1;
+  transition:
+    opacity 0.7s ease,
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-frame][data-on='1'] {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+}
+
 /* ---------------------------------------------------------------------------
    Calculator range slider thumb (WebKit + Firefox).
    Lives here (not styled-jsx) so it survives framework upgrades and keeps

@@ -8,5 +8,9 @@ export const CONTACT_PHONE_TEL = '+74951200404';
 export const CONTACT_PHONE_HREF = 'tel:+74951200404';
 export const CONTACT_EMAIL = 'hello@vent.team';
 export const CONTACT_EMAIL_HREF = 'mailto:hello@vent.team';
+// Placeholder handles carried over from the design handoff — swap both for the
+// real accounts before launch.
+export const CONTACT_TELEGRAM_HREF = 'https://t.me/vent';
+export const CONTACT_WHATSAPP_HREF = 'https://wa.me/74951200404';
 
 export const FOUNDED_YEAR = 2021;
