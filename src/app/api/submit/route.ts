@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { submitSchema } from '@/lib/schemas';
 import { appendRow } from '@/lib/sheets';
-import { PACKAGES, SERVICES, computePrice, formatPrice } from '@/lib/pricing';
+import { PACKAGES, SERVICES, computeEstimate, formatPrice } from '@/lib/pricing';
 import { rateLimitOk } from '@/lib/rate-limit';
 
 const MAX_BODY_BYTES = 10_000;
@@ -44,9 +44,11 @@ export async function POST(req: NextRequest) {
       minute: '2-digit',
     });
 
-    const { totalMin } = computePrice(
+    // Recomputed server-side rather than trusted from the client — the sheet
+    // is the sales team's source of truth for what was quoted.
+    const { total } = computeEstimate(
       data.services,
-      data.areaM2,
+      { unit: data.unit, areaM2: data.areaM2, lmValue: data.lmValue },
       data.packageKey,
       data.hoodCount,
     );
@@ -58,10 +60,10 @@ export async function POST(req: NextRequest) {
       data.phone,
       data.objectName,
       PACKAGES[data.packageKey].label,
-      `${data.areaM2} м²`,
-      data.services.map((s) => SERVICES[s].label).join(', '),
+      data.unit === 'lm' ? `${data.lmValue} пог.м` : `${data.areaM2} м²`,
+      data.services.map((s) => SERVICES[s].label).join(', ') || '—',
       data.comment || '—',
-      `от ${formatPrice(totalMin)}`,
+      `от ${formatPrice(total)}`,
     ];
 
     await appendRow(row);

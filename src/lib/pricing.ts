@@ -109,3 +109,97 @@ export function computePrice(
 
 export const formatPrice = (n: number): string =>
   new Intl.NumberFormat('ru-RU').format(n) + ' ₽';
+
+/** Разрядка без знака валюты — для крупной цифры в итоговой панели. */
+export const formatNumber = (n: number): string =>
+  new Intl.NumberFormat('ru-RU').format(Math.round(n));
+
+/* ---------------------------------------------------------------------------
+   Story calculator.
+
+   The volume can be entered two ways: floor area, converted to duct metres by
+   the package coefficient, or duct metres directly. Everything downstream
+   works off the resulting linear metres, so the two modes cannot disagree.
+   --------------------------------------------------------------------------- */
+
+export type VolumeUnit = 'm2' | 'lm';
+
+export type Volume = {
+  unit: VolumeUnit;
+  /** Floor area in m², used when unit === 'm2'. */
+  areaM2: number;
+  /** Duct length in linear metres, used when unit === 'lm'. */
+  lmValue: number;
+};
+
+/** Order the chips are rendered in — and the order of the breakdown lines. */
+export const CALCULATOR_SERVICES: ServiceKey[] = ['grease', 'dust', 'hood', 'diag'];
+
+/** Short chip labels; SERVICES[].label is the long form used in documents. */
+export const SERVICE_SHORT: Record<ServiceKey, string> = {
+  grease: 'Жир',
+  dust: 'Пыль',
+  hood: 'Зонты',
+  diag: 'Диагностика',
+};
+
+/** The first-order discount kicks in at this total and takes 20% off. */
+export const DISCOUNT_THRESHOLD = 30_000;
+export const DISCOUNT_RATE = 0.2;
+
+export function linearMeters(volume: Volume, packageKey: PackageKey): number {
+  return volume.unit === 'lm' ? volume.lmValue : volume.areaM2 * PACKAGES[packageKey].m2ToLm;
+}
+
+export type EstimateLine = PriceLine & {
+  /** "· 54 пог.м" / "· 2 шт" — the quantity the amount was derived from. */
+  qty: string;
+};
+
+export type Estimate = {
+  lines: EstimateLine[];
+  total: number;
+  lm: number;
+  /** Total less 20%, or null when the order is below the discount threshold. */
+  discounted: number | null;
+};
+
+export function computeEstimate(
+  services: ServiceKey[],
+  volume: Volume,
+  packageKey: PackageKey,
+  hoodCount: number,
+): Estimate {
+  const lm = linearMeters(volume, packageKey);
+  const lines: EstimateLine[] = [];
+
+  for (const key of CALCULATOR_SERVICES) {
+    if (!services.includes(key)) continue;
+    const service = SERVICES[key];
+    if (service.kind === 'linear') {
+      lines.push({
+        key,
+        label: SERVICE_SHORT[key].toLowerCase(),
+        amount: round100(lm * service.min),
+        qty: `${Math.round(lm)} пог.м`,
+      });
+    } else if (service.kind === 'unit') {
+      lines.push({
+        key,
+        label: SERVICE_SHORT[key].toLowerCase(),
+        amount: hoodCount * service.price,
+        qty: `${hoodCount} шт`,
+      });
+    } else {
+      lines.push({ key, label: SERVICE_SHORT[key].toLowerCase(), amount: service.price, qty: '' });
+    }
+  }
+
+  const total = lines.reduce((sum, line) => sum + line.amount, 0);
+  return {
+    lines,
+    total,
+    lm,
+    discounted: total >= DISCOUNT_THRESHOLD ? Math.round(total * (1 - DISCOUNT_RATE)) : null,
+  };
+}

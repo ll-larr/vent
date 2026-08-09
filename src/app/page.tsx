@@ -5,7 +5,9 @@ import { StoryEngine } from '@/components/story/StoryEngine';
 import { Process } from '@/components/story/Process';
 import { Advantages } from '@/components/story/Advantages';
 import { Discounts } from '@/components/story/Discounts';
+import { CalculatorSection } from '@/components/story/CalculatorSection';
 import { StoryFaq } from '@/components/story/StoryFaq';
+import { CalculatorProvider } from '@/lib/calculator-context';
 import { StoryFooter } from '@/components/story/StoryFooter';
 import { FAQ } from '@/data/story';
 import { serviceSchema, faqSchema, jsonLdScript } from '@/lib/schema';
@@ -30,12 +32,17 @@ export default function HomePage() {
     <>
       <ProgressBar />
       <Topbar />
-      <main id="main">
-        <Process />
-        <Advantages />
-        <Discounts />
-        <StoryFaq />
-      </main>
+      {/* The provider wraps the sections that share calculator state: presets
+          clicked in the story land in section 07 and in the lead payload. */}
+      <CalculatorProvider>
+        <main id="main">
+          <Process />
+          <Advantages />
+          <Discounts />
+          <CalculatorSection />
+          <StoryFaq />
+        </main>
+      </CalculatorProvider>
       <StoryFooter />
       <StoryEngine />
       <script type="application/ld+json" dangerouslySetInnerHTML={homeJsonLd} />

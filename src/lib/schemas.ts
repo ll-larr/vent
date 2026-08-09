@@ -18,9 +18,17 @@ export const submitSchema = z.object({
     .int('Введите целое число')
     .min(0, 'Площадь не может быть отрицательной')
     .max(100_000, 'Слишком большая площадь'),
+  // The calculator can be driven in duct metres instead of floor area; the
+  // server recomputes the estimate the same way the page does, so it needs
+  // both the mode and the metres.
+  unit: z.enum(['m2', 'lm']).default('m2'),
+  lmValue: z.coerce.number().int().min(0).max(100_000).default(0),
   // Mirrors the calculator so the server can recompute the estimate for the sheet.
   hoodCount: z.coerce.number().int().min(0).max(40).default(0),
-  services: z.array(z.enum(SERVICE_KEYS)).min(1, 'Выберите хотя бы одну услугу'),
+  // May be empty. The story form asks only for name, phone and consent — a
+  // visitor who cleared every chip is still a lead, and rejecting them here
+  // would show a failed-to-send error for a form that looked complete.
+  services: z.array(z.enum(SERVICE_KEYS)).default([]),
   comment: z.string().max(500, 'Слишком длинный комментарий').optional().default(''),
   // Honeypot — must be empty
   website: z.string().max(0).optional().default(''),
