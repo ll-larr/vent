@@ -2,7 +2,10 @@ import type { Metadata } from 'next';
 import { Topbar } from '@/components/story/Topbar';
 import { ProgressBar } from '@/components/story/ProgressBar';
 import { StoryEngine } from '@/components/story/StoryEngine';
+import { Hero } from '@/components/story/Hero';
+import { Technology } from '@/components/story/Technology';
 import { Process } from '@/components/story/Process';
+import { Objects } from '@/components/story/Objects';
 import { Advantages } from '@/components/story/Advantages';
 import { Discounts } from '@/components/story/Discounts';
 import { CalculatorSection } from '@/components/story/CalculatorSection';
@@ -36,8 +39,11 @@ export default function HomePage() {
           clicked in the story land in section 07 and in the lead payload. */}
       <CalculatorProvider>
         <main id="main">
+          <Hero />
+          <Technology />
           <Process />
           <Advantages />
+          <Objects />
           <Discounts />
           <CalculatorSection />
           <StoryFaq />

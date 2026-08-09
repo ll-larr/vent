@@ -3,6 +3,185 @@
    articles and service pages) because the FAQ also feeds JSON-LD, and because
    the same texts will move to a CMS later. */
 
+import type { ServiceKey } from '@/lib/pricing';
+
+export type TechStep = {
+  n: string;
+  title: string;
+  text: string;
+  /** Frame shown on the left while this step is active. */
+  image: string;
+  imageAlt: string;
+  /** Right-hand price note; two lines where the reference has a <br>. */
+  price?: string[];
+  /** Steps 03 and 05 are links that preset the calculator and jump to 07. */
+  svc?: ServiceKey;
+};
+
+/** Section 02 — механически, до металла. Order is the scroll order. */
+export const TECH_STEPS: TechStep[] = [
+  {
+    n: '01',
+    title: 'Диагностика и замер',
+    text: 'Инженер выезжает на объект, считает метраж воздуховодов, смотрит тип и сечение каналов и степень загрязнения. По этому собирается смета.',
+    image: '/images/tech-01-diagnostics.jpg',
+    imageAlt: 'Диагностика и замер на объекте',
+    price: ['4 500 ₽'],
+  },
+  {
+    n: '02',
+    title: 'Закрываем контур',
+    text: 'Накрываем оборудование и мебель, ставим заглушки на решётки и ответвления, вскрываем ревизионные люки. Грязь пойдёт по каналу, а не в помещение.',
+    image: '/images/tech-02-contour.jpg',
+    imageAlt: 'Закрываем контур',
+  },
+  {
+    n: '03',
+    title: 'Щётка на гибком валу',
+    text: 'Вал заходит через люк и идёт по каналу, щётка снимает жир или пыль со стенок до металла.',
+    image: '/images/tech-03-brush.jpg',
+    imageAlt: 'Щётка на гибком валу',
+    price: ['жир от 300 ₽/пог.м', 'пыль от 100 ₽/пог.м'],
+    svc: 'grease',
+  },
+  {
+    n: '04',
+    title: 'Отсос и фильтрация',
+    text: 'К каналу подключён фильтрующий блок: он держит участок под разрежением и вытягивает всё, что сняла щётка.',
+    image: '/images/tech-04-filter.jpg',
+    imageAlt: 'Отсос и фильтрация',
+  },
+  {
+    n: '05',
+    title: 'Зонты и крыльчатки',
+    text: 'Жироулавители снимаем, моем в ванне, ставим обратно. Металл не портим, крепёж не теряем. Гидрофильтры и крыльчатки вентиляторов — тоже наша часть.',
+    image: '/images/tech-05-hoods.jpg',
+    imageAlt: 'Зонты и крыльчатки',
+    price: ['от 2 000 ₽/шт'],
+    svc: 'hood',
+  },
+  {
+    n: '06',
+    title: 'Сборка и приёмка',
+    text: 'Ставим решётки на место, убираем за собой, проходим участки вместе с вами и подписываем акт очистки.',
+    image: '/images/tech-06-handover.jpg',
+    imageAlt: 'Сборка и приёмка',
+  },
+];
+
+export type ObjectTab = {
+  /** Doubles as the calculator package key for the "рассчитать" button. */
+  key: 'restaurant' | 'office' | 'warehouse';
+  title: string;
+  sub: string;
+  thumb: string;
+  heading: string;
+  description: string;
+  bullets: string[];
+  /** Three before/after pairs per tab. */
+  pairs: Array<{ before: string; after: string; caption: string }>;
+};
+
+/** Section 05 — найдите свой объект. */
+export const OBJECT_TABS: ObjectTab[] = [
+  {
+    key: 'restaurant',
+    title: 'Кухня ресторана',
+    sub: 'Жир в воздуховодах и зонтах, ночные смены',
+    thumb: '/images/obj-restaurant-main.jpg',
+    heading: 'Кухня ресторана или кафе',
+    description:
+      'Жир оседает в зонтах и воздуховодах и постепенно превращается в плотный нагар. Кухня начинает дымить, тяга падает, а при проверке это первое, на что смотрят.',
+    bullets: [
+      'Снимаем зонты, моем в ванне и ставим обратно',
+      'Чистим горизонтальные участки и стояки до металла',
+      'Работаем ночью между сменами — точка не закрывается',
+      'Отдаём акт очистки и фотоотчёт по каждой ветке',
+    ],
+    pairs: [
+      {
+        before: '/images/obj-restaurant-1a.jpg',
+        after: '/images/obj-restaurant-1b.jpg',
+        caption: 'кухня ресторана · до и после',
+      },
+      {
+        before: '/images/obj-restaurant-2a.jpg',
+        after: '/images/obj-restaurant-2b.jpg',
+        caption: 'кадр 2 · до и после',
+      },
+      {
+        before: '/images/obj-restaurant-3a.jpg',
+        after: '/images/obj-restaurant-3b.jpg',
+        caption: 'кадр 3 · до и после',
+      },
+    ],
+  },
+  {
+    key: 'office',
+    title: 'Офис и бизнес-центр',
+    sub: 'Пыль, духота и запахи в переговорных',
+    thumb: '/images/obj-office-main.jpg',
+    heading: 'Офис или бизнес-центр',
+    description:
+      'Пыль в каналах садится на решётки и диффузоры: падает воздухообмен, в переговорных душно, между этажами тянет чужими запахами.',
+    bullets: [
+      'Чистим каналы от пыли по этажу или по всему стояку',
+      'Решётки и диффузоры снимаем, моем, ставим на место',
+      'Отсос с фильтрацией — пыль не оседает на рабочих местах',
+      'Выходим в выходные — сотрудники ничего не заметят',
+    ],
+    pairs: [
+      {
+        before: '/images/obj-office-1a.jpg',
+        after: '/images/obj-office-1b.jpg',
+        caption: 'офисный этаж · до и после',
+      },
+      {
+        before: '/images/obj-office-2a.jpg',
+        after: '/images/obj-office-2b.jpg',
+        caption: 'кадр 2 · до и после',
+      },
+      {
+        before: '/images/obj-office-3a.jpg',
+        after: '/images/obj-office-3b.jpg',
+        caption: 'кадр 3 · до и после',
+      },
+    ],
+  },
+  {
+    key: 'warehouse',
+    title: 'Склад и производство',
+    sub: 'Большие объёмы, работа в технологическое окно',
+    thumb: '/images/obj-warehouse-main.jpg',
+    heading: 'Склад или производство',
+    description:
+      'Забитая вентиляция гонит нагрузку на оборудование и портит условия на участке. Считаем по метражу и работаем участками, чтобы не останавливать цех.',
+    bullets: [
+      'Большие объёмы: считаем по метражу, работаем участками',
+      'Магистральные короба и вытяжные шахты целиком',
+      'Встраиваемся в технологическое окно и график смен',
+      'Пропуска, допуск на высоту, согласование заранее',
+    ],
+    pairs: [
+      {
+        before: '/images/obj-warehouse-1a.jpg',
+        after: '/images/obj-warehouse-1b.jpg',
+        caption: 'производство · до и после',
+      },
+      {
+        before: '/images/obj-warehouse-2a.jpg',
+        after: '/images/obj-warehouse-2b.jpg',
+        caption: 'кадр 2 · до и после',
+      },
+      {
+        before: '/images/obj-warehouse-3a.jpg',
+        after: '/images/obj-warehouse-3b.jpg',
+        caption: 'кадр 3 · до и после',
+      },
+    ],
+  },
+];
+
 export type ProcessStep = { n: string; title: string; text: string };
 
 /** Section 03 — от звонка до чистых каналов. */
