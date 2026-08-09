@@ -1,9 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  /* Redesign palette */
+  /* Story palette. The five brand colours are unchanged from bento; the story
+     design adds two near-blacks: a deeper one behind photography so cover
+     images never sit on the same value as the ink surfaces, and a lighter one
+     used only as the hover state of dark cards. */
   --color-bg:           #f6f3ec;
   --color-ink:          #141312;
+  --color-black-deep:   #0e0d0c;
+  --color-ink-hover:    #191817;
+  --color-slot:         #171614;
   --color-brand:        #1e5c32;
   --color-brand-dark:   #0f3d22;
   --color-brand-hover:  #2d7d46;
@@ -30,7 +36,13 @@
 
   --max-width-content: 1320px;
 
+  /* Story design rounds pills, circles and badges only. The 3px on the
+     calculator checkbox square is the single exception and lives inline.
+     Rectangular blocks are never rounded. */
   --radius-pill: 999px;
+  /* Legacy bento radii — still referenced by the not-yet-ported pages
+     (/uslugi, /calculator, /contacts, /privacy). Delete together with the
+     bento components. */
   --radius-card: 14px;
   --radius-tile: 22px;
   --radius-tile-lg: 28px;
@@ -500,6 +512,43 @@
     background: color-mix(in srgb, var(--color-accent) 22%, transparent);
     mix-blend-mode: normal;
   }
+}
+
+/* ===========================================================================
+   STORY — scroll-reveal.
+
+   Content is visible by default. The hidden state only exists while
+   <html class="story-reveal"> is set, and useStoryReveal sets that class from
+   an effect — so no JS, no observer, or a thrown hook all leave the page fully
+   readable instead of blank. The observer then stamps [data-revealed] per
+   element; a 4s failsafe stamps whatever is left.
+   --reveal-y is the per-element travel (16–30px in the reference).
+   =========================================================================== */
+[data-reveal] {
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+}
+html.story-reveal [data-reveal]:not([data-revealed]) {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 22px));
+}
+@media (prefers-reduced-motion: reduce) {
+  html.story-reveal [data-reveal]:not([data-revealed]) {
+    opacity: 1;
+    transform: none;
+  }
+  [data-reveal] {
+    transition: none;
+  }
+}
+
+/* Small mono typography is the story's signature: always uppercase, always
+   tracked. Declared once so no caption can quietly ship without it. */
+.mono-label {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
 }
 
 /* ---------------------------------------------------------------------------

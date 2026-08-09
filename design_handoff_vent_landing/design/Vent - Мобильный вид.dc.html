@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600&family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+@font-face{font-family:"Marggraff";src:url("./fonts/marggraff-kursiv-zarte.woff2") format("woff2");font-display:swap}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f6f3ec;color:#141312;font-family:"Inter Tight",system-ui,sans-serif;text-wrap:pretty}
+a{color:#1e5c32;text-decoration:none}
+a:hover{color:#141312}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#f6f3ec;padding:clamp(28px,4vw,60px)">
+  <div style="display:flex;align-items:center;gap:11px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);margin-bottom:18px"><span style="width:20px;height:1px;background:#1e5c32"></span>мобильный вид</div>
+  <h1 style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(32px,4.4vw,64px);line-height:.98;letter-spacing:-.03em;margin:0 0 14px">Та же история<br />в 390 пикселей.</h1>
+  <p style="font-size:16px;line-height:1.6;color:rgba(20,19,18,.66);max-width:62ch;margin-bottom:clamp(30px,5vh,54px)">Полосы разделов нет, липкие кадры разворачиваются в поток, сплиты складываются в одну колонку. Кадр всегда во всю ширину, текст — с полями 20 px.</p>
+
+  <div style="display:flex;flex-wrap:wrap;gap:clamp(24px,3vw,54px);align-items:flex-start">
+
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+        <div style="height:100%;overflow:auto;background:#0e0d0c;color:#f6f3ec;padding-top:62px">
+          <div style="position:relative;min-height:812px;display:flex;flex-direction:column;justify-content:flex-end;padding:80px 20px 34px;background:repeating-linear-gradient(112deg,rgba(246,243,236,.055) 0 2px,transparent 2px 10px),#0e0d0c">
+            <div style="position:absolute;inset:0;background:radial-gradient(100% 60% at 70% 6%,rgba(30,92,50,.3),transparent 62%),linear-gradient(0deg,rgba(14,13,12,.95) 0%,rgba(14,13,12,.4) 58%,rgba(14,13,12,.7) 100%)"></div>
+            <div style="position:absolute;top:70px;left:20px;right:20px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(246,243,236,.4);line-height:2">фото / видео — сюда<br />кадр канала изнутри до чистки</div>
+            <div style="position:absolute;top:14px;left:20px;right:20px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+              <span style="font-family:Fraunces,Georgia,serif;font-weight:400;font-size:19px;letter-spacing:-.02em">vent<span style="font-family:Marggraff,Fraunces,Georgia,serif;font-size:.9em;color:#c8ff3e">.team</span></span>
+              <span style="background:#c8ff3e;color:#141312;padding:9px 15px;border-radius:999px;font-size:12.5px;font-weight:500">Рассчитать →</span>
+            </div>
+            <div style="position:relative;display:flex;flex-direction:column;gap:18px">
+              <div style="display:flex;align-items:center;gap:9px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.6)"><span style="width:16px;height:1px;background:#c8ff3e"></span>чистка вентиляции · москва</div>
+              <div style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:52px;line-height:.9;letter-spacing:-.038em">Чистим то,<br />что никто<br /><span style="color:transparent;-webkit-text-stroke:1.2px #f6f3ec">не видит.</span></div>
+              <div style="border-top:1px solid rgba(246,243,236,.14);padding-top:16px;display:flex;flex-direction:column;gap:16px">
+                <p style="font-size:14.5px;line-height:1.55;color:rgba(246,243,236,.74)">Спецсервис по чистке вентканалов, вытяжек и зонтов. Работаем в нерабочее время — объект не останавливается.</p>
+                <div style="display:flex;flex-direction:column;gap:7px">
+                  <span style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:20px;letter-spacing:-.015em;border-bottom:1px solid rgba(200,255,62,.5);padding-bottom:6px">Кухня 120 м² — от 20 200 ₽ →</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.45)">ориентир до осмотра</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </x-import>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);max-width:402px;line-height:1.8">01 · кто мы<br /><span style="color:rgba(20,19,18,.4)">кадр во весь экран, заголовок в три строки, крючок расчёта внизу</span></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+        <div style="height:100%;overflow:auto;background:#f6f3ec;padding-top:62px">
+          <div style="height:300px;background:repeating-linear-gradient(112deg,rgba(246,243,236,.06) 0 2px,transparent 2px 10px),#0e0d0c;display:grid;place-items:center;position:relative">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(246,243,236,.4);text-align:center;line-height:2;padding:20px">фото — сюда<br />бригада заходит на объект после закрытия</span>
+            <span style="position:absolute;left:20px;bottom:16px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(246,243,236,.55)">01 / 05 · ночь на объекте</span>
+          </div>
+          <div style="padding:26px 20px 40px">
+            <div style="display:flex;align-items:center;gap:9px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);margin-bottom:12px"><span style="width:16px;height:1px;background:#1e5c32"></span>02 · бригада и услуги</div>
+            <div style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:34px;line-height:.98;letter-spacing:-.032em;margin-bottom:10px">Одна ночь<br />на объекте.</div>
+            <p style="font-size:14.5px;line-height:1.55;color:rgba(20,19,18,.65);margin-bottom:18px">Приезжает бригада из двух–четырёх человек. Один из них — ответственный за объект: с ним вы общаетесь весь проект, не с диспетчером.</p>
+            <div style="display:flex;gap:12px;padding:14px 0;border-top:1px solid rgba(20,19,18,.14)"><span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#1e5c32;padding-top:4px">01</span><span><span style="display:block;font-family:Fraunces,Georgia,serif;font-weight:400;font-size:19px;line-height:1.15;letter-spacing:-.015em">Заходим после закрытия</span><span style="display:block;font-size:13.5px;line-height:1.5;color:rgba(20,19,18,.65);margin-top:4px">Накрываем оборудование, ставим свет, размечаем участки.</span></span></div>
+            <div style="display:flex;gap:12px;padding:14px 0;border-top:1px solid rgba(20,19,18,.14)"><span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#1e5c32;padding-top:4px">02</span><span style="flex:1 1 auto"><span style="display:block;font-family:Fraunces,Georgia,serif;font-weight:400;font-size:19px;line-height:1.15;letter-spacing:-.015em">Смотрим камерой внутрь</span><span style="display:block;font-size:13.5px;line-height:1.5;color:rgba(20,19,18,.65);margin-top:4px">Видеоинспекция каналов до работы.</span></span><span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:rgba(20,19,18,.55);white-space:nowrap;padding-top:5px">4 500 ₽</span></div>
+            <div style="display:flex;gap:12px;padding:14px 0;border-top:1px solid rgba(20,19,18,.14)"><span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#1e5c32;padding-top:4px">03</span><span style="flex:1 1 auto"><span style="display:block;font-family:Fraunces,Georgia,serif;font-weight:400;font-size:19px;line-height:1.15;letter-spacing:-.015em">Снимаем зонты в ванну</span><span style="display:block;font-size:13.5px;line-height:1.5;color:rgba(20,19,18,.65);margin-top:4px">Разбираем, моем, ставим обратно.</span></span><span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:rgba(20,19,18,.55);white-space:nowrap;padding-top:5px">от 2 000 ₽</span></div>
+            <div style="display:flex;gap:12px;padding:14px 0;border-top:1px solid rgba(20,19,18,.14);border-bottom:1px solid rgba(20,19,18,.14)"><span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#1e5c32;padding-top:4px">04</span><span style="flex:1 1 auto"><span style="display:block;font-family:Fraunces,Georgia,serif;font-weight:400;font-size:19px;line-height:1.15;letter-spacing:-.015em">Чистим каналы</span><span style="display:block;font-size:13.5px;line-height:1.5;color:rgba(20,19,18,.65);margin-top:4px">Жир, из-за которого дымит кухня. Или пыль, из-за которой душно.</span></span><span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:rgba(20,19,18,.55);white-space:nowrap;padding-top:5px;text-align:right">от 300 ₽<br />от 100 ₽</span></div>
+            <p style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.45);margin-top:14px">кухня открывается утром так, будто ночью ничего не было</p>
+          </div>
+        </div>
+      </x-import>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);max-width:402px;line-height:1.8">02 · бригада<br /><span style="color:rgba(20,19,18,.4)">липкий кадр становится шапкой, шаги идут списком</span></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+        <div style="height:100%;overflow:auto;background:#f6f3ec;padding-top:62px">
+          <div style="padding:26px 20px 20px">
+            <div style="display:flex;align-items:center;gap:9px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);margin-bottom:12px"><span style="width:16px;height:1px;background:#1e5c32"></span>05 · найдите свой объект</div>
+            <div style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:34px;line-height:.98;letter-spacing:-.032em">Готовое решение<br />под ваш объект.</div>
+          </div>
+          <div style="height:230px;background:repeating-linear-gradient(112deg,rgba(20,19,18,.06) 0 2px,transparent 2px 10px),#eeebe3;display:grid;place-items:center"><span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(20,19,18,.4);text-align:center;line-height:2;padding:20px">фото — сюда<br />кухня общепита, зонты над линией</span></div>
+          <div style="padding:22px 20px 40px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.45);margin-bottom:10px">пакет 01 · общепит</div>
+            <div style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:30px;line-height:1;letter-spacing:-.03em;margin-bottom:16px">Кухня ресторана или кафе</div>
+            <div style="display:flex;gap:10px;padding:11px 0;border-top:1px solid rgba(20,19,18,.14);font-size:14px;line-height:1.5;color:rgba(20,19,18,.75)"><span style="color:#1e5c32">—</span>Чистка каналов от жира до выхода на кровлю</div>
+            <div style="display:flex;gap:10px;padding:11px 0;border-top:1px solid rgba(20,19,18,.14);font-size:14px;line-height:1.5;color:rgba(20,19,18,.75)"><span style="color:#1e5c32">—</span>Зонты снимаем, моем в ванне, ставим обратно</div>
+            <div style="display:flex;gap:10px;padding:11px 0;border-top:1px solid rgba(20,19,18,.14);font-size:14px;line-height:1.5;color:rgba(20,19,18,.75)"><span style="color:#1e5c32">—</span>Видеоинспекция до и после, запись отдаём вам</div>
+            <div style="display:flex;gap:10px;padding:11px 0;border-top:1px solid rgba(20,19,18,.14);border-bottom:1px solid rgba(20,19,18,.14);font-size:14px;line-height:1.5;color:rgba(20,19,18,.75)"><span style="color:#1e5c32">—</span>Ночная смена — к открытию кухня работает</div>
+            <div style="display:inline-flex;align-items:center;gap:10px;margin-top:20px;background:#141312;color:#f6f3ec;padding:15px 22px;border-radius:999px;font-size:14.5px;font-weight:500;min-height:48px">Посчитать для кухни →</div>
+          </div>
+        </div>
+      </x-import>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);max-width:402px;line-height:1.8">05 · ваш объект<br /><span style="color:rgba(20,19,18,.4)">пакеты идут кадр за кадром, кнопка ведёт в расчёт с готовым составом</span></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+        <div style="height:100%;overflow:auto;background:#f6f3ec;padding-top:62px">
+          <div style="padding:26px 20px 24px">
+            <div style="display:flex;align-items:center;gap:9px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);margin-bottom:12px"><span style="width:16px;height:1px;background:#1e5c32"></span>07 · калькулятор</div>
+            <div style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:34px;line-height:.98;letter-spacing:-.032em;margin-bottom:8px">Сколько это стоит?</div>
+            <p style="font-size:14.5px;line-height:1.55;color:rgba(20,19,18,.66);margin-bottom:20px">Выберите тип объекта, отметьте услуги и площадь. Точная цена — после осмотра.</p>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);margin-bottom:8px">1 / тип объекта</div>
+            <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px">
+              <span style="padding:11px 15px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:#141312;color:#f6f3ec">Общепит</span>
+              <span style="padding:11px 15px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:#fff;border:1px solid rgba(20,19,18,.14)">Офис</span>
+              <span style="padding:11px 15px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:#fff;border:1px solid rgba(20,19,18,.14)">Производство</span>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);margin-bottom:8px">2 / услуги</div>
+            <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px">
+              <span style="display:inline-flex;align-items:center;gap:8px;padding:11px 15px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:#141312;color:#f6f3ec"><span style="width:11px;height:11px;border-radius:3px;background:#c8ff3e;color:#141312;display:grid;place-items:center;font-size:8px">✓</span>Жир · 300 ₽/пог.м</span>
+              <span style="display:inline-flex;align-items:center;gap:8px;padding:11px 15px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:#141312;color:#f6f3ec"><span style="width:11px;height:11px;border-radius:3px;background:#c8ff3e;color:#141312;display:grid;place-items:center;font-size:8px">✓</span>Зонты · 2 000 ₽/шт</span>
+              <span style="display:inline-flex;align-items:center;gap:8px;padding:11px 15px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:#fff;border:1px solid rgba(20,19,18,.14)"><span style="width:11px;height:11px;border-radius:3px;background:rgba(20,19,18,.1)"></span>Пыль · 100 ₽/пог.м</span>
+            </div>
+            <div style="background:#fff;padding:18px 18px 20px">
+              <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+                <span style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:40px;letter-spacing:-.025em">120<span style="font-size:.55em;color:rgba(20,19,18,.45)"> м²</span></span>
+                <span style="display:flex;gap:5px"><span style="padding:8px 11px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:9.5px;background:#f4f4f2;color:rgba(20,19,18,.6)">50</span><span style="padding:8px 11px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:9.5px;background:#1e5c32;color:#f6f3ec">120</span><span style="padding:8px 11px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:9.5px;background:#f4f4f2;color:rgba(20,19,18,.6)">200</span></span>
+              </div>
+              <div style="height:5px;border-radius:999px;background:#f4f4f2;margin-top:16px;position:relative"><span style="position:absolute;left:0;top:0;bottom:0;width:40%;border-radius:999px;background:#1e5c32"></span><span style="position:absolute;left:40%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 6px #1e5c32,0 3px 10px rgba(30,92,50,.25)"></span></div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(20,19,18,.45);margin-top:16px;padding-top:12px;border-top:1px solid rgba(20,19,18,.1)">≈ 54 пог.м каналов для этого типа объекта</div>
+            </div>
+          </div>
+          <div style="background:#141312;color:#f6f3ec;padding:26px 20px 34px;display:flex;flex-direction:column;gap:12px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.55)">итоговая вилка</div>
+            <div style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:64px;line-height:.86;letter-spacing:-.04em;color:#c8ff3e">20 200<span style="font-size:.22em;vertical-align:super;color:rgba(246,243,236,.7);margin-left:5px">₽</span></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.55)">от · до осмотра инженера</div>
+            <div style="border-top:1px solid rgba(246,243,236,.14);padding-top:12px;display:flex;flex-direction:column;gap:7px;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(246,243,236,.72)"><span style="display:flex;justify-content:space-between">жир · 54 пог.м <b style="color:#f6f3ec;font-weight:500">16 200 ₽</b></span><span style="display:flex;justify-content:space-between">зонты · 2 шт <b style="color:#f6f3ec;font-weight:500">4 000 ₽</b></span></div>
+            <div style="display:inline-flex;align-items:center;justify-content:center;gap:10px;background:#c8ff3e;color:#141312;padding:16px 22px;border-radius:999px;font-size:14.5px;font-weight:500;margin-top:6px;min-height:48px">Оставить заявку →</div>
+            <p style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(246,243,236,.45);line-height:1.8">не является публичной офертой</p>
+          </div>
+        </div>
+      </x-import>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);max-width:402px;line-height:1.8">07 · калькулятор<br /><span style="color:rgba(20,19,18,.4)">панель итога уходит под настройки, кнопки — от 48 px</span></div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

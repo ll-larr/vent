@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&amp;family=Inter+Tight:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:"Marggraff";src:url("./fonts/marggraff-kursiv-zarte.woff2") format("woff2");font-display:swap}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:#f6f3ec;color:#141312;font-family:"Inter Tight",system-ui,sans-serif;overflow-x:hidden;text-wrap:pretty}
+::selection{background:#1e5c32;color:#f6f3ec}
+a{color:#1e5c32;text-decoration:none}
+a:hover{color:#141312}
+button{font:inherit;color:inherit;background:none;border:0}
+</style>
+</helmet>
+
+<div data-progress-bar="" style="position:fixed;top:0;left:0;right:0;height:2px;background:#c8ff3e;transform:scaleX(0);transform-origin:left center;z-index:60;pointer-events:none"></div>
+
+<header style="position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:clamp(12px,2vw,32px);padding:13px clamp(18px,3vw,56px);background:rgba(246,243,236,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(20,19,18,.1)">
+  <a href="./Vent - Лендинг-история.dc.html" style="display:flex;align-items:baseline;gap:1px;font-family:Fraunces,Georgia,serif;font-weight:400;font-size:21px;letter-spacing:-.02em;color:#141312">vent<span style="font-family:Marggraff,Fraunces,Georgia,serif;font-size:.9em;color:#1e5c32">.team</span></a>
+  <nav aria-label="Разделы" style="display:flex;align-items:center;gap:clamp(13px,1.7vw,28px)">
+    <a href="./Vent - Лендинг-история.dc.html#02" style="font-size:13.5px;color:rgba(20,19,18,.62);white-space:nowrap">Технология</a>
+    <a href="./Vent - Лендинг-история.dc.html#05" style="font-size:13.5px;color:rgba(20,19,18,.62);white-space:nowrap">Объекты</a>
+    <a href="./Vent - Лендинг-история.dc.html#08" style="font-size:13.5px;color:rgba(20,19,18,.62);white-space:nowrap">Вопросы</a>
+    <a href="./Vent - Статьи.dc.html" style="font-size:13.5px;color:#141312;white-space:nowrap;border-bottom:1.5px solid #1e5c32;padding-bottom:2px">Статьи</a>
+  </nav>
+  <a href="./Vent - Лендинг-история.dc.html#07" style="display:inline-flex;align-items:center;gap:9px;background:#141312;color:#f6f3ec;padding:10px 17px;border-radius:999px;font-size:13px;font-weight:500;white-space:nowrap;transition:background .35s ease,color .35s ease" style-hover="background:#c8ff3e;color:#141312">Рассчитать <span>→</span></a>
+</header>
+
+<article>
+  <div style="padding:clamp(28px,5vh,64px) clamp(22px,3vw,56px) clamp(20px,3vh,34px);max-width:1180px;margin:0 auto">
+    <a href="./Vent - Статьи.dc.html" style="display:inline-flex;align-items:center;gap:9px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.55);margin-bottom:clamp(18px,3vh,30px)"><span>←</span> все статьи</a>
+    <div style="display:flex;gap:16px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.45);margin-bottom:14px"><span style="color:#1e5c32">{{ tag }}</span>{{ date }}<span>{{ read }}</span></div>
+    <h1 style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(34px,5.4vw,86px);line-height:.96;letter-spacing:-.036em;margin:0 0 clamp(14px,2vh,22px);max-width:20ch">{{ title }}</h1>
+    <p style="font-size:clamp(17px,1.5vw,24px);line-height:1.5;color:rgba(20,19,18,.72);max-width:56ch">{{ lead }}</p>
+  </div>
+
+  <div style="position:relative;width:100%;aspect-ratio:{{ heroRatio }};background:#0e0d0c;overflow:hidden">
+    <img src="{{ hero }}" alt="{{ heroAlt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+    <span style="position:absolute;left:clamp(16px,3vw,40px);bottom:clamp(14px,2vh,26px);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.8);background:rgba(14,13,12,.55);padding:7px 12px;border-radius:999px">{{ heroCap }}</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:{{ bodyCols }};gap:clamp(24px,5vw,84px);max-width:1180px;margin:0 auto;padding:clamp(30px,5vh,64px) clamp(22px,3vw,56px) clamp(40px,6vh,80px)">
+    <aside style="min-width:0">
+      <div style="position:{{ stickyPos }};top:86px;display:flex;flex-direction:column;gap:16px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.45);padding-bottom:10px;border-bottom:1px solid rgba(20,19,18,.14)">в этой статье</div>
+        <sc-for list="{{ toc }}" as="t" hint-placeholder-count="4">
+          <a href="{{ t.href }}" style="font-size:14.5px;line-height:1.45;color:rgba(20,19,18,.6);transition:color .3s ease" style-hover="color:#141312">{{ t.v }}</a>
+        </sc-for>
+        <div style="margin-top:6px;padding-top:16px;border-top:1px solid rgba(20,19,18,.14);display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.45)">нужен расчёт?</span>
+          <a href="./Vent - Лендинг-история.dc.html#07" style="display:inline-flex;align-items:center;justify-content:center;gap:9px;background:#141312;color:#f6f3ec;padding:13px 18px;border-radius:999px;font-size:14px;font-weight:500;transition:background .35s ease,color .35s ease" style-hover="background:#c8ff3e;color:#141312">Калькулятор <span>→</span></a>
+        </div>
+      </div>
+    </aside>
+
+    <div style="min-width:0;display:flex;flex-direction:column;gap:clamp(16px,2.4vh,26px)">
+      <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="8">
+        <div id="{{ b.anchor }}" style="scroll-margin-top:96px">
+          <sc-if value="{{ b.isH }}"><h2 style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(26px,2.9vw,44px);line-height:1.06;letter-spacing:-.03em;margin:clamp(10px,1.6vh,20px) 0 0;max-width:24ch">{{ b.v }}</h2></sc-if>
+          <sc-if value="{{ b.isP }}"><p style="font-size:clamp(16px,1.15vw,18.5px);line-height:1.65;color:rgba(20,19,18,.8);max-width:68ch">{{ b.v }}</p></sc-if>
+          <sc-if value="{{ b.isQuote }}"><p style="font-family:Fraunces,Georgia,serif;font-weight:300;font-style:italic;font-size:clamp(22px,2.4vw,36px);line-height:1.22;letter-spacing:-.026em;color:#1e5c32;border-left:2px solid #c8ff3e;padding:6px 0 6px clamp(16px,2vw,28px);max-width:34ch">{{ b.v }}</p></sc-if>
+          <sc-if value="{{ b.isNote }}"><p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;line-height:1.85;color:rgba(20,19,18,.5);border-top:1px solid rgba(20,19,18,.14);padding-top:14px;max-width:74ch">{{ b.v }}</p></sc-if>
+          <sc-if value="{{ b.isList }}">
+            <div style="display:flex;flex-direction:column;max-width:68ch">
+              <sc-for list="{{ b.items }}" as="i" hint-placeholder-count="4">
+                <span style="display:grid;grid-template-columns:26px 1fr;gap:12px;padding:11px 0;border-top:1px solid rgba(20,19,18,.14);font-size:clamp(15.5px,1.1vw,17.5px);line-height:1.5;color:rgba(20,19,18,.8)"><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:#1e5c32;padding-top:4px">{{ i.n }}</span>{{ i.v }}</span>
+              </sc-for>
+              <span style="border-top:1px solid rgba(20,19,18,.14)"></span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ b.isImg }}">
+            <figure style="margin:clamp(6px,1.4vh,16px) 0">
+              <span style="position:relative;display:block;overflow:hidden;background:#0e0d0c;aspect-ratio:16/9"><img src="{{ b.src }}" alt="{{ b.cap }}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></span>
+              <figcaption style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(20,19,18,.45);margin-top:10px">{{ b.cap }}</figcaption>
+            </figure>
+          </sc-if>
+          <sc-if value="{{ b.isPair }}">
+            <figure style="margin:clamp(6px,1.4vh,16px) 0">
+              <span style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                <span style="position:relative;display:block;overflow:hidden;background:#0e0d0c;aspect-ratio:4/3"><img src="{{ b.src }}" alt="До чистки" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><span style="position:absolute;left:10px;top:10px;background:rgba(20,19,18,.86);color:#f6f3ec;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;padding:6px 11px;border-radius:999px">до</span></span>
+                <span style="position:relative;display:block;overflow:hidden;background:#0e0d0c;aspect-ratio:4/3"><img src="{{ b.src2 }}" alt="После чистки" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><span style="position:absolute;left:10px;top:10px;background:#c8ff3e;color:#141312;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;padding:6px 11px;border-radius:999px">после</span></span>
+              </span>
+              <figcaption style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(20,19,18,.45);margin-top:10px">{{ b.cap }}</figcaption>
+            </figure>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</article>
+
+<section style="background:#141312;color:#f6f3ec;padding:clamp(40px,6vh,72px) clamp(22px,3vw,56px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px">
+  <div style="min-width:0">
+    <h2 style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(28px,3.6vw,56px);line-height:1;letter-spacing:-.032em;margin:0 0 10px">Посчитать для своего объекта.</h2>
+    <p style="font-size:clamp(15px,1.1vw,17px);line-height:1.6;color:rgba(246,243,236,.7);max-width:48ch">Калькулятор даёт вилку за минуту. Точную сумму инженер называет на осмотре — и дальше она не меняется.</p>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:12px">
+    <a href="./Vent - Лендинг-история.dc.html#07" style="display:inline-flex;align-items:center;gap:10px;background:#c8ff3e;color:#141312;padding:15px 24px;border-radius:999px;font-size:14.5px;font-weight:500;transition:background .35s ease" style-hover="background:#f6f3ec">Открыть калькулятор <span>→</span></a>
+    <a href="tel:+74951200404" style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(246,243,236,.24);color:#f6f3ec;padding:14px 22px;border-radius:999px;font-size:14.5px;transition:color .35s ease,border-color .35s ease" style-hover="color:#c8ff3e;border-color:#c8ff3e">+7 (495) 120-04-04</a>
+  </div>
+</section>
+
+<section style="padding:clamp(36px,5.5vh,68px) clamp(22px,3vw,56px) clamp(44px,6vh,80px)">
+  <div style="display:flex;align-items:center;gap:11px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);margin-bottom:clamp(16px,2.5vh,26px)"><span style="width:20px;height:1px;background:#1e5c32"></span>читайте также</div>
+  <div style="display:grid;grid-template-columns:{{ relCols }};gap:1px;background:rgba(20,19,18,.14)">
+    <sc-for list="{{ related }}" as="r" hint-placeholder-count="3">
+      <a href="{{ r.href }}" style="background:#f6f3ec;padding:clamp(16px,1.8vw,24px);display:flex;flex-direction:column;gap:12px;color:#141312;transition:background .35s ease" style-hover="background:#ffffff">
+        <span style="position:relative;display:block;overflow:hidden;background:#0e0d0c;aspect-ratio:16/9"><img src="{{ r.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.45)">{{ r.read }}</span>
+        <span style="display:block;font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(19px,1.7vw,26px);line-height:1.14;letter-spacing:-.022em">{{ r.title }}</span>
+      </a>
+    </sc-for>
+  </div>
+</section>
+
+<footer style="background:#141312;color:#f6f3ec;padding:24px clamp(22px,3vw,56px) 28px">
+  <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(246,243,236,.45)">
+    <span>Vent.team · чистка вентиляции · москва и область</span>
+    <a href="./Vent - Лендинг-история.dc.html" style="color:rgba(246,243,236,.7);border-bottom:1px solid rgba(246,243,236,.2)" style-hover="color:#c8ff3e">На главную</a>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  DATA = {
+    'periodichnost-chistki-ventilyacii': {
+      tag: 'нормативы', date: '05.08.2026', read: '6 мин',
+      title: 'Периодичность чистки вентиляции по СанПиН',
+      lead: 'Универсального «раз в год для всех» не существует. Срок задаёт не календарь, а состояние каналов и тип объекта — ниже практические ориентиры и то, от чего график сдвигается.',
+      hero: './img/art-sanpin.jpg', heroCap: 'периодичность чистки · санитарные требования',
+      heroAlt: 'Иллюстрация к статье о периодичности чистки вентиляции',
+      blocks: [
+        { t: 'p', v: 'Вопрос «как часто» почти всегда возникает перед проверкой или после того, как кухня начала дымить. Нормативные документы отвечают на него осторожно: они требуют держать систему вентиляции в исправном и чистом состоянии, но не назначают дату для конкретного помещения.' },
+        { t: 'h', v: 'Что требуют документы' },
+        { t: 'p', v: 'Санитарные правила обязывают содержать системы вентиляции и кондиционирования в исправном состоянии и очищать их по мере загрязнения. Правила противопожарного режима отдельно говорят про очистку вентиляционных камер, фильтров и воздуховодов от горючих отходов — это в первую очередь про кухни с интенсивной жаркой, где в канале копится жир. Проверяющий смотрит не на календарь, а на два факта: чистый ли канал и есть ли документ, подтверждающий последнюю очистку.' },
+        { t: 'quote', v: 'Дата в акте важна ровно настолько, насколько ей соответствует состояние канала.' },
+        { t: 'h', v: 'Практические ориентиры по типам объектов' },
+        { t: 'list', items: [
+          'Кухни с интенсивной жаркой, грилем, воком, фритюром — раз в 3 месяца.',
+          'Кухни со средней нагрузкой, кофейни, пекарни — раз в 6 месяцев.',
+          'Офисы и бизнес-центры — раз в 6–12 месяцев, по состоянию решёток и диффузоров.',
+          'Склады и производство — раз в 12 месяцев или по внутреннему регламенту объекта.',
+          'После ремонта, длительного простоя или смены концепции кухни — внеплановая чистка.'
+        ] },
+        { t: 'pair', src: './img/grease1-before.jpg', src2: './img/grease1-after.jpg', cap: 'один участок магистрального канала кухни: до чистки и после' },
+        { t: 'h', v: 'От чего график сдвигается' },
+        { t: 'p', v: 'Два одинаковых по площади ресторана могут требовать разного интервала. Быстрее зарастают каналы там, где много открытого огня и жарки, где длинная горизонтальная ветка до кровли, где жироулавливающие фильтры моют редко или ставят обратно мокрыми. В офисах интервал определяет пыль: сторона улицы, этажность, состояние приточных фильтров.' },
+        { t: 'p', v: 'Простое правило: если на стенке канала слой отложений заметен на глаз и снимается пальцем — вы уже за пределами графика, независимо от того, что написано в прошлом акте.' },
+        { t: 'h', v: 'Как это зафиксировать' },
+        { t: 'p', v: 'Удобнее всего закрепить периодичность договором на обслуживание: в нём фиксируется интервал, состав работ и стоимость каждой чистки. Мы ведём график сами и напоминаем о сроке за пару недель — чтобы дата в акте никогда не расходилась с реальным состоянием каналов.' },
+        { t: 'note', v: 'материал носит справочный характер · точную периодичность и перечень документов для вашего объекта уточняйте по действующей редакции нормативных актов' }
+      ]
+    },
+    'kak-chasto-chistit-ventilyaciyu-v-restorane': {
+      tag: 'общепит', date: '05.08.2026', read: '5 мин',
+      title: 'Как часто чистить вентиляцию в ресторане',
+      lead: 'Интервал для кухни считается не по площади зала, а по тому, что и как на ней готовят. Разбираем признаки, по которым видно, что чистить пора раньше графика.',
+      hero: './img/art-restaurant.jpg', heroCap: 'кухня общепита · вытяжная вентиляция',
+      heroAlt: 'Иллюстрация к статье о чистке вентиляции в ресторане',
+      blocks: [
+        { t: 'p', v: 'Жир в вытяжке — расходник процесса. Он копится всегда, вопрос только в скорости: гриль и фритюр дают плотный нагар за считанные недели, пароконвектомат и индукция — заметно медленнее.' },
+        { t: 'h', v: 'Базовый интервал' },
+        { t: 'list', items: [
+          'Интенсивная жарка, гриль, вок, фритюр, работа 7 дней в неделю — раз в 3 месяца.',
+          'Средняя нагрузка, смешанное меню — раз в 4–6 месяцев.',
+          'Кофейни, пекарни, кондитерские без активной жарки — раз в 6–12 месяцев.'
+        ] },
+        { t: 'p', v: 'Это ориентир для планирования бюджета. Точный срок ставится после первого осмотра: инженер вскрывает ревизионные люки и смотрит толщину отложений на разных участках ветки.' },
+        { t: 'h', v: 'Признаки, что пора раньше' },
+        { t: 'list', items: [
+          'Тяга упала: дым от линии уходит в зал, повара жалуются на жару.',
+          'Запах кухни ощущается в зале или в соседних помещениях.',
+          'На зонте и потолке появляются капли жира, на фильтрах — плотная корка.',
+          'Гул или вибрация вентилятора — на крыльчатке накопился слой.',
+          'Прошлый акт очистки старше полугода, а объект работает без выходных.'
+        ] },
+        { t: 'pair', src: './img/grease2-before.jpg', src2: './img/grease2-after.jpg', cap: 'вытяжной короб над линией: состояние до работ и после' },
+        { t: 'h', v: 'Как встроить работы в смену' },
+        { t: 'p', v: 'Кухню закрывать не нужно. Обычно мы работаем ночью или в санитарный день: накрываем оборудование, ставим заглушки на решётки, подключаем к каналу фильтрующий блок и снимаем отложения щёткой на гибком валу. Зонты и жироулавители снимаются и моются в ванне отдельно.' },
+        { t: 'quote', v: 'Кухня на 120 м² — это, как правило, одна ночная смена: к открытию точка работает как обычно.' },
+        { t: 'p', v: 'После работ вы получаете акт очистки, акт выполненных работ и фотоотчёт по участкам — те самые кадры до и после, снятые с одной точки.' }
+      ]
+    },
+    'akt-ochistki-ventilyacii': {
+      tag: 'документы', date: '05.08.2026', read: '4 мин',
+      title: 'Акт очистки вентиляции: что в нём должно быть',
+      lead: 'Акт — это не формальность на одну страницу, а подтверждение того, что работы действительно выполнены и на каких именно участках. Разбираем состав документа.',
+      hero: './img/art-akt.jpg', heroCap: 'акт очистки вентиляции · приёмка работ',
+      heroAlt: 'Иллюстрация к статье об акте очистки вентиляции',
+      blocks: [
+        { t: 'p', v: 'Акт очистки спрашивают при проверках, при сдаче объекта арендодателю и при страховых разбирательствах. Документ без конкретики — с одной строкой «выполнена очистка вентиляции» — вопросов снимает мало.' },
+        { t: 'h', v: 'Обязательный минимум' },
+        { t: 'list', items: [
+          'Дата и адрес объекта, наименование заказчика и исполнителя.',
+          'Перечень систем и участков: какие ветки, какая протяжённость, какие зонты и фильтры.',
+          'Метод очистки: механическая щёткой, с отсосом и фильтрацией, с применением химии или без.',
+          'Состояние до и после работ — со ссылкой на фотоотчёт.',
+          'Рекомендованный срок следующей очистки.',
+          'Подписи представителей обеих сторон.'
+        ] },
+        { t: 'h', v: 'Почему без фотоотчёта акт слабый' },
+        { t: 'p', v: 'Канал закрыт: ни заказчик, ни проверяющий не видят его изнутри. Фотоотчёт по участкам — единственный способ показать результат. Мы снимаем каждый участок с одной точки до начала работ и после, привязываем кадры к схеме и прикладываем к акту.' },
+        { t: 'quote', v: 'Приёмка идёт по фотоотчёту: вы смотрите участок за участком и подписываете акт, когда вопросов не остаётся.' },
+        { t: 'h', v: 'Кто подписывает' },
+        { t: 'p', v: 'Со стороны исполнителя — ответственный инженер, который вёл работы на объекте. Со стороны заказчика — тот, кто отвечает за помещение: управляющий, шеф-повар, технический директор. Экземпляра всегда два, и оба остаются подписанными.' },
+        { t: 'note', v: 'форма акта не унифицирована · состав пунктов может отличаться в зависимости от требований объекта и надзорного органа' }
+      ]
+    },
+    'shtrafy-za-gryaznuyu-ventilyaciyu': {
+      tag: 'проверки', date: '05.08.2026', read: '5 мин',
+      title: 'Штраф за грязную вентиляцию: чем рискует бизнес',
+      lead: 'Вентиляцию проверяют сразу с двух сторон — санитарной и противопожарной. Разбираем, что смотрят на объекте и чем оборачивается запущенный канал.',
+      hero: './img/art-fine.jpg', heroCap: 'проверка объекта · санитарный и пожарный надзор',
+      heroAlt: 'Иллюстрация к статье о штрафах за грязную вентиляцию',
+      blocks: [
+        { t: 'p', v: 'Грязная вентиляция редко бывает единственным замечанием. Обычно она идёт в связке: запах в зале, жир на потолке, неработающая вытяжка над линией — и дальше проверка смотрит глубже.' },
+        { t: 'h', v: 'Кто и что проверяет' },
+        { t: 'list', items: [
+          'Роспотребнадзор — санитарное состояние помещений и систем вентиляции, наличие документов об очистке.',
+          'Пожарный надзор — жировые отложения в каналах и камерах как горючую нагрузку и путь распространения огня.',
+          'Арендодатель или управляющая компания — состояние общедомовых шахт и выходов на кровлю.'
+        ] },
+        { t: 'p', v: 'На объекте смотрят вполне конкретные вещи: вскрывают ревизионный люк, проверяют жироулавливающие фильтры, оценивают тягу и запрашивают акт последней очистки с фотоотчётом.' },
+        { t: 'quote', v: 'Слой жира в канале — это не про эстетику. Это горючая нагрузка внутри системы, которая проходит через всё здание.' },
+        { t: 'h', v: 'Чем заканчивается' },
+        { t: 'p', v: 'Последствия зависят от тяжести нарушения и от того, повторное оно или нет: от предписания с сроком устранения до административного штрафа, а в тяжёлых случаях — до приостановки деятельности. Конкретные суммы определяются статьёй КоАП и обстоятельствами, поэтому называть «прайс» на штрафы бессмысленно. Куда дороже обходится второй сценарий — возгорание в канале над работающей кухней.' },
+        { t: 'pair', src: './img/dust-before.jpg', src2: './img/dust-after.jpg', cap: 'приточный канал офисного этажа: запущенное состояние и результат чистки' },
+        { t: 'h', v: 'Как подготовиться' },
+        { t: 'list', items: [
+          'Держать актуальный акт очистки с фотоотчётом по участкам.',
+          'Соблюдать интервал: для кухонь с активной жаркой — раз в 3 месяца.',
+          'Мыть жироулавливающие фильтры регулярно, а не перед приездом проверки.',
+          'Фиксировать график чисток договором на обслуживание — это снимает вопрос «когда в последний раз».'
+        ] },
+        { t: 'note', v: 'материал носит справочный характер и не является юридической консультацией' }
+      ]
+    },
+    'trebovaniya-hassp-k-ventilyacii': {
+      tag: 'хассп', date: '05.08.2026', read: '5 мин',
+      title: 'Требования ХАССП к вентиляции',
+      lead: 'В системе ХАССП вентиляция — это источник риска загрязнения продукта. Значит, её состояние нужно не просто поддерживать, а документировать.',
+      hero: './img/art-haccp.jpg', heroCap: 'ХАССП · контроль вентиляции на производстве',
+      heroAlt: 'Иллюстрация к статье о требованиях ХАССП к вентиляции',
+      blocks: [
+        { t: 'p', v: 'ХАССП строится вокруг простой логики: определить опасности, назначить контрольные меры, вести записи. Вентиляция попадает в эту схему как потенциальный источник физического и микробиологического загрязнения: пыль, частицы отложений, конденсат над рабочей поверхностью.' },
+        { t: 'h', v: 'Что фиксируется по вентиляции' },
+        { t: 'list', items: [
+          'Описание системы: какие зоны обслуживает, где приток и вытяжка, где жироулавители.',
+          'Периодичность очистки и мойки — по каждому элементу отдельно.',
+          'Ответственный за контроль состояния и форма записи.',
+          'Корректирующие действия: что делаем, если состояние вышло за норму.',
+          'Документы, подтверждающие выполнение работ: акты и фотоотчёты.'
+        ] },
+        { t: 'img', src: './img/service-ventilation.jpg', cap: 'вентиляционные короба производственной зоны — объект регулярного контроля' },
+        { t: 'h', v: 'Как связать с графиком чистки' },
+        { t: 'p', v: 'В плане ХАССП удобно разделить два уровня: ежедневная и еженедельная мойка силами персонала (фильтры, поверхности зонтов) и периодическая чистка каналов силами подрядчика. Первое ведётся в чек-листах, второе подтверждается актом очистки с датой следующей плановой работы.' },
+        { t: 'quote', v: 'Проверяющему важно увидеть систему: график, записи и документ, который закрывает каждую плановую дату.' },
+        { t: 'p', v: 'Мы отдаём комплект, который подшивается в документацию без переделки: акт очистки с перечнем участков, акт выполненных работ и фотоотчёт до и после. Рекомендованный срок следующей чистки указан в акте, а напоминание приходит от нас заранее.' },
+        { t: 'note', v: 'материал носит справочный характер · требования к документации уточняйте по действующим нормативным актам и внутреннему плану ХАССП вашего предприятия' }
+      ]
+    }
+  };
+
+  ORDER = [
+    'periodichnost-chistki-ventilyacii',
+    'kak-chasto-chistit-ventilyaciyu-v-restorane',
+    'akt-ochistki-ventilyacii',
+    'shtrafy-za-gryaznuyu-ventilyaciyu',
+    'trebovaniya-hassp-k-ventilyacii'
+  ];
+
+  state = { slug: '', narrow: false };
+
+  componentDidMount() {
+    this.readSlug();
+    window.addEventListener('hashchange', () => this.readSlug());
+    window.addEventListener('popstate', () => this.readSlug());
+    this.onResize = () => {
+      const n = window.innerWidth < 900;
+      if (n !== this.state.narrow) this.setState({ narrow: n });
+    };
+    this.onResize();
+    window.addEventListener('resize', this.onResize);
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); }
+
+  readSlug() {
+    let s = '';
+    try {
+      s = new URLSearchParams(location.search).get('slug') || '';
+      if (!s && location.hash) s = location.hash.replace('#', '');
+    } catch (e) { s = ''; }
+    if (!this.DATA[s]) s = this.ORDER[0];
+    if (s !== this.state.slug) this.setState({ slug: s });
+  }
+
+  href(slug) { return './Vent - Статья.dc.html?slug=' + slug; }
+
+  renderVals() {
+    const slug = this.DATA[this.state.slug] ? this.state.slug : this.ORDER[0];
+    const a = this.DATA[slug];
+    const stack = this.state.narrow;
+    let hn = 0;
+    const blocks = a.blocks.map((b, i) => {
+      const anchor = b.t === 'h' ? 'h' + (++hn) : 'b' + i;
+      return {
+        key: i, anchor, v: b.v || '',
+        isH: b.t === 'h', isP: b.t === 'p', isQuote: b.t === 'quote', isNote: b.t === 'note',
+        isList: b.t === 'list', isImg: b.t === 'img', isPair: b.t === 'pair',
+        src: b.src || '', src2: b.src2 || '', cap: b.cap || '',
+        items: (b.items || []).map((v, k) => ({ key: k, n: String(k + 1).padStart(2, '0'), v }))
+      };
+    });
+    let tn = 0;
+    const toc = a.blocks.filter((b) => b.t === 'h').map((b) => {
+      tn++;
+      return { key: tn, href: '#h' + tn, v: b.v };
+    });
+
+    return {
+      tag: a.tag, date: a.date, read: a.read, title: a.title, lead: a.lead,
+      hero: a.hero, heroCap: a.heroCap, heroAlt: a.heroAlt,
+      heroRatio: stack ? '4 / 3' : '21 / 8',
+      bodyCols: stack ? '1fr' : '230px 1fr',
+      stickyPos: stack ? 'static' : 'sticky',
+      relCols: stack ? '1fr' : 'repeat(auto-fit,minmax(240px,1fr))',
+      blocks, toc,
+      related: this.ORDER.filter((s) => s !== slug).slice(0, 3).map((s) => ({
+        key: s, href: this.href(s), title: this.DATA[s].title, read: this.DATA[s].read, img: this.DATA[s].hero
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -26,12 +26,6 @@ export const SERVICE_DISPLAY: Record<ServiceKey, ServiceDisplay> = {
     description: 'Профессиональная мойка зонтов пищеблока с разбором и сборкой.',
     iconName: 'Fan',
   },
-  disinfect: {
-    key: 'disinfect',
-    title: 'Дезинфекция воздуховодов',
-    description: 'Противомикробная обработка после чистки. Для производства и медицинских объектов.',
-    iconName: 'SprayCan',
-  },
   diag: {
     key: 'diag',
     title: 'Диагностика / видеоинспекция',

@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&amp;family=Inter+Tight:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:"Marggraff";src:url("./fonts/marggraff-kursiv-zarte.woff2") format("woff2");font-display:swap}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;scroll-padding-top:76px}
+body{background:#f6f3ec;color:#141312;font-family:"Inter Tight",system-ui,sans-serif;overflow-x:hidden;text-wrap:pretty}
+::selection{background:#1e5c32;color:#f6f3ec}
+a{color:#1e5c32;text-decoration:none}
+a:hover{color:#141312}
+input,button,select,textarea{font:inherit;color:inherit;background:none;border:0}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+input[type=number]{-moz-appearance:textfield}
+@media (prefers-reduced-motion:reduce){[data-reveal]{opacity:1!important;transform:none!important}}
+</style>
+<script src="./story-scroll.js"></script>
+</helmet>
+
+<div data-progress-bar="" style="position:fixed;top:0;left:0;right:0;height:2px;background:#c8ff3e;transform:scaleX(0);transform-origin:left center;z-index:60;pointer-events:none"></div>
+
+<header data-topbar="" style="position:fixed;top:0;left:0;right:0;z-index:55;display:flex;align-items:center;justify-content:space-between;gap:clamp(12px,2vw,32px);padding:13px clamp(18px,3vw,56px);border-bottom:1px solid transparent;color:#f6f3ec;transition:background .45s ease,border-color .45s ease,color .45s ease">
+  <a href="#01" style="display:flex;align-items:baseline;gap:1px;font-family:Fraunces,Georgia,serif;font-weight:400;font-size:21px;letter-spacing:-.02em;color:inherit;flex:0 0 auto">vent<span data-logo-tail="" style="font-family:Marggraff,Fraunces,Georgia,serif;font-size:.9em;color:#c8ff3e;transition:color .45s ease">.team</span></a>
+  <nav aria-label="Разделы сайта" style="display:{{ navDisplay }};align-items:center;gap:clamp(13px,1.7vw,28px);flex:1 1 auto;justify-content:center">
+    <a href="#02" data-nav-item="02" style="position:relative;font-size:13.5px;padding:3px 0;color:rgba(246,243,236,.72);transition:color .35s ease;white-space:nowrap">Технология<span data-nav-underline="" style="position:absolute;left:0;right:0;bottom:-3px;height:1.5px;background:#c8ff3e;transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1)"></span></a>
+    <a href="#03" data-nav-item="03" style="position:relative;font-size:13.5px;padding:3px 0;color:rgba(246,243,236,.72);transition:color .35s ease;white-space:nowrap">Как работаем<span data-nav-underline="" style="position:absolute;left:0;right:0;bottom:-3px;height:1.5px;background:#c8ff3e;transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1)"></span></a>
+    <a href="#04" data-nav-item="04" style="position:relative;font-size:13.5px;padding:3px 0;color:rgba(246,243,236,.72);transition:color .35s ease;white-space:nowrap">Преимущества<span data-nav-underline="" style="position:absolute;left:0;right:0;bottom:-3px;height:1.5px;background:#c8ff3e;transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1)"></span></a>
+    <a href="#05" data-nav-item="05" style="position:relative;font-size:13.5px;padding:3px 0;color:rgba(246,243,236,.72);transition:color .35s ease;white-space:nowrap">Объекты<span data-nav-underline="" style="position:absolute;left:0;right:0;bottom:-3px;height:1.5px;background:#c8ff3e;transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1)"></span></a>
+    <a href="#06" data-nav-item="06" style="position:relative;font-size:13.5px;padding:3px 0;color:rgba(246,243,236,.72);transition:color .35s ease;white-space:nowrap">Скидки<span data-nav-underline="" style="position:absolute;left:0;right:0;bottom:-3px;height:1.5px;background:#c8ff3e;transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1)"></span></a>
+    <a href="#08" data-nav-item="08" style="position:relative;font-size:13.5px;padding:3px 0;color:rgba(246,243,236,.72);transition:color .35s ease;white-space:nowrap">Вопросы<span data-nav-underline="" style="position:absolute;left:0;right:0;bottom:-3px;height:1.5px;background:#c8ff3e;transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1)"></span></a>
+    <a href="./Vent - Статьи.dc.html" data-topbar-soft="" style="position:relative;font-size:13.5px;padding:3px 0;color:rgba(246,243,236,.72);transition:color .35s ease;white-space:nowrap">Статьи</a>
+  </nav>
+  <div style="display:flex;align-items:center;gap:clamp(10px,1.5vw,22px);flex:0 0 auto">
+    <a href="tel:+74951200404" data-topbar-soft="" style="font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.06em;color:rgba(246,243,236,.68);white-space:nowrap">+7 (495) 120-04-04</a>
+    <a href="#07" style="display:inline-flex;align-items:center;gap:9px;background:#c8ff3e;color:#141312;padding:10px 17px;border-radius:999px;font-size:13px;font-weight:500;white-space:nowrap;transition:background .35s ease,color .35s ease" style-hover="background:#141312;color:#c8ff3e">Рассчитать <span>→</span></a>
+  </div>
+</header>
+
+<!-- 01 · КТО МЫ -->
+<section id="01" data-sec="01" data-screen-label="01 Кто мы" style="position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;background:#141312;color:#f6f3ec;overflow:hidden;padding:96px clamp(22px,3vw,56px) clamp(26px,4vh,46px)">
+  <div data-parallax="0.05" style="position:absolute;left:0;right:0;top:-8%;bottom:-8%">
+    <img src="./img/hero-main.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.55) contrast(1.05);opacity:.4">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(112deg,rgba(246,243,236,.05) 0 2px,transparent 2px 10px)"></div>
+  </div>
+  <div style="position:absolute;inset:0;background:radial-gradient(100% 70% at 78% 4%,rgba(30,92,50,.34),transparent 62%),linear-gradient(0deg,rgba(14,13,12,.96) 0%,rgba(14,13,12,.5) 58%,rgba(14,13,12,.78) 100%)"></div>
+  <div style="position:relative;display:flex;flex-direction:column;gap:clamp(16px,2.6vh,30px)">
+    <div data-reveal="" style="opacity:0;transform:translateY(18px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;gap:11px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.6)">
+      <span style="width:20px;height:1px;background:#c8ff3e"></span>промышленная чистка вентиляции · москва и область
+    </div>
+    <h1 data-reveal="" data-delay="90" style="opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1);font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(50px,10.5vw,190px);line-height:.88;letter-spacing:-.04em;margin:0">Чистим то,<br>что никто <span style="color:transparent;-webkit-text-stroke:1.5px #f6f3ec">не видит.</span></h1>
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px;border-top:1px solid rgba(246,243,236,.14);padding-top:clamp(14px,2.2vh,26px)">
+      <p data-reveal="" data-delay="180" style="opacity: 0; transform: translateY(20px); transition: opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1); flex: 1 1 340px; max-width: 80ch; font-size: clamp(15px,1.15vw,19px); line-height: 1.6; color: rgba(246,243,236,.74); width: 637px">Спецсервис по чистке вентиляционных каналов для ресторанов, офисов и складов.</p>
+      <div data-reveal="" data-delay="260" style="opacity:0;transform:translateY(20px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column;gap:10px;align-items:flex-start;padding-right:clamp(0px,3vw,48px)">
+        <a href="#07" style="display:inline-flex;align-items:center;gap:11px;font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(19px,1.7vw,28px);letter-spacing:-.015em;color:#f6f3ec;border-bottom:1px solid rgba(200,255,62,.5);padding-bottom:5px;transition:color .35s ease,border-color .35s ease" style-hover="color:#c8ff3e;border-color:#c8ff3e">Кухня 120 м² — от {{ heroHook }} <span>→</span></a>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.45)">ориентир до осмотра · полный расчёт ниже</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · ТЕХНОЛОГИЯ -->
+<section id="02" data-sec="02" data-screen-label="02 Технология" style="background:#f6f3ec">
+  <div data-track="" style="position:relative;min-height:{{ trackH }}">
+    <div style="position:{{ stickyPos }};top:0;height:{{ stickyH }};display:grid;grid-template-columns:{{ splitCols }};align-items:stretch">
+      <div style="position:relative;overflow:hidden;background:#0e0d0c;display:{{ framePane }}">
+        <div data-frame="" style="position:absolute;inset:0;opacity:1;transition:opacity .7s ease,transform .9s cubic-bezier(.16,1,.3,1);background:#0e0d0c"><img src="./img/tech-01-diagnostics.jpg" alt="Диагностика и замер на объекте" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.2)"></div>
+        <div data-frame="" style="position:absolute;inset:0;opacity:0;transform:scale(1.04);transition:opacity .7s ease,transform .9s cubic-bezier(.16,1,.3,1);background:#0e0d0c"><img src="./img/tech-02-contour.jpg" alt="Закрываем контур" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
+        <div data-frame="" style="position:absolute;inset:0;opacity:0;transform:scale(1.04);transition:opacity .7s ease,transform .9s cubic-bezier(.16,1,.3,1);background:#0e0d0c"><img src="./img/tech-03-brush.jpg" alt="Щётка на гибком валу" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
+        <div data-frame="" style="position:absolute;inset:0;opacity:0;transform:scale(1.04);transition:opacity .7s ease,transform .9s cubic-bezier(.16,1,.3,1);background:#0e0d0c"><img src="./img/tech-04-filter.jpg" alt="Отсос и фильтрация" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
+        <div data-frame="" style="position:absolute;inset:0;opacity:0;transform:scale(1.04);transition:opacity .7s ease,transform .9s cubic-bezier(.16,1,.3,1);background:#0e0d0c"><img src="./img/tech-05-hoods.jpg" alt="Зонты и крыльчатки" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
+        <div data-frame="" style="position:absolute;inset:0;opacity:0;transform:scale(1.04);transition:opacity .7s ease,transform .9s cubic-bezier(.16,1,.3,1);background:#0e0d0c"><img src="./img/tech-06-handover.jpg" alt="Сборка и приёмка" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
+
+      </div>
+      <div style="min-width:0;display:flex;flex-direction:column;justify-content:center;padding:clamp(56px,7vh,84px) clamp(22px,4vw,72px) clamp(28px,4vh,48px) clamp(22px,3.5vw,60px)">
+        <div style="display:flex;align-items:center;gap:11px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);margin-bottom:12px"><span style="width:20px;height:1px;background:#1e5c32"></span>02 · технология</div>
+        <h2 style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(30px,3.8vw,64px);line-height:.98;letter-spacing:-.032em;margin:0 0 8px">Механически,<br>до металла.</h2>
+        <p style="font-size:clamp(14.5px,1.05vw,17px);line-height:1.55;color:rgba(20,19,18,.65);max-width:54ch;margin-bottom:clamp(10px,2vh,20px)">Отложения снимаются щёткой, а не растворителем: жир и пыль вытягиваются из канала в фильтр, помещение остаётся чистым. Химию используем только там, где без неё нельзя.</p>
+        <div data-item="" style="display:flex;gap:14px;padding:clamp(9px,1.4vh,14px) 0;border-top:1px solid rgba(20,19,18,.14);opacity:1;transition:opacity .5s ease">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#1e5c32;padding-top:5px;flex:0 0 22px">01</span>
+          <span style="flex:1 1 auto;min-width:0"><span style="display:block;font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(18px,1.5vw,26px);letter-spacing:-.015em;line-height:1.15">Диагностика и замер</span><span style="display:block;font-size:14.5px;line-height:1.5;color:rgba(20,19,18,.65);margin-top:4px">Инженер выезжает на объект, считает метраж воздуховодов, смотрит тип и сечение каналов и степень загрязнения. По этому собирается смета.</span><span data-bar="" style="display:block;height:1px;background:#1e5c32;transform:scaleX(1);transform-origin:left;transition:transform .7s cubic-bezier(.16,1,.3,1);margin-top:10px"></span></span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:rgba(20,19,18,.55);white-space:nowrap;padding-top:6px">4 500 ₽</span>
+        </div>
+        <div data-item="" style="display:flex;gap:14px;padding:clamp(9px,1.4vh,14px) 0;border-top:1px solid rgba(20,19,18,.14);opacity:.32;transition:opacity .5s ease">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#1e5c32;padding-top:5px;flex:0 0 22px">02</span>
+          <span style="flex:1 1 auto;min-width:0"><span style="display:block;font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(18px,1.5vw,26px);letter-spacing:-.015em;line-height:1.15">Закрываем контур</span><span style="display:block;font-size:14.5px;line-height:1.5;color:rgba(20,19,18,.65);margin-top:4px">Накрываем оборудование и мебель, ставим заглушки на решётки и ответвления, вскрываем ревизионные люки. Грязь пойдёт по каналу, а не в помещение.</span><span data-bar="" style="display:block;height:1px;background:#1e5c32;transform:scaleX(0);transform-origin:left;transition:transform .7s cubic-bezier(.16,1,.3,1);margin-top:10px"></span></span>
+        </div>
+        <a href="#07" data-svc="grease" data-item="" style="display:flex;gap:14px;padding:clamp(9px,1.4vh,14px) 0;border-top:1px solid rgba(20,19,18,.14);opacity:.32;transition:opacity .5s ease;color:#141312">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#1e5c32;padding-top:5px;flex:0 0 22px">03</span>
+          <span style="flex:1 1 auto;min-width:0"><span style="display:block;font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(18px,1.5vw,26px);letter-spacing:-.015em;line-height:1.15">Щётка на гибком валу</span><span style="display:block;font-size:14.5px;line-height:1.5;color:rgba(20,19,18,.65);margin-top:4px">Вал заходит через люк и идёт по каналу, щётка снимает жир или пыль со стенок до металла.</span><span data-bar="" style="display:block;height:1px;background:#1e5c32;transform:scaleX(0);transform-origin:left;transition:transform .7s cubic-bezier(.16,1,.3,1);margin-top:10px"></span></span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:rgba(20,19,18,.55);white-space:nowrap;padding-top:6px;text-align:right">жир от 300 ₽/пог.м<br>пыль от 100 ₽/пог.м</span>
+        </a>
+        <div data-item="" style="display:flex;gap:14px;padding:clamp(9px,1.4vh,14px) 0;border-top:1px solid rgba(20,19,18,.14);opacity:.32;transition:opacity .5s ease">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#1e5c32;padding-top:5px;flex:0 0 22px">04</span>
+          <span style="flex:1 1 auto;min-width:0"><span style="display:block;font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(18px,1.5vw,26px);letter-spacing:-.015em;line-height:1.15">Отсос и фильтрация</span><span style="display:block;font-size:14.5px;line-height:1.5;color:rgba(20,19,18,.65);margin-top:4px">К каналу подключён фильтрующий блок: он держит участок под разрежением и вытягивает всё, что сняла щётка.</span><span data-bar="" style="display:block;height:1px;background:#1e5c32;transform:scaleX(0);transform-origin:left;transition:transform .7s cubic-bezier(.16,1,.3,1);margin-top:10px"></span></span>
+        </div>
+        <a href="#07" data-svc="hood" data-item="" style="display:flex;gap:14px;padding:clamp(9px,1.4vh,14px) 0;border-top:1px solid rgba(20,19,18,.14);opacity:.32;transition:opacity .5s ease;color:#141312">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#1e5c32;padding-top:5px;flex:0 0 22px">05</span>
+          <span style="flex:1 1 auto;min-width:0"><span style="display:block;font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(18px,1.5vw,26px);letter-spacing:-.015em;line-height:1.15">Зонты и крыльчатки</span><span style="display:block;font-size:14.5px;line-height:1.5;color:rgba(20,19,18,.65);margin-top:4px">Жироулавители снимаем, моем в ванне, ставим обратно. Металл не портим, крепёж не теряем. Гидрофильтры и крыльчатки вентиляторов — тоже наша часть.</span><span data-bar="" style="display:block;height:1px;background:#1e5c32;transform:scaleX(0);transform-origin:left;transition:transform .7s cubic-bezier(.16,1,.3,1);margin-top:10px"></span></span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:rgba(20,19,18,.55);white-space:nowrap;padding-top:6px">от 2 000 ₽/шт</span>
+        </a>
+        <div data-item="" style="display:flex;gap:14px;padding:clamp(9px,1.4vh,14px) 0;border-top:1px solid rgba(20,19,18,.14);border-bottom:1px solid rgba(20,19,18,.14);opacity:.32;transition:opacity .5s ease">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#1e5c32;padding-top:5px;flex:0 0 22px">06</span>
+          <span style="flex:1 1 auto;min-width:0"><span style="display:block;font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(18px,1.5vw,26px);letter-spacing:-.015em;line-height:1.15">Сборка и приёмка</span><span style="display:block;font-size:14.5px;line-height:1.5;color:rgba(20,19,18,.65);margin-top:4px">Ставим решётки на место, убираем за собой, проходим участки вместе с вами и подписываем акт очистки.</span><span data-bar="" style="display:block;height:1px;background:#1e5c32;transform:scaleX(0);transform-origin:left;transition:transform .7s cubic-bezier(.16,1,.3,1);margin-top:10px"></span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · ПОРЯДОК -->
+<section id="03" data-sec="03" data-screen-label="03 Порядок" style="background:#f6f3ec;border-top:1px solid rgba(20,19,18,.1);padding:clamp(48px,6.5vh,80px) clamp(22px,3vw,56px)">
+  <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:clamp(20px,3vw,48px);margin-bottom:clamp(24px,3.5vh,42px)">
+    <div data-reveal="" style="opacity:0;transform:translateY(18px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;gap:11px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);margin-bottom:14px;flex:1 1 100%"><span style="width:20px;height:1px;background:#1e5c32"></span>03 · порядок работы</div>
+    <h2 data-reveal="" data-delay="80" style="opacity:0;transform:translateY(26px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1);font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(34px,4.6vw,80px);line-height:.95;letter-spacing:-.034em;margin:0;flex:1 1 420px">От звонка до чистых каналов.</h2>
+    <p data-reveal="" data-delay="150" style="opacity: 0; transform: translateY(18px); transition: opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1); font-size: 20px; line-height: 1.6; color: rgba(20,19,18,.66); flex: 0 1 34ch; height: 62px; width: 351px">Пять шагов. Вам нужно участвовать в двух — на осмотре и на приёмке.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:{{ stepCols }};gap:clamp(14px,1.6vw,28px)">
+    <div data-reveal="" style="opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column;gap:10px;padding:clamp(13px,1.8vh,18px) 0 0;border-top:2px solid #141312"><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#1e5c32">01</span><div style="min-width:0"><h3 style="font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(20px,1.8vw,30px);letter-spacing:-.015em;line-height:1.1;margin:0 0 5px">Заявка</h3><p style="font-size:clamp(14.5px,1.05vw,16.5px);line-height:1.55;color:rgba(20,19,18,.7);max-width:62ch">Расскажите про объект — тип, площадь, что беспокоит. Договариваемся, когда приехать на осмотр.</p></div></div>
+    <div data-reveal="" data-delay="70" style="opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column;gap:10px;padding:clamp(13px,1.8vh,18px) 0 0;border-top:2px solid #141312"><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#1e5c32">02</span><div style="min-width:0"><h3 style="font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(20px,1.8vw,30px);letter-spacing:-.015em;line-height:1.1;margin:0 0 5px">Осмотр и смета</h3><p style="font-size:clamp(14.5px,1.05vw,16.5px);line-height:1.55;color:rgba(20,19,18,.7);max-width:62ch">Инженер считает метраж и сечение каналов, оценивает загрязнение и озвучивает стоимость.</p></div></div>
+    <div data-reveal="" data-delay="140" style="opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column;gap:10px;padding:clamp(13px,1.8vh,18px) 0 0;border-top:2px solid #141312"><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#1e5c32">03</span><div style="min-width:0"><h3 style="font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(20px,1.8vw,30px);letter-spacing:-.015em;line-height:1.1;margin:0 0 5px">Доступ и график</h3><p style="font-size:clamp(14.5px,1.05vw,16.5px);line-height:1.55;color:rgba(20,19,18,.7);max-width:62ch">Согласуем время работ под ваш режим и фиксируем в договоре. При необходимости свяжемся с управляющей компанией: выход на кровлю, доступ к шахтам, пропуска. Это наша забота, не ваша.</p></div></div>
+    <div data-reveal="" data-delay="210" style="opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column;gap:10px;padding:clamp(13px,1.8vh,18px) 0 0;border-top:2px solid #141312"><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#1e5c32">04</span><div style="min-width:0"><h3 style="font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(20px,1.8vw,30px);letter-spacing:-.015em;line-height:1.1;margin:0 0 5px">Чистка и приёмка</h3><p style="font-size:clamp(14.5px,1.05vw,16.5px);line-height:1.55;color:rgba(20,19,18,.7);max-width:62ch">Работаем по технологии из блока выше. На объекте есть наш ответственный инженер — с ним вы проходите участки и принимаете работу.</p></div></div>
+    <div data-reveal="" data-delay="280" style="opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column;gap:10px;padding:clamp(13px,1.8vh,18px) 0 0;border-top:2px solid #141312;grid-column:{{ lastSpan }}"><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#1e5c32">05</span><div style="min-width:0"><h3 style="font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(20px,1.8vw,30px);letter-spacing:-.015em;line-height:1.1;margin:0 0 5px">Документы и напоминание</h3><p style="font-size:clamp(14.5px,1.05vw,16.5px);line-height:1.55;color:rgba(20,19,18,.7);max-width:62ch">Отдаём акт очистки, акт выполненных работ и фотоотчёт по участкам. Через 3–6 месяцев напомним, что пора чистить снова.</p></div></div>
+  </div>
+</section>
+
+<!-- 04 · ПРЕИМУЩЕСТВА -->
+<section id="04" data-sec="04" data-screen-label="04 Преимущества" style="background:#141312;color:#f6f3ec;padding:clamp(48px,6.5vh,80px) clamp(22px,3vw,56px)">
+  <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:clamp(24px,3.5vh,40px)">
+    <div style="flex:1 1 460px;min-width:0">
+      <div data-reveal="" style="opacity:0;transform:translateY(18px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;gap:11px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.55);margin-bottom:14px"><span style="width:20px;height:1px;background:#c8ff3e"></span>04 · ответственность</div>
+      <h2 data-reveal="" data-delay="80" style="opacity:0;transform:translateY(26px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1);font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(32px,4.4vw,76px);line-height:.98;letter-spacing:-.034em;margin:0">Наши преимущества —<br><span style="color:#c8ff3e">ваши привилегии.</span></h2>
+    </div>
+    <p data-reveal="" data-delay="150" style="opacity: 0; transform: translateY(18px); transition: opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1); flex: 0 1 40ch; font-size: clamp(15px,1.1vw,18px); line-height: 1.6; color: rgba(246,243,236,.7); text-align: justify; flex-grow: 0; position: static">Всё, что обычно съедает время заказчика — согласования, документы, контроль качества — мы берём на себя и фиксируем в договоре.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:1px;background:rgba(246,243,236,.16);border:1px solid rgba(246,243,236,.16)">
+    <div data-reveal="" style="opacity:0;transform:translateY(20px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1),background .4s ease;background:#141312;padding:clamp(20px,2vw,30px);display:flex;flex-direction:column;gap:9px;min-height:180px" style-hover="background:#191817">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#c8ff3e">01</span>
+      <h3 style="font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(20px,1.6vw,27px);line-height:1.12;letter-spacing:-.02em;margin:0">Цена не растёт</h3>
+      <p style="font-size:15px;line-height:1.55;color:rgba(246,243,236,.68)">Стоимость фиксируется после осмотра инженера. Дополнительные работы — только по вашему согласию, отдельным приложением.</p>
+    </div>
+    <div data-reveal="" data-delay="60" style="opacity:0;transform:translateY(20px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1),background .4s ease;background:#141312;padding:clamp(20px,2vw,30px);display:flex;flex-direction:column;gap:9px;min-height:180px" style-hover="background:#191817">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#c8ff3e">02</span>
+      <h3 style="font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(20px,1.6vw,27px);line-height:1.12;letter-spacing:-.02em;margin:0">Переделаем за свой счёт</h3>
+      <p style="font-size:15px;line-height:1.55;color:rgba(246,243,236,.68)">Принимаете работу по фотоотчёту, участок за участком. Что-то не устроило — возвращаемся и доводим без доплат.</p>
+    </div>
+    <div data-reveal="" data-delay="120" style="opacity:0;transform:translateY(20px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1),background .4s ease;background:#141312;padding:clamp(20px,2vw,30px);display:flex;flex-direction:column;gap:9px;min-height:180px" style-hover="background:#191817">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#c8ff3e">03</span>
+      <h3 style="font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(20px,1.6vw,27px);line-height:1.12;letter-spacing:-.02em;margin:0">Документы для проверок</h3>
+      <p style="font-size:15px;line-height:1.55;color:rgba(246,243,236,.68)">Акт очистки, акт выполненных работ и фотоотчёт по участкам — комплект, который спрашивают Роспотребнадзор и пожнадзор.</p>
+    </div>
+    <div data-reveal="" data-delay="180" style="opacity:0;transform:translateY(20px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1),background .4s ease;background:#141312;padding:clamp(20px,2vw,30px);display:flex;flex-direction:column;gap:9px;min-height:180px" style-hover="background:#191817">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#c8ff3e">04</span>
+      <h3 style="font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(20px,1.6vw,27px);line-height:1.12;letter-spacing:-.02em;margin:0">Доступ — наша забота</h3>
+      <p style="font-size:15px;line-height:1.55;color:rgba(246,243,236,.68)">Управляющая компания, выход на кровлю, шахты, пропуска и допуск на высоту. Договариваемся сами.</p>
+    </div>
+    <div data-reveal="" data-delay="240" style="opacity:0;transform:translateY(20px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1),background .4s ease;background:#141312;padding:clamp(20px,2vw,30px);display:flex;flex-direction:column;gap:9px;min-height:180px" style-hover="background:#191817">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#c8ff3e">05</span>
+      <h3 style="font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(20px,1.6vw,27px);line-height:1.12;letter-spacing:-.02em;margin:0">Работаем в ваше окно</h3>
+      <p style="font-size:15px;line-height:1.55;color:rgba(246,243,236,.68)">Ночь, выходные, технологическая пауза — под режим объекта. Кухня и офис продолжают работать.</p>
+    </div>
+    <div data-reveal="" data-delay="300" style="opacity:0;transform:translateY(20px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1),background .4s ease;background:#141312;padding:clamp(20px,2vw,30px);display:flex;flex-direction:column;gap:9px;min-height:180px" style-hover="background:#191817">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#c8ff3e">06</span>
+      <h3 style="font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(20px,1.6vw,27px);line-height:1.12;letter-spacing:-.02em;margin:0">Напомним про срок</h3>
+      <p style="font-size:15px;line-height:1.55;color:rgba(246,243,236,.68)">Через 3–6 месяцев сами напишем, что пора чистить снова. Следить за графиком не придётся.</p>
+    </div>
+  </div>
+
+  <div data-reveal="" data-delay="300" style="opacity:0;transform:translateY(18px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px;margin-top:clamp(20px,3vh,32px)">
+    <p style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(22px,2.6vw,42px);line-height:1.08;letter-spacing:-.03em;color:#c8ff3e;margin:0">Можете быть спокойны за вентиляцию.</p>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(246,243,236,.45);line-height:1.9;max-width:52ch">условия зафиксированы в договоре и оферте · дополнительные услуги после подписания договора фиксируются отдельно</p>
+  </div>
+</section>
+
+<!-- 05 · ОБЪЕКТЫ И ПРИМЕРЫ РАБОТ -->
+<section id="05" data-sec="05" data-screen-label="05 Объекты" style="background:#f6f3ec;padding:clamp(48px,6.5vh,80px) clamp(22px,3vw,56px)">
+  <div data-reveal="" style="opacity:0;transform:translateY(18px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;gap:11px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);margin-bottom:14px"><span style="width:20px;height:1px;background:#1e5c32"></span>05 · объекты · примеры работ</div>
+  <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;justify-content:space-between;margin-bottom:clamp(20px,3vh,34px)">
+    <h2 data-reveal="" data-delay="80" style="opacity:0;transform:translateY(26px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1);font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(34px,4.6vw,80px);line-height:.95;letter-spacing:-.034em;margin:0;flex:1 1 420px">Найдите <span style="font-style:italic;color:#1e5c32">свой объект.</span></h2>
+    <p data-reveal="" data-delay="150" style="opacity:0;transform:translateY(18px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);flex:0 1 38ch;font-size:clamp(15px,1.1vw,18px);line-height:1.6;color:rgba(20,19,18,.66)">Выберите тип объекта — увидите состав работ и наши кадры «до / после» с этого типа. Ползунок в центре снимка можно тянуть.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:clamp(10px,1.2vw,16px)">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+      <button type="button" onClick="{{ t.pick }}" style="text-align:left;cursor:pointer;padding:clamp(14px,1.4vw,20px);display:flex;flex-direction:column;gap:12px;border:1px solid {{ t.bd }};background:{{ t.bg }};color:{{ t.fg }};transition:background .4s ease,color .4s ease,border-color .4s ease">
+        <span style="display:block;position:relative;height:clamp(78px,9vw,116px);overflow:hidden;background:repeating-linear-gradient(112deg,rgba(20,19,18,.07) 0 2px,transparent 2px 10px),{{ t.slotBg }}">
+          <img src="{{ t.thumb }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:{{ t.thumbOp }}">
+          <span style="position:absolute;inset:0;display:grid;place-items:center;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:{{ t.slotFg }};opacity:{{ t.slotOp }}">фото — сюда</span>
+        </span>
+        <span style="display:block;font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(19px,1.6vw,26px);line-height:1.1;letter-spacing:-.02em">{{ t.title }}</span>
+        <span style="display:block;font-size:14px;line-height:1.45;opacity:.7">{{ t.sub }}</span>
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="margin-top:clamp(12px,1.5vw,18px);background:#141312;color:#f6f3ec;padding:clamp(14px,1.5vw,22px)">
+    <div style="display:grid;grid-template-columns:{{ compareCols }};gap:clamp(10px,1.2vw,16px)">
+      <div data-compare="" data-auto="{{ autoAttr }}" tabindex="0" role="slider" aria-label="Сравнение до и после" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="position:relative;overflow:hidden;background:#0e0d0c;min-height:{{ compareH }};touch-action:none;cursor:ew-resize;outline:none;user-select:none">
+        <img ref="{{ beforeRef }}" src="./img/obj-restaurant-1a.jpg" alt="Участок до чистки" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <img data-after="" ref="{{ afterRef }}" src="./img/obj-restaurant-1b.jpg" alt="Тот же участок после чистки" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;clip-path:inset(0 100% 0 0);pointer-events:none">
+        <div data-compare-line="" style="position:absolute;top:0;bottom:0;left:0;width:1.5px;background:#c8ff3e;pointer-events:none;z-index:3"><span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;border-radius:999px;background:#c8ff3e;color:#141312;display:grid;place-items:center;font-size:15px;box-shadow:0 4px 22px rgba(0,0,0,.35)">⇄</span></div>
+        <span data-badge-before="" style="position:absolute;left:14px;top:14px;z-index:4;background:rgba(20,19,18,.86);color:#f6f3ec;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:7px 13px;border-radius:999px;transition:opacity .3s ease;pointer-events:none">до</span>
+        <span data-badge-after="" style="position:absolute;right:14px;top:14px;z-index:4;opacity:0;background:#c8ff3e;color:#141312;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:7px 13px;border-radius:999px;transition:opacity .3s ease;pointer-events:none">после</span>
+        <span style="position:absolute;left:14px;bottom:14px;z-index:4;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.72);background:rgba(14,13,12,.5);padding:6px 11px;border-radius:999px;pointer-events:none">{{ compareCap }}</span>
+      </div>
+      <div style="display:grid;grid-template-rows:1fr 1fr;gap:clamp(10px,1.2vw,16px);min-height:{{ sideH }}">
+        <div data-compare="" data-auto="{{ autoAttr }}" tabindex="0" role="slider" aria-label="Сравнение до и после" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="position:relative;overflow:hidden;background:#0e0d0c;touch-action:none;cursor:ew-resize;outline:none;user-select:none">
+          <img ref="{{ before2Ref }}" src="./img/obj-restaurant-2a.jpg" alt="Участок до чистки" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <img data-after="" ref="{{ after2Ref }}" src="./img/obj-restaurant-2b.jpg" alt="Тот же участок после чистки" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;clip-path:inset(0 100% 0 0);pointer-events:none">
+          <div data-compare-line="" style="position:absolute;top:0;bottom:0;left:0;width:1.5px;background:#c8ff3e;pointer-events:none;z-index:3"><span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32px;height:32px;border-radius:999px;background:#c8ff3e;color:#141312;display:grid;place-items:center;font-size:12px;box-shadow:0 4px 18px rgba(0,0,0,.35)">⇄</span></div>
+          <span data-badge-before="" style="position:absolute;left:11px;top:11px;z-index:4;background:rgba(20,19,18,.86);color:#f6f3ec;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;padding:5px 10px;border-radius:999px;transition:opacity .3s ease;pointer-events:none">до</span>
+          <span data-badge-after="" style="position:absolute;right:11px;top:11px;z-index:4;opacity:0;background:#c8ff3e;color:#141312;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;padding:5px 10px;border-radius:999px;transition:opacity .3s ease;pointer-events:none">после</span>
+          <span style="position:absolute;left:11px;bottom:11px;z-index:4;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.72);background:rgba(14,13,12,.5);padding:5px 10px;border-radius:999px;pointer-events:none">{{ cap2 }}</span>
+        </div>
+        <div data-compare="" data-auto="{{ autoAttr }}" tabindex="0" role="slider" aria-label="Сравнение до и после" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="position:relative;overflow:hidden;background:#0e0d0c;touch-action:none;cursor:ew-resize;outline:none;user-select:none">
+          <img ref="{{ before3Ref }}" src="./img/obj-restaurant-3a.jpg" alt="Участок до чистки" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <img data-after="" ref="{{ after3Ref }}" src="./img/obj-restaurant-3b.jpg" alt="Тот же участок после чистки" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;clip-path:inset(0 100% 0 0);pointer-events:none">
+          <div data-compare-line="" style="position:absolute;top:0;bottom:0;left:0;width:1.5px;background:#c8ff3e;pointer-events:none;z-index:3"><span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32px;height:32px;border-radius:999px;background:#c8ff3e;color:#141312;display:grid;place-items:center;font-size:12px;box-shadow:0 4px 18px rgba(0,0,0,.35)">⇄</span></div>
+          <span data-badge-before="" style="position:absolute;left:11px;top:11px;z-index:4;background:rgba(20,19,18,.86);color:#f6f3ec;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;padding:5px 10px;border-radius:999px;transition:opacity .3s ease;pointer-events:none">до</span>
+          <span data-badge-after="" style="position:absolute;right:11px;top:11px;z-index:4;opacity:0;background:#c8ff3e;color:#141312;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;padding:5px 10px;border-radius:999px;transition:opacity .3s ease;pointer-events:none">после</span>
+          <span style="position:absolute;left:11px;bottom:11px;z-index:4;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.72);background:rgba(14,13,12,.5);padding:5px 10px;border-radius:999px;pointer-events:none">{{ cap3 }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:{{ detailCols }};gap:clamp(18px,3vw,52px);padding-top:clamp(18px,2.4vh,28px);margin-top:clamp(14px,1.8vh,22px);border-top:1px solid rgba(246,243,236,.14)">
+      <div style="min-width:0">
+        <h3 style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(26px,3vw,46px);line-height:1;letter-spacing:-.03em;margin:0 0 10px">{{ objTitle }}</h3>
+        <p style="font-size:clamp(15px,1.05vw,17px);line-height:1.55;color:rgba(246,243,236,.7);max-width:46ch">{{ objDesc }}</p>
+      </div>
+      <div style="min-width:0;display:flex;flex-direction:column;gap:9px">
+        <sc-for list="{{ objBullets }}" as="b" hint-placeholder-count="4">
+          <span style="display:flex;gap:11px;font-size:clamp(14.5px,1.05vw,16.5px);line-height:1.5;color:rgba(246,243,236,.82)"><span style="color:#c8ff3e;flex:0 0 auto">•</span>{{ b.t }}</span>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:clamp(16px,2.2vh,26px)">
+      <button type="button" onClick="{{ goTab }}" style="display:inline-flex;align-items:center;gap:11px;background:#c8ff3e;color:#141312;padding:15px 24px;border-radius:999px;font-size:14.5px;font-weight:500;cursor:pointer;transition:background .35s ease,color .35s ease" style-hover="background:#f6f3ec;color:#141312">Рассчитать для такого объекта <span>→</span></button>
+      
+    </div>
+  </div>
+
+  
+</section>
+
+<!-- 06 · СКИДКИ -->
+<section id="06" data-sec="06" data-screen-label="06 Скидки" style="background:#1e5c32;color:#f6f3ec;padding:clamp(40px,5.5vh,66px) clamp(22px,3vw,56px)">
+  <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:clamp(18px,2.5vh,28px)">
+    <div style="min-width:0">
+      <div data-reveal="" style="opacity:0;transform:translateY(16px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;gap:11px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.6);margin-bottom:12px"><span style="width:20px;height:1px;background:#c8ff3e"></span>06 · условия</div>
+      <h2 data-reveal="" data-delay="70" style="opacity:0;transform:translateY(22px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1);font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(30px,3.6vw,58px);line-height:1;letter-spacing:-.032em;margin:0">Два повода не откладывать.</h2>
+    </div>
+    <a href="#07" data-reveal="" data-delay="140" style="opacity:0;transform:translateY(16px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1),background .35s ease,color .35s ease;display:inline-flex;align-items:center;gap:11px;background:#c8ff3e;color:#141312;padding:14px 22px;border-radius:999px;font-size:14.5px;font-weight:500;white-space:nowrap" style-hover="background:#f6f3ec;color:#141312">Посчитать со скидкой <span>→</span></a>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1px;background:rgba(246,243,236,.2)">
+    <div data-reveal="" data-delay="120" style="opacity:0;transform:translateY(22px);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform 1.05s cubic-bezier(.16,1,.3,1);background:#f6f3ec;color:#141312;padding:clamp(20px,2.2vw,34px);display:flex;gap:clamp(16px,2vw,28px);align-items:flex-start">
+      <div style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(46px,5.6vw,96px);line-height:.82;letter-spacing:-.045em;flex:0 0 auto">−20<span style="font-size:.4em">%</span></div>
+      <div style="min-width:0;display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#1e5c32">первый заказ</div>
+        <p style="font-size:clamp(15px,1.05vw,17px);line-height:1.5;color:rgba(20,19,18,.75)">Скидка на первую чистку. Убедитесь в нашем профессионализме на выгодных условиях</p>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;line-height:1.9;color:rgba(20,19,18,.55);text-transform:uppercase;padding-top:8px;border-top:1px solid rgba(20,19,18,.14)">заказ от 30 000 ₽ · один раз на объект</div>
+      </div>
+    </div>
+    <div data-reveal="" data-delay="180" style="opacity:0;transform:translateY(22px);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform 1.05s cubic-bezier(.16,1,.3,1);background:#141312;color:#f6f3ec;padding:clamp(20px,2.2vw,34px);display:flex;gap:clamp(16px,2vw,28px);align-items:flex-start">
+      <div style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(46px,5.6vw,96px);line-height:.82;letter-spacing:-.045em;color:#c8ff3e;flex:0 0 auto">−10<span style="font-size:.4em">%</span></div>
+      <div style="min-width:0;display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.6)">договор на обслуживание</div>
+        <p style="font-size:clamp(15px,1.05vw,17px);line-height:1.5;color:rgba(246,243,236,.78)">На каждую чистку по договору. Мы приходим по графику раз в 3–6 месяцев и сами напоминаем о сроке.</p>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;line-height:1.9;color:rgba(246,243,236,.55);text-transform:uppercase;padding-top:8px;border-top:1px solid rgba(246,243,236,.16)">договор от 12 месяцев · все плановые чистки<br>пока действует договор</div>
+      </div>
+    </div>
+  </div>
+
+  <p data-reveal="" data-delay="240" style="opacity:0;transform:translateY(16px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;line-height:1.9;color:rgba(246,243,236,.5);max-width:78ch;margin-top:16px">Скидки не суммируются. Размер и условия зафиксированы в оферте. Скидка не распространяется на выезд за пределы Московской области.</p>
+</section>
+
+<!-- 07 · РАСЧЁТ И ЗАЯВКА -->
+<section id="07" data-sec="07" data-screen-label="07 Расчёт и заявка" style="display:grid;grid-template-columns:{{ splitCols6 }};align-items:stretch;background:#f6f3ec">
+  <div style="min-width:0;padding:clamp(48px,6.5vh,80px) clamp(22px,3vw,48px) clamp(40px,5.5vh,66px) clamp(22px,3vw,56px)">
+    <div style="display:flex;align-items:center;gap:11px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);margin-bottom:14px"><span style="width:20px;height:1px;background:#1e5c32"></span>07 · калькулятор</div>
+    <h2 style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(32px,4vw,66px);line-height:.96;letter-spacing:-.032em;margin:0 0 10px">Сколько это стоит?</h2>
+    <p style="font-size:clamp(15px,1.1vw,18px);line-height:1.6;color:rgba(20,19,18,.66);max-width:78ch;margin-bottom:24px">Выберите тип объекта, отметьте услуги и площадь помещения.</p>
+
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);margin-bottom:10px">1 / тип объекта</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px">
+      <sc-for list="{{ pkgList }}" as="p" hint-placeholder-count="4">
+        <button type="button" onClick="{{ p.pick }}" style="padding:11px 16px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(20,19,18,.14);transition:background .3s ease,color .3s ease,border-color .3s ease;background:{{ p.bg }};color:{{ p.fg }};border-color:{{ p.bd }}">{{ p.label }}</button>
+      </sc-for>
+    </div>
+
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);margin-bottom:10px">2 / услуги</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px">
+      <sc-for list="{{ svcList }}" as="s" hint-placeholder-count="4">
+        <button type="button" onClick="{{ s.toggle }}" style="display:inline-flex;align-items:center;gap:9px;padding:11px 16px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(20,19,18,.14);transition:background .3s ease,color .3s ease,border-color .3s ease,opacity .3s ease;background:{{ s.bg }};color:{{ s.fg }};border-color:{{ s.bd }};opacity:{{ s.op }}"><span style="width:12px;height:12px;border-radius:3px;display:grid;place-items:center;font-size:9px;background:{{ s.boxBg }};color:{{ s.boxFg }}">{{ s.tick }}</span>{{ s.label }} · {{ s.rate }}</button>
+      </sc-for>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5)">3 / объём работ</span>
+      <span style="display:inline-flex;gap:3px;background:#fff;border:1px solid rgba(20,19,18,.12);border-radius:999px;padding:3px">
+        <button type="button" onClick="{{ setM2 }}" style="padding:8px 15px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:background .3s ease,color .3s ease;background:{{ m2Bg }};color:{{ m2Fg }}">площадь · м²</button>
+        <button type="button" onClick="{{ setLm }}" style="padding:8px 15px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:background .3s ease,color .3s ease;background:{{ lmBg }};color:{{ lmFg }}">каналы · пог.м</button>
+      </span>
+    </div>
+    <div style="background:#fff;padding:20px 22px">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px">
+        <label style="display:inline-flex;align-items:baseline;gap:7px;cursor:text"><input type="number" value="{{ amount }}" onInput="{{ onAmount }}" aria-label="{{ amountAria }}" style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(36px,3.2vw,50px);letter-spacing:-.025em;width:4ch;padding:0;outline:none"><span style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:24px;color:rgba(20,19,18,.45)">{{ unitLabel }}</span></label>
+        <div style="display:flex;gap:6px">
+          <sc-for list="{{ quickAreas }}" as="q" hint-placeholder-count="4">
+            <button type="button" onClick="{{ q.pick }}" style="padding:8px 12px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;cursor:pointer;transition:background .3s ease,color .3s ease;background:{{ q.bg }};color:{{ q.fg }}">{{ q.v }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <input type="range" min="0" max="{{ rangeMax }}" step="5" value="{{ amount }}" onInput="{{ onAmount }}" aria-label="{{ amountAria }}" style="width:100%;margin-top:14px;accent-color:#1e5c32;cursor:pointer">
+      <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(20,19,18,.4);margin-top:4px">
+        <sc-for list="{{ ticks }}" as="t" hint-placeholder-count="4"><span>{{ t.v }}</span></sc-for>
+      </div>
+      <sc-if value="{{ showLm }}" hint-placeholder-val="{{ true }}">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(20,19,18,.45);margin-top:10px;padding-top:10px;border-top:1px solid rgba(20,19,18,.1)">≈ {{ lmLabel }} пог.м каналов для этого типа объекта</div>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ hasHood }}">
+    <div style="background:#fff;padding:12px 14px 12px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:2px">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5)">зонты</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;background:#f6f3ec;border-radius:999px;padding:5px">
+        <button type="button" onClick="{{ hoodMinus }}" aria-label="Меньше зонтов" style="width:38px;height:38px;border-radius:999px;background:#fff;display:grid;place-items:center;cursor:pointer;transition:background .3s ease,color .3s ease" style-hover="background:#141312;color:#c8ff3e">−</button>
+        <span style="display:inline-flex;align-items:baseline;gap:5px;padding:0 8px"><b style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:28px;letter-spacing:-.02em">{{ hoods }}</b><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5)">шт</span></span>
+        <button type="button" onClick="{{ hoodPlus }}" aria-label="Больше зонтов" style="width:38px;height:38px;border-radius:999px;background:#fff;display:grid;place-items:center;cursor:pointer;transition:background .3s ease,color .3s ease" style-hover="background:#141312;color:#c8ff3e">+</button>
+      </span>
+    </div>
+    </sc-if>
+
+    <div style="background:#141312;color:#f6f3ec;margin-top:14px;padding:clamp(18px,2vw,26px);display:flex;flex-wrap:wrap;gap:clamp(16px,2.5vw,36px);align-items:flex-start;justify-content:space-between">
+      <div style="min-width:0">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.55);margin-bottom:6px">итоговая вилка · до осмотра</div>
+        <div style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(42px,5vw,86px);line-height:.88;letter-spacing:-.042em;color:#c8ff3e">{{ total }}<span style="font-size:.24em;vertical-align:super;color:rgba(246,243,236,.7);margin-left:6px">₽</span></div>
+        <sc-if value="{{ hasDiscount }}">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.04em;color:#c8ff3e;margin-top:8px">со скидкой −20% · <b style="font-weight:500">{{ discounted }} ₽</b></div>
+        </sc-if>
+      </div>
+      <div style="flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:7px">
+        <sc-for list="{{ lines }}" as="l" hint-placeholder-count="2">
+          <div style="display:flex;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.04em;color:rgba(246,243,236,.72);padding-bottom:6px;border-bottom:1px solid rgba(246,243,236,.12)"><span>{{ l.label }}</span><b style="color:#f6f3ec;font-weight:500">{{ l.amount }} ₽</b></div>
+        </sc-for>
+        <sc-if value="{{ noSvc }}"><div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(246,243,236,.55)">выберите хотя бы одну услугу</div></sc-if>
+        <div style="display:flex;flex-wrap:wrap;gap:9px;margin-top:6px">
+          <button type="button" onClick="{{ focusForm }}" style="display:inline-flex;align-items:center;gap:10px;background:#c8ff3e;color:#141312;padding:13px 20px;border-radius:999px;font-size:14px;font-weight:500;cursor:pointer;transition:background .35s ease,color .35s ease" style-hover="background:#f6f3ec;color:#141312">Отправить расчёт <span>→</span></button>
+          <a href="/files/vent-pricelist-2026.pdf" style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(246,243,236,.22);color:#f6f3ec;padding:12px 18px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;transition:color .35s ease,border-color .35s ease" style-hover="color:#c8ff3e;border-color:#c8ff3e">прайс · pdf</a>
+        </div>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(246,243,236,.45);line-height:1.8;margin-top:2px">цена зависит от типа и сечения канала · не является публичной офертой</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="min-width:0;background:#fff;display:flex;flex-direction:column;justify-content:center;padding:clamp(48px,6.5vh,80px) clamp(22px,3vw,56px) clamp(40px,5.5vh,66px) clamp(22px,3vw,48px);border-left:1px solid rgba(20,19,18,.08)">
+    <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;flex-direction:column;gap:14px;max-width:560px;width:100%">
+      <div style="display:flex;align-items:center;gap:11px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5)"><span style="width:20px;height:1px;background:#1e5c32"></span>заявка</div>
+      <h2 style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(30px,3.4vw,54px);line-height:1;letter-spacing:-.032em;margin:0">Оставьте номер.</h2>
+      <p style="font-size:clamp(15px,1.1vw,17px);line-height:1.55;color:rgba(20,19,18,.7);max-width:44ch">Позвоним, уточним объём и договоримся об осмотре. На осмотре назовём цену, которая дальше не меняется.</p>
+      <label style="display:flex;flex-direction:column;gap:6px;margin-top:4px"><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5)">как к вам обращаться</span><input type="text" data-form-name="" value="{{ fname }}" onInput="{{ onName }}" placeholder="Имя" style="border-bottom:1px solid rgba(20,19,18,.18);padding:10px 0;font-size:17px;outline:none"></label>
+      <label style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5)">телефон</span><span style="display:flex;align-items:baseline;gap:8px;border-bottom:1px solid rgba(20,19,18,.18);padding:10px 0"><span style="font-size:17px;color:rgba(20,19,18,.5)">+7</span><input type="tel" value="{{ fphone }}" onInput="{{ onPhone }}" placeholder="999 888 77 66" style="font-size:17px;outline:none;flex:1 1 auto;min-width:0"></span></label>
+      <div style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5)">объект</span><div style="display:flex;flex-wrap:wrap;gap:7px"><sc-for list="{{ objList }}" as="o" hint-placeholder-count="3"><button type="button" onClick="{{ o.pick }}" style="padding:10px 15px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(20,19,18,.14);transition:background .3s ease,color .3s ease;background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }}</button></sc-for></div></div>
+      <label style="display:block;border-bottom:1px solid rgba(20,19,18,.18);padding-bottom:10px"><span style="display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);margin-bottom:6px">что нужно сделать — коротко</span><textarea rows="2" value="{{ fnote }}" onInput="{{ onNote }}" placeholder="Например: кухня 140 м², четыре зонта, дымит на линии" style="display:block;width:100%;padding:0;font-size:16px;line-height:1.5;outline:none;resize:none;font-family:inherit"></textarea></label>
+      <label style="display:flex;gap:11px;align-items:flex-start;cursor:pointer;padding-top:4px"><input type="checkbox" checked="{{ pdn }}" onChange="{{ togglePdn }}" style="width:18px;height:18px;flex:0 0 auto;margin-top:2px;accent-color:#1e5c32;cursor:pointer"><span style="font-size:13px;line-height:1.5;color:rgba(20,19,18,.7)">Согласен на обработку персональных данных в соответствии с <a href="/privacy" style="border-bottom:1px solid rgba(30,92,50,.4)">политикой</a> и <a href="/privacy" style="border-bottom:1px solid rgba(30,92,50,.4)">офертой</a>.</span></label>
+      <label style="display:flex;gap:11px;align-items:flex-start;cursor:pointer"><input type="checkbox" checked="{{ news }}" onChange="{{ toggleNews }}" style="width:18px;height:18px;flex:0 0 auto;margin-top:2px;accent-color:#1e5c32;cursor:pointer"><span style="font-size:13px;line-height:1.5;color:rgba(20,19,18,.55)">Хочу получать напоминания о сроках чистки и информационные письма. Не обязательно.</span></label>
+      <button type="button" onClick="{{ submit }}" disabled="{{ cantSend }}" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:17px 24px;border-radius:999px;font-size:15px;font-weight:500;cursor:pointer;margin-top:4px;transition:background .35s ease,color .35s ease,opacity .3s ease;background:{{ btnBg }};color:{{ btnFg }};opacity:{{ btnOp }}">{{ btnLabel }} <span>→</span></button>
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,2vw,28px);align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid rgba(20,19,18,.1)">
+        <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+          <a href="tel:+74951200404" style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(22px,2.2vw,32px);line-height:1.2;letter-spacing:-.025em;color:#141312;transition:color .3s ease" style-hover="color:#1e5c32">+7 (495) 120-04-04</a>
+          <a href="mailto:hello@vent.team" style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(22px,2.2vw,32px);line-height:1.2;letter-spacing:-.025em;color:#141312;transition:color .3s ease" style-hover="color:#1e5c32">hello@vent.team</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;flex:0 0 auto">
+          <a href="https://t.me/vent" aria-label="Написать в Telegram" title="Telegram" style="width:50px;height:50px;border-radius:999px;border:1px solid rgba(20,19,18,.16);color:#141312;display:grid;place-items:center;transition:background .3s ease,color .3s ease,border-color .3s ease" style-hover="background:#141312;color:#c8ff3e;border-color:#141312"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.7 19c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.3 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.3-.1-.5-.6-.2L6.4 12.7 1.6 11.2c-1-.3-1-1 .2-1.5l18.7-7.2c.9-.3 1.6.2 1.4 1.8Z"></path></svg></a>
+          <a href="https://wa.me/74951200404" aria-label="Написать в WhatsApp" title="WhatsApp" style="width:50px;height:50px;border-radius:999px;border:1px solid rgba(20,19,18,.16);color:#141312;display:grid;place-items:center;transition:background .3s ease,color .3s ease,border-color .3s ease" style-hover="background:#141312;color:#c8ff3e;border-color:#141312"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.6-6.1c-.3-.1-1.5-.8-1.7-.9-.2-.1-.4-.1-.6.1-.2.3-.6.9-.8 1-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.4-2.9c-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.8.8-1 1.9-.6 3.1.5 1.4 1.4 2.6 2.5 3.6a9 9 0 0 0 3.5 2c1.6.5 2.5.4 3.2.2.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.2-.2-.4-.3Z"></path></svg></a>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+    <sc-if value="{{ sent }}">
+    <div style="display:flex;flex-direction:column;gap:18px;max-width:560px">
+      <span style="width:48px;height:48px;border-radius:999px;background:#c8ff3e;color:#141312;display:grid;place-items:center;font-size:22px">✓</span>
+      <h3 style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(30px,3.6vw,56px);line-height:1;letter-spacing:-.03em;margin:0">Заявка у нас.</h3>
+      <p style="font-size:17px;line-height:1.6;color:rgba(20,19,18,.7);max-width:40ch">Следующий шаг — звонок: уточним объём и договоримся, когда приехать на осмотр.</p>
+      <button type="button" onClick="{{ reset }}" style="align-self:flex-start;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#1e5c32;border-bottom:1px solid rgba(30,92,50,.5);padding-bottom:3px;cursor:pointer">отправить ещё одну</button>
+    </div>
+    </sc-if>
+  </div>
+</section>
+
+<!-- 08 · ВОПРОСЫ -->
+<section id="08" data-sec="08" data-screen-label="08 Вопросы" style="background:#f6f3ec;border-top:1px solid rgba(20,19,18,.1);padding:clamp(48px,6.5vh,80px) clamp(22px,3vw,56px)">
+  <div style="display:grid;grid-template-columns:{{ faqCols }};gap:clamp(22px,4vw,64px);align-items:start">
+    <div style="min-width:0">
+      <div data-reveal="" style="opacity:0;transform:translateY(16px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;gap:11px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,19,18,.5);margin-bottom:12px"><span style="width:20px;height:1px;background:#1e5c32"></span>08 · вопросы</div>
+      <h2 data-reveal="" data-delay="70" style="opacity:0;transform:translateY(22px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1);font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(30px,3.8vw,62px);line-height:1;letter-spacing:-.032em;margin:0 0 14px">Частые вопросы.</h2>
+      <p data-reveal="" data-delay="120" style="opacity:0;transform:translateY(16px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);font-size:clamp(15px,1.1vw,17px);line-height:1.6;color:rgba(20,19,18,.66);max-width:34ch;margin-bottom:16px">Не нашли свой — спросите у инженера по телефону, отвечаем без скриптов.</p>
+      <a href="./Vent - Статьи.dc.html" data-reveal="" data-delay="170" style="opacity:0;transform:translateY(16px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1),color .3s ease;display:inline-flex;align-items:center;gap:9px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#1e5c32;border-bottom:1px solid rgba(30,92,50,.4);padding-bottom:4px">разборы в статьях <span>→</span></a>
+    </div>
+    <div style="min-width:0;display:flex;flex-direction:column">
+      <sc-for list="{{ faq }}" as="f" hint-placeholder-count="6">
+        <div data-reveal="" data-delay="{{ f.delay }}" style="opacity:0;transform:translateY(16px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1);border-top:1px solid rgba(20,19,18,.16)">
+          <button type="button" onClick="{{ f.toggle }}" style="width:100%;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;text-align:left;padding:clamp(14px,1.9vh,20px) 0;cursor:pointer;color:{{ f.color }};transition:color .3s ease">
+            <span style="font-family:Fraunces,Georgia,serif;font-weight:400;font-size:clamp(18px,1.6vw,27px);line-height:1.2;letter-spacing:-.02em">{{ f.q }}</span>
+            <span style="flex:0 0 auto;width:30px;height:30px;border-radius:999px;display:grid;place-items:center;font-size:15px;background:{{ f.iconBg }};color:{{ f.iconFg }};transform:{{ f.iconRot }};transition:background .3s ease,color .3s ease,transform .35s cubic-bezier(.16,1,.3,1)">+</span>
+          </button>
+          <div style="display:{{ f.disp }};padding:0 0 clamp(16px,2vh,22px);max-width:66ch">
+            <p style="font-size:clamp(15px,1.05vw,16.5px);line-height:1.6;color:rgba(20,19,18,.72)">{{ f.a }}</p>
+          </div>
+        </div>
+      </sc-for>
+      <div style="border-top:1px solid rgba(20,19,18,.16)"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ФУТЕР -->
+<footer style="background:#141312;color:#f6f3ec;padding:clamp(44px,6vh,76px) clamp(22px,3vw,56px) 28px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:clamp(24px,3vw,56px);align-items:start">
+    <div style="grid-column:span 2;min-width:0">
+      <div style="font-family:Fraunces,Georgia,serif;font-weight:300;font-size:clamp(30px,4.4vw,72px);line-height:.93;letter-spacing:-.032em">vent<span style="font-family:Marggraff,Fraunces,Georgia,serif;font-size:.85em;color:#c8ff3e">.team</span><br>чистим то,<br>что не видно.</div>
+      <p style="font-size:14px;line-height:1.55;color:rgba(246,243,236,.6);max-width:38ch;margin-top:16px">Промышленный сервис по чистке вентиляции, вытяжек и зонтов. Москва и область в радиусе 100 км.</p>
+    </div>
+    <div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.5);margin-bottom:14px">услуги</div>
+      <div style="display:flex;flex-direction:column;gap:9px;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase"><a href="/uslugi/chistka-ot-zhira" style="color:rgba(246,243,236,.85)" style-hover="color:#c8ff3e">Чистка от жира</a><a href="/uslugi/chistka-ot-pyli" style="color:rgba(246,243,236,.85)" style-hover="color:#c8ff3e">Чистка от пыли</a><a href="/uslugi/vytyazhki-i-zonty" style="color:rgba(246,243,236,.85)" style-hover="color:#c8ff3e">Зонты и вытяжки</a><a href="/uslugi/diagnostika" style="color:rgba(246,243,236,.85)" style-hover="color:#c8ff3e">Диагностика</a></div>
+    </div>
+    <div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.5);margin-bottom:14px">компания</div>
+      <div style="display:flex;flex-direction:column;gap:9px;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase"><a href="#02" style="color:rgba(246,243,236,.85)" style-hover="color:#c8ff3e">Технология</a><a href="#03" style="color:rgba(246,243,236,.85)" style-hover="color:#c8ff3e">Порядок работы</a><a href="#05" style="color:rgba(246,243,236,.85)" style-hover="color:#c8ff3e">Объекты и работы</a><a href="#07" style="color:rgba(246,243,236,.85)" style-hover="color:#c8ff3e">Калькулятор</a><a href="#08" style="color:rgba(246,243,236,.85)" style-hover="color:#c8ff3e">Вопросы</a><a href="./Vent - Статьи.dc.html" style="color:rgba(246,243,236,.85)" style-hover="color:#c8ff3e">Статьи</a></div>
+    </div>
+    <div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,243,236,.5);margin-bottom:14px">контакты</div>
+      <div style="display:flex;flex-direction:column;gap:9px;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase"><a href="tel:+74951200404" style="color:rgba(246,243,236,.85)" style-hover="color:#c8ff3e">+7 (495) 120-04-04</a><a href="mailto:hello@vent.team" style="color:rgba(246,243,236,.85)" style-hover="color:#c8ff3e">hello@vent.team</a><a href="https://t.me/vent" style="color:rgba(246,243,236,.85)" style-hover="color:#c8ff3e">Telegram</a><a href="https://wa.me/74951200404" style="color:rgba(246,243,236,.85)" style-hover="color:#c8ff3e">WhatsApp</a></div>
+    </div>
+  </div>
+  <div style="margin-top:34px;padding-top:16px;border-top:1px solid rgba(246,243,236,.1);display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(246,243,236,.45)">
+    <span>Vent.team · реквизиты — после регистрации юрлица</span>
+    <a href="/privacy" style="color:rgba(246,243,236,.7);border-bottom:1px solid rgba(246,243,236,.2)" style-hover="color:#c8ff3e">Политика конфиденциальности</a>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;customCursor&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Оболочка&quot;},&quot;autoCompare&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Секция 05&quot;}}">
+class Component extends DCLogic {
+  PKG = {
+    restaurant: { label: 'Общепит', coef: 0.45, av: ['grease', 'hood', 'diag'], def: ['grease', 'hood'] },
+    office: { label: 'Офис', coef: 0.30, av: ['dust', 'diag'], def: ['dust'] },
+    warehouse: { label: 'Производство', coef: 0.25, av: ['dust', 'grease', 'diag'], def: ['dust'] },
+    custom: { label: 'Своё', coef: 0.30, av: ['grease', 'dust', 'hood', 'diag'], def: [] }
+  };
+  SVC = {
+    grease: { n: 'Жир', kind: 'lin', rate: 300, unit: '₽/пог.м' },
+    dust: { n: 'Пыль', kind: 'lin', rate: 100, unit: '₽/пог.м' },
+    hood: { n: 'Зонты', kind: 'unit', rate: 2000, unit: '₽/шт' },
+    diag: { n: 'Диагностика', kind: 'fix', rate: 4500, unit: '₽' }
+  };
+  OBJ = { restaurant: 'Кухня', office: 'Офис', warehouse: 'Склад / цех' };
+
+  TABS = [
+    {
+      key: 'restaurant', title: 'Кухня ресторана', sub: 'Жир в воздуховодах и зонтах, ночные смены',
+      thumb: './img/obj-restaurant-main.jpg', hasThumb: true,
+      h: 'Кухня ресторана или кафе',
+      d: 'Жир оседает в зонтах и воздуховодах и постепенно превращается в плотный нагар. Кухня начинает дымить, тяга падает, а при проверке это первое, на что смотрят.',
+      b: ['Снимаем зонты, моем в ванне и ставим обратно', 'Чистим горизонтальные участки и стояки до металла', 'Работаем ночью между сменами — точка не закрывается', 'Отдаём акт очистки и фотоотчёт по каждой ветке'],
+      pairs: [
+        { b: './img/obj-restaurant-1a.jpg', a: './img/obj-restaurant-1b.jpg', c: 'кухня ресторана · до и после' },
+        { b: './img/obj-restaurant-2a.jpg', a: './img/obj-restaurant-2b.jpg', c: 'кадр 2 · до и после' },
+        { b: './img/obj-restaurant-3a.jpg', a: './img/obj-restaurant-3b.jpg', c: 'кадр 3 · до и после' }
+      ]
+    },
+    {
+      key: 'office', title: 'Офис и бизнес-центр', sub: 'Пыль, духота и запахи в переговорных',
+      thumb: './img/obj-office-main.jpg', hasThumb: true,
+      h: 'Офис или бизнес-центр',
+      d: 'Пыль в каналах садится на решётки и диффузоры: падает воздухообмен, в переговорных душно, между этажами тянет чужими запахами.',
+      b: ['Чистим каналы от пыли по этажу или по всему стояку', 'Решётки и диффузоры снимаем, моем, ставим на место', 'Отсос с фильтрацией — пыль не оседает на рабочих местах', 'Выходим в выходные — сотрудники ничего не заметят'],
+      pairs: [
+        { b: './img/obj-office-1a.jpg', a: './img/obj-office-1b.jpg', c: 'офисный этаж · до и после' },
+        { b: './img/obj-office-2a.jpg', a: './img/obj-office-2b.jpg', c: 'кадр 2 · до и после' },
+        { b: './img/obj-office-3a.jpg', a: './img/obj-office-3b.jpg', c: 'кадр 3 · до и после' }
+      ]
+    },
+    {
+      key: 'warehouse', title: 'Склад и производство', sub: 'Большие объёмы, работа в технологическое окно',
+      thumb: './img/obj-warehouse-main.jpg', hasThumb: true,
+      h: 'Склад или производство',
+      d: 'Забитая вентиляция гонит нагрузку на оборудование и портит условия на участке. Считаем по метражу и работаем участками, чтобы не останавливать цех.',
+      b: ['Большие объёмы: считаем по метражу, работаем участками', 'Магистральные короба и вытяжные шахты целиком', 'Встраиваемся в технологическое окно и график смен', 'Пропуска, допуск на высоту, согласование заранее'],
+      pairs: [
+        { b: './img/obj-warehouse-1a.jpg', a: './img/obj-warehouse-1b.jpg', c: 'производство · до и после' },
+        { b: './img/obj-warehouse-2a.jpg', a: './img/obj-warehouse-2b.jpg', c: 'кадр 2 · до и после' },
+        { b: './img/obj-warehouse-3a.jpg', a: './img/obj-warehouse-3b.jpg', c: 'кадр 3 · до и после' }
+      ]
+    }
+  ];
+
+  FAQ = [
+    { q: 'Как часто нужно чистить вентиляцию?', a: 'Кухни общепита — раз в 3–6 месяцев: интервал зависит от нагрузки на линию и типа кухни. Офисы, склады и производство — обычно раз в 6–12 месяцев. Точный срок для вашего объекта инженер называет после первого осмотра, дальше мы сами напоминаем о нём.' },
+    { q: 'От чего зависит цена?', a: 'От метража каналов, их сечения и типа загрязнения. Жир считается от 300 ₽ за погонный метр, пыль — от 100 ₽, зонты и гидрофильтры — от 2 000 ₽ за штуку, выездная диагностика — 4 500 ₽. Калькулятор выше даёт вилку, точную сумму фиксируем после осмотра и дальше не меняем.' },
+    { q: 'Нужно ли закрывать кухню или офис на время работ?', a: 'Нет. Работаем ночью, в выходные или в технологическое окно — под режим объекта. Оборудование накрываем, решётки закрываем заглушками, грязь уходит в фильтр, а не в помещение. К открытию точка работает как обычно.' },
+    { q: 'Какие документы вы отдаёте после работ?', a: 'Акт очистки вентиляции, акт выполненных работ и фотоотчёт по участкам — кадры до и после с одной точки. Этот комплект и спрашивают при проверках.' },
+    { q: 'Сколько времени занимает чистка?', a: 'Кухня на 120 м² — обычно одна ночная смена. Большие объекты разбиваем на участки и согласовываем график заранее, чтобы не останавливать работу.' },
+    { q: 'Что, если результат не устроит?', a: 'Приёмка идёт по фотоотчёту, участок за участком, вместе с нашим инженером. Если что-то не устроило — возвращаемся и доводим за свой счёт.' }
+  ];
+
+  ARTICLES = [
+    { slug: 'periodichnost-chistki-ventilyacii', title: 'Периодичность чистки вентиляции по СанПиН', desc: 'Как часто нужно чистить вентиляцию по СанПиН и требованиям пожарной безопасности: таблица периодичности по типу объекта и от чего зависит график чисток.', date: '05.08.2026' },
+    { slug: 'kak-chasto-chistit-ventilyaciyu-v-restorane', title: 'Как часто чистить вентиляцию в ресторане', desc: 'От чего зависит интервал чистки вытяжки в ресторане, какие признаки говорят, что пора чистить раньше графика, и как встроить это в работу кухни ресторана.', date: '05.08.2026' },
+    { slug: 'akt-ochistki-ventilyacii', title: 'Акт очистки вентиляции: что в нём должно быть', desc: 'Что такое акт очистки вентиляции, какие пункты в нём обязательны, кто его подписывает и почему этот документ важен при проверке Роспотребнадзора или МЧС.', date: '05.08.2026' },
+    { slug: 'shtrafy-za-gryaznuyu-ventilyaciyu', title: 'Штраф за грязную вентиляцию: чем рискует бизнес', desc: 'Какие требования нарушает грязная вентиляция, кто именно проверяет объект — Роспотребнадзор или пожнадзор, и чем это грозит бизнесу общепита при проверке.', date: '05.08.2026' },
+    { slug: 'trebovaniya-hassp-k-ventilyacii', title: 'Требования ХАССП к вентиляции', desc: 'Как вентиляция вписывается в систему ХАССП: что нужно фиксировать, какие документы держать под рукой и как это связано с графиком чистки и дезинфекции.', date: '05.08.2026' }
+  ];
+
+  state = {
+    pkg: 'restaurant', svcs: ['grease', 'hood'], area: 120, lmv: 60, unit: 'm2', hoods: 2,
+    tab: 'restaurant', faqOpen: 0,
+    name: '', phone: '', obj: 'restaurant', note: '', pdn: false, news: false, sent: false,
+    narrow: false, short: false, wide: true
+  };
+
+  componentDidMount() {
+    this.sync();
+    this.onResize = () => {
+      const n = window.innerWidth < 900;
+      const s = window.innerHeight < 620;
+      const w = window.innerWidth >= 1180;
+      if (n !== this.state.narrow || s !== this.state.short || w !== this.state.wide) this.setState({ narrow: n, short: s, wide: w });
+    };
+    this.onResize();
+    window.addEventListener('resize', this.onResize);
+    this.onSvcClick = (e) => {
+      const a = e.target.closest && e.target.closest('[data-svc]');
+      if (!a) return;
+      const k = a.getAttribute('data-svc');
+      const pkg = k === 'dust' ? 'office' : k === 'diag' ? 'custom' : 'restaurant';
+      this.preset(pkg, k);
+    };
+    document.addEventListener('click', this.onSvcClick);
+    this.jumpToHash();
+  }
+  componentDidUpdate() { this.sync(); this.syncCompareImgs(); }
+  /* src stays static in markup — a {{ hole }} there is fetched literally by the
+     preload scanner — so the tab swap writes the images from here. */
+  syncCompareImgs() {
+    const t = this.TABS.filter((x) => x.key === this.state.tab)[0] || this.TABS[0];
+    const set = (el, src) => { if (el && !el.src.endsWith(src.replace('./', ''))) el.src = src; };
+    for (let i = 0; i < 3; i++) {
+      set(this['_imgB' + i], t.pairs[i].b);
+      set(this['_imgA' + i], t.pairs[i].a);
+    }
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+    document.removeEventListener('click', this.onSvcClick);
+  }
+  sync() {
+    if (this.props.customCursor === false && window.ventCursorOff) window.ventCursorOff();
+  }
+
+  /* Deep link: #05 etc. Fragment navigation fires before the runtime mounts the
+     sections, so the page scrolls itself once the target exists. */
+  jumpToHash() {
+    const id = (location.hash || '').replace('#', '');
+    if (!/^\d{2}$/.test(id)) return;
+    let tries = 0;
+    const tick = () => {
+      tries++;
+      const el = document.getElementById(id);
+      const sc = document.scrollingElement || document.documentElement;
+      if (el) {
+        const top = el.getBoundingClientRect().top + sc.scrollTop;
+        if (top > 1) {
+          window.scrollTo(0, top);
+          sc.scrollTop = top;
+          if (Math.abs(sc.scrollTop - top) < 4) return;
+        }
+      }
+      if (tries < 60) setTimeout(tick, 120);
+    };
+    setTimeout(tick, 80);
+  }
+
+  fmt(n) { return new Intl.NumberFormat('ru-RU').format(Math.round(n)); }
+  r100(n) { return Math.round(n / 100) * 100; }
+
+  amounts() {
+    const p = this.PKG[this.state.pkg];
+    const lm = this.state.unit === 'lm' ? this.state.lmv : this.state.area * p.coef;
+    const out = [];
+    ['grease', 'dust', 'hood', 'diag'].forEach((k) => {
+      if (this.state.svcs.indexOf(k) < 0) return;
+      const s = this.SVC[k];
+      let a = 0, q = '';
+      if (s.kind === 'lin') { a = this.r100(lm * s.rate); q = ' · ' + Math.round(lm) + ' пог.м'; }
+      else if (s.kind === 'unit') { a = this.state.hoods * s.rate; q = ' · ' + this.state.hoods + ' шт'; }
+      else { a = s.rate; }
+      out.push({ key: k, label: s.n.toLowerCase() + q, raw: a, amount: this.fmt(a) });
+    });
+    return { lines: out, lm, total: out.reduce((t, l) => t + l.raw, 0) };
+  }
+
+  scrollTo(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 60, behavior: 'smooth' });
+  }
+  preset(pkg, extra) {
+    const p = this.PKG[pkg];
+    let svcs = p.def.slice();
+    if (extra && svcs.indexOf(extra) < 0) svcs.push(extra);
+    if (!svcs.length && extra) svcs = [extra];
+    this.setState({ pkg, svcs, obj: pkg === 'custom' ? this.state.obj : pkg });
+    setTimeout(() => this.scrollTo('07'), 60);
+  }
+  pickPkg(k) {
+    this.setState({ pkg: k, svcs: this.state.svcs.length ? this.state.svcs : this.PKG[k].def.slice() });
+  }
+  toggleSvc(k) {
+    const has = this.state.svcs.indexOf(k) >= 0;
+    this.setState({ svcs: has ? this.state.svcs.filter((s) => s !== k) : this.state.svcs.concat([k]) });
+  }
+  pickTab(k) {
+    if (k === this.state.tab) return;
+    this.setState({ tab: k });
+    if (window.ventCompareReplay) setTimeout(window.ventCompareReplay, 40);
+  }
+
+  renderVals() {
+    const st = this.state;
+    const { lines, lm, total } = this.amounts();
+    const isLm = st.unit === 'lm';
+    const amount = isLm ? st.lmv : st.area;
+    const ON = { bg: '#141312', fg: '#f6f3ec', bd: '#141312' };
+    const OFF = { bg: '#ffffff', fg: '#141312', bd: 'rgba(20,19,18,.14)' };
+    const stack = st.narrow;
+    const tab = this.TABS.filter((t) => t.key === st.tab)[0] || this.TABS[0];
+
+    const pkgList = Object.keys(this.PKG).map((k) => {
+      const on = st.pkg === k;
+      return { key: k, label: this.PKG[k].label, bg: on ? ON.bg : OFF.bg, fg: on ? ON.fg : OFF.fg, bd: on ? ON.bd : OFF.bd, pick: () => this.pickPkg(k) };
+    });
+    const svcList = ['grease', 'dust', 'hood', 'diag'].map((k) => {
+      const on = st.svcs.indexOf(k) >= 0;
+      const s = this.SVC[k];
+      return {
+        key: k, label: s.n, rate: s.kind === 'fix' ? s.rate + ' ₽' : s.rate + ' ' + s.unit,
+        bg: on ? ON.bg : OFF.bg, fg: on ? ON.fg : OFF.fg, bd: on ? ON.bd : OFF.bd,
+        op: '1', tick: on ? '✓' : '',
+        boxBg: on ? '#c8ff3e' : 'rgba(20,19,18,.1)', boxFg: '#141312',
+        toggle: () => this.toggleSvc(k)
+      };
+    });
+    const quickAreas = (isLm ? [20, 50, 100, 200] : [50, 120, 200, 300]).map((v) => ({
+      v, bg: amount === v ? '#1e5c32' : '#f4f4f2', fg: amount === v ? '#f6f3ec' : 'rgba(20,19,18,.6)',
+      pick: () => this.setState(isLm ? { lmv: v } : { area: v })
+    }));
+    const objList = Object.keys(this.OBJ).map((k) => ({
+      key: k, label: this.OBJ[k],
+      bg: st.obj === k ? '#141312' : '#f6f3ec', fg: st.obj === k ? '#f6f3ec' : '#141312',
+      pick: () => this.setState({ obj: k })
+    }));
+    const tabs = this.TABS.map((t) => {
+      const on = st.tab === t.key;
+      return {
+        key: t.key, title: t.title, sub: t.sub,
+        thumb: t.hasThumb ? t.thumb : 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
+        thumbOp: t.hasThumb ? (on ? '1' : '.75') : '0',
+        slotOp: t.hasThumb ? '0' : '1',
+        slotBg: on ? '#1b1a18' : '#efece4',
+        slotFg: on ? 'rgba(246,243,236,.4)' : 'rgba(20,19,18,.4)',
+        bg: on ? '#141312' : '#ffffff',
+        fg: on ? '#f6f3ec' : '#141312',
+        bd: on ? '#141312' : 'rgba(20,19,18,.14)',
+        pick: () => this.pickTab(t.key)
+      };
+    });
+
+    const ready = st.pdn && st.name.trim().length > 1 && st.phone.replace(/\D/g, '').length >= 10;
+
+    return {
+      navDisplay: stack ? 'none' : 'flex',
+      framePane: stack || st.short ? 'none' : 'block',
+      trackH: st.short ? 'auto' : '380vh',
+      stickyPos: st.short ? 'static' : 'sticky',
+      stickyH: st.short ? 'auto' : '100vh',
+      splitCols: stack || st.short ? '1fr' : '44% 56%',
+      splitCols2: stack ? '1fr' : '38% 62%',
+      splitCols6: stack ? '1fr' : '54% 46%',
+      compareCols: stack ? '1fr' : '2.05fr 1fr',
+      detailCols: stack ? '1fr' : '1.1fr 1fr',
+      artCols: stack ? '1fr' : '84px 1fr 24px',
+      compareH: stack ? '48vh' : 'clamp(320px,52vh,560px)',
+      sideH: stack ? '38vh' : 'auto',
+      heroHook: this.fmt(this.r100(120 * 0.45 * 300) + 2 * 2000) + ' ₽',
+
+      tabs,
+      beforeRef: (el) => { this._imgB0 = el; this.syncCompareImgs(); },
+      afterRef: (el) => { this._imgA0 = el; this.syncCompareImgs(); },
+      before2Ref: (el) => { this._imgB1 = el; this.syncCompareImgs(); },
+      after2Ref: (el) => { this._imgA1 = el; this.syncCompareImgs(); },
+      before3Ref: (el) => { this._imgB2 = el; this.syncCompareImgs(); },
+      after3Ref: (el) => { this._imgA2 = el; this.syncCompareImgs(); },
+      compareCap: tab.pairs[0].c,
+      cap2: tab.pairs[1].c, cap3: tab.pairs[2].c,
+      objTitle: tab.h, objDesc: tab.d,
+      objBullets: tab.b.map((t, i) => ({ key: i, t })),
+      autoAttr: this.props.autoCompare === false ? '0' : '1',
+      goTab: () => this.preset(st.tab),
+
+      faqCols: stack ? '1fr' : '34% 1fr',
+      stepCols: stack ? '1fr' : (st.wide ? 'repeat(5,1fr)' : 'repeat(3,1fr)'),
+      lastSpan: stack || st.wide ? 'auto' : 'span 2',
+      faq: this.FAQ.map((f, i) => {
+        const open = st.faqOpen === i;
+        return {
+          key: i, q: f.q, a: f.a, delay: String(i * 50),
+          disp: open ? 'block' : 'none',
+          color: open ? '#141312' : 'rgba(20,19,18,.78)',
+          iconBg: open ? '#141312' : 'rgba(20,19,18,.07)',
+          iconFg: open ? '#c8ff3e' : '#141312',
+          iconRot: open ? 'rotate(45deg)' : 'none',
+          toggle: () => this.setState({ faqOpen: open ? -1 : i })
+        };
+      }),
+
+      pkgList, svcList, quickAreas, objList,
+      area: st.area, hoods: st.hoods, hasHood: st.svcs.indexOf('hood') >= 0,
+      lmLabel: this.fmt(lm), total: this.fmt(total), lines, noSvc: lines.length === 0,
+      hasDiscount: total >= 30000, discounted: this.fmt(total * 0.8),
+      amount, unitLabel: isLm ? 'пог.м' : 'м²', showLm: !isLm,
+      amountAria: isLm ? 'Длина каналов, погонных метров' : 'Площадь объекта, м²',
+      rangeMax: isLm ? '400' : '300',
+      ticks: (isLm ? ['0 пог.м', '100', '250', '400+'] : ['0 м²', '100', '200', '300+']).map((v, i) => ({ key: i, v })),
+      m2Bg: isLm ? 'transparent' : '#141312', m2Fg: isLm ? 'rgba(20,19,18,.6)' : '#f6f3ec',
+      lmBg: isLm ? '#141312' : 'transparent', lmFg: isLm ? '#f6f3ec' : 'rgba(20,19,18,.6)',
+      setM2: () => this.setState({ unit: 'm2' }),
+      setLm: () => this.setState({ unit: 'lm', lmv: Math.max(5, Math.round(st.area * this.PKG[st.pkg].coef)) }),
+      onAmount: (e) => {
+        const v = Math.max(0, parseInt(e.target.value, 10) || 0);
+        this.setState(isLm ? { lmv: v } : { area: v });
+      },
+      onArea: (e) => this.setState({ area: Math.max(0, parseInt(e.target.value, 10) || 0) }),
+      hoodPlus: () => this.setState({ hoods: Math.min(40, st.hoods + 1) }),
+      hoodMinus: () => this.setState({ hoods: Math.max(0, st.hoods - 1) }),
+
+      fname: st.name, fphone: st.phone, fnote: st.note, pdn: st.pdn, news: st.news,
+      onName: (e) => this.setState({ name: e.target.value }),
+      onPhone: (e) => {
+        const d = e.target.value.replace(/\D/g, '').replace(/^[78]/, '').slice(0, 10);
+        const p = [d.slice(0, 3), d.slice(3, 6), d.slice(6, 8), d.slice(8, 10)].filter(Boolean).join(' ');
+        this.setState({ phone: p });
+      },
+      onNote: (e) => this.setState({ note: e.target.value }),
+      togglePdn: () => this.setState({ pdn: !st.pdn }),
+      toggleNews: () => this.setState({ news: !st.news }),
+      focusForm: () => {
+        const el = document.querySelector('[data-form-name]');
+        if (!el) return;
+        const top = el.getBoundingClientRect().top + window.scrollY - 140;
+        window.scrollTo({ top, behavior: 'smooth' });
+        setTimeout(() => el.focus({ preventScroll: true }), 500);
+      },
+      cantSend: !ready,
+      btnBg: ready ? '#141312' : 'rgba(20,19,18,.1)',
+      btnFg: ready ? '#f6f3ec' : 'rgba(20,19,18,.4)',
+      btnOp: ready ? '1' : '0.7',
+      btnLabel: ready ? 'Отправить заявку' : 'Заполните имя, телефон и согласие',
+      submit: () => { if (ready) this.setState({ sent: true }); },
+      reset: () => this.setState({ sent: false, name: '', phone: '', note: '', pdn: false }),
+      sent: st.sent, notSent: !st.sent
+    };
+  }
+}
+</script>
+</body>
+</html>

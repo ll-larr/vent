@@ -27,3 +27,11 @@ npm-debug.log*
 # OS
 .DS_Store
 Thumbs.db
+.vercel
+.env*
+
+# Story handoff photos are byte-identical to public/images/*.jpg (same file
+# names), so committing them would double 35 MB of client photography in a
+# public repo. To open the .dc.html prototypes locally with pictures:
+#   cp public/images/*.jpg design_handoff_vent_landing/design/img/
+design_handoff_vent_landing/design/img/

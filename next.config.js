@@ -13,6 +13,13 @@ const nextConfig = {
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },
+  async redirects() {
+    return [
+      // Disinfection left the catalogue with the story redesign — the page was
+      // indexed, so it points at the services hub instead of 404-ing.
+      { source: '/uslugi/dezinfekciya', destination: '/uslugi', permanent: true },
+    ];
+  },
 };
 
 module.exports = nextConfig;

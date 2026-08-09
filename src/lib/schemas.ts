@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const SERVICE_KEYS = ['grease', 'dust', 'disinfect', 'hood', 'diag'] as const;
+export const SERVICE_KEYS = ['grease', 'dust', 'hood', 'diag'] as const;
 export const PACKAGE_KEYS = ['restaurant', 'office', 'warehouse', 'custom'] as const;
 
 // Phone is stored as full E.164-ish: +7XXXXXXXXXX (12 chars: +7 + 10 digits)

@@ -1,4 +1,4 @@
-export type ServiceKey = 'grease' | 'dust' | 'disinfect' | 'hood' | 'diag';
+export type ServiceKey = 'grease' | 'dust' | 'hood' | 'diag';
 export type PackageKey = 'restaurant' | 'office' | 'warehouse' | 'custom';
 
 export type DiameterTier = { code: string; label: string; rate: number };
@@ -42,13 +42,6 @@ export const SERVICES: Record<ServiceKey, Service> = {
       { code: 'box-large',  label: 'короб > 600×400 мм', rate: 220 },
     ],
   },
-  disinfect: {
-    kind: 'linear',
-    min: 30,
-    max: 30,
-    label: 'Дезинфекция',
-    hint: 'противомикробная обработка воздуховодов',
-  },
   hood: {
     kind: 'unit',
     price: 2000,
@@ -70,11 +63,17 @@ export type Package = {
   available: ServiceKey[];
 };
 
+// `available` is the same four keys everywhere on purpose: the story design
+// offers every service under every object type, so nothing filters the chips.
+// The field stays because /uslugi pages and the API still read package labels
+// and coefficients from this table.
+const ALL_SERVICES: ServiceKey[] = ['grease', 'dust', 'hood', 'diag'];
+
 export const PACKAGES: Record<PackageKey, Package> = {
-  restaurant: { label: 'Общепит',      m2ToLm: 0.45, default: ['grease', 'hood'],    available: ['grease', 'hood', 'dust', 'diag'] },
-  office:     { label: 'Офис',         m2ToLm: 0.30, default: ['dust'],              available: ['dust', 'diag'] },
-  warehouse:  { label: 'Производство', m2ToLm: 0.25, default: ['dust', 'disinfect'], available: ['dust', 'disinfect', 'grease', 'diag'] },
-  custom:     { label: 'Своё',         m2ToLm: 0.30, default: [],                    available: ['grease', 'dust', 'hood', 'disinfect', 'diag'] },
+  restaurant: { label: 'Общепит',      m2ToLm: 0.45, default: ['grease', 'hood'], available: ALL_SERVICES },
+  office:     { label: 'Офис',         m2ToLm: 0.30, default: ['dust'],           available: ALL_SERVICES },
+  warehouse:  { label: 'Производство', m2ToLm: 0.25, default: ['dust'],           available: ALL_SERVICES },
+  custom:     { label: 'Своё',         m2ToLm: 0.30, default: [],                 available: ALL_SERVICES },
 };
 
 export type PriceLine = { key: ServiceKey; label: string; amount: number };

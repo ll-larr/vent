@@ -21,7 +21,6 @@ export const metadata: Metadata = {
 const serviceJsonLd = jsonLdScript([
   serviceSchema(SERVICES.grease.label, 'от 300 ₽/пог.м', SERVICES.grease.hint),
   serviceSchema(SERVICES.dust.label, 'от 100 ₽/пог.м', SERVICES.dust.hint),
-  serviceSchema(SERVICES.disinfect.label, 'от 30 ₽/пог.м', SERVICES.disinfect.hint),
   serviceSchema(SERVICES.hood.label, 'от 2 000 ₽/шт', SERVICES.hood.hint),
   serviceSchema(SERVICES.diag.label, '4 500 ₽', SERVICES.diag.hint),
 ]);

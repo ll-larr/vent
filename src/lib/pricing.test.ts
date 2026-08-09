@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { computePrice, PACKAGES, SERVICES, type ServiceKey } from './pricing';
 
 describe('SERVICES catalog', () => {
-  it('has all five expected services', () => {
-    expect(Object.keys(SERVICES).sort()).toEqual(['diag', 'disinfect', 'dust', 'grease', 'hood'].sort());
+  it('has all four expected services', () => {
+    expect(Object.keys(SERVICES).sort()).toEqual(['diag', 'dust', 'grease', 'hood'].sort());
   });
 
   it('grease and dust have diameter tiers', () => {
@@ -23,6 +23,14 @@ describe('PACKAGES catalog', () => {
   it('restaurant default selects grease and hood', () => {
     expect(PACKAGES.restaurant.default).toEqual(['grease', 'hood']);
   });
+
+  // Story design lets any service pair with any object type — the chip row in
+  // section 07 renders all four unconditionally, so no package may narrow it.
+  it('offers every service under every package', () => {
+    for (const pkg of Object.values(PACKAGES)) {
+      expect([...pkg.available].sort()).toEqual(['diag', 'dust', 'grease', 'hood']);
+    }
+  });
 });
 
 describe('computePrice — linear services', () => {
@@ -37,9 +45,9 @@ describe('computePrice — linear services', () => {
     expect(r.totalMin).toBe(14400);
   });
 
-  it('disinfect at 200 m² warehouse uses 0.25 coef and 30 rate', () => {
-    const r = computePrice(['disinfect'], 200, 'warehouse');
-    expect(r.totalMin).toBe(1500);
+  it('dust at 200 m² warehouse uses the 0.25 coef', () => {
+    const r = computePrice(['dust'], 200, 'warehouse');
+    expect(r.totalMin).toBe(5000);
   });
 });
 

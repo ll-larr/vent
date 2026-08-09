@@ -34,7 +34,6 @@ function serviceShortName(key: ServiceKey): string {
     case 'grease': return 'Чистка от жира';
     case 'hood': return 'Зонты';
     case 'dust': return 'Пыль';
-    case 'disinfect': return 'Дезинфекция';
     case 'diag': return 'Диагностика';
   }
 }
@@ -44,7 +43,6 @@ const SVC_TO_PKG: Record<ServiceKey, PackageKey> = {
   grease: 'restaurant',
   hood: 'restaurant',
   dust: 'office',
-  disinfect: 'warehouse',
   diag: 'custom',
 };
 
@@ -109,7 +107,7 @@ export function Calculator() {
   const fillPct = Math.max(0, Math.min(100, ((state.areaM2 - AREA_MIN) / (SLIDER_MAX - AREA_MIN)) * 100));
 
   const pkgKeys = Object.keys(PACKAGES) as PackageKey[];
-  const svcKeys: ServiceKey[] = ['grease', 'hood', 'dust', 'disinfect', 'diag'];
+  const svcKeys: ServiceKey[] = ['grease', 'hood', 'dust', 'diag'];
 
   return (
     <section
