@@ -9,36 +9,54 @@ npm run dev      # Start dev server (Next.js on localhost:3000)
 npm run build    # Production build
 npm run start    # Start production server
 npx tsc --noEmit # Type-check without building
-npm test         # Run vitest (pricing engine unit tests)
+npm test         # Run vitest (pricing engine + submit schema)
 ```
+
+Do not `rm -rf .next` while `npm run dev` is running — it leaves the dev server
+serving a half-deleted manifest until restarted.
 
 ## Architecture
 
-**Stack:** Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS 4 (CSS-first config in `@theme`), shadcn/ui primitives, React Hook Form + Zod, lucide-react, googleapis, vitest.
+**Stack:** Next.js 16 (App Router, Turbopack), React 19, TypeScript, Tailwind CSS 4 (CSS-first
+config in `@theme`), React Hook Form + Zod, lucide-react, googleapis, vitest.
 
 **Path alias:** `@/` maps to `src/`
 
 ### Site structure
 
-Single-page landing at `/` (bento-modern layout) plus three additional routes: `/calculator`, `/contacts`, `/privacy`. No dynamic routes.
-
-Home page render order (matches `vent bento modern/handoff_bento_modern/Vent - Bento Modern.html`):
+The home page is a scroll story of eight sections plus the footer:
 
 ```
-Header → Hero → Services → Cases → BigVenues → HowWeWork → TrustSection → Calculator → ContactSection → Footer
+01 Hero → 02 Technology → 03 Process → 04 Advantages → 05 Objects
+→ 06 Discounts → 07 Calculator + LeadForm → 08 FAQ → Footer
 ```
 
-`Header` and `ContactSection` are wrapped in `CalculatorProvider` (in `app/page.tsx`) so MiniCalculator, Calculator, and ContactForm share state.
+Section ids are the numbers themselves (`#01` … `#08`) and double as the menu anchors, so
+`/#07` from any page lands on the calculator.
+
+Other routes: `/blog` (article list), `/blog/[slug]` (five articles, statically generated),
+`/calculator`, `/contacts`, `/privacy`, `/uslugi` (hub + four service pages).
 
 ### Visual reference (handoff)
 
-`vent bento modern/handoff_bento_modern/Vent - Bento Modern.html` is the **canonical** design reference. All visual decisions, spacing, animations, and interactions must match it 1-to-1. When in doubt, open the HTML reference and find the corresponding selector before writing port code.
+`design_handoff_vent_landing/README.md` is the **canonical specification** — tokens, type scale,
+section-by-section layout, interactions, calculator formulas. `design/*.dc.html` are working
+prototypes of the same thing; open them when a measurement is ambiguous. Their runtime
+(`support.js`, `<x-dc>`, `<sc-*>`, inline styles) is not part of the port.
 
-`AUDIT.md` in repo root tracks reference-vs-port deltas as they're discovered.
+`design/img/` is gitignored — the photos are byte-identical to `public/images/*.jpg`. To view the
+prototypes with pictures: `cp public/images/*.jpg design_handoff_vent_landing/design/img/`.
+
+`AUDIT.md` tracks reference-vs-port deltas and the reasons for each.
 
 ### Component conventions
 
-Every component lives in `src/components/<Name>/<Name>.tsx`. Tailwind utility classes only — no SCSS. Components using hooks or browser APIs must start with `'use client'`.
+Story components live in `src/components/story/<Name>.tsx`; the few shared leftovers
+(`Breadcrumbs`, `ContentPage`, `Prose`, `CustomCursor`) keep the older `<Name>/<Name>.tsx` shape.
+Tailwind utility classes only. Components using hooks or browser APIs start with `'use client'`.
+
+Sizes come from the handoff as `clamp(min, preferred, max)` and line lengths as `max-width` in
+`ch` — both are load-bearing, not approximations.
 
 ### Design tokens (`src/app/globals.css` @theme)
 
@@ -46,94 +64,109 @@ Every component lives in `src/components/<Name>/<Name>.tsx`. Tailwind utility cl
 |---|---|
 | `--color-bg` | `#f6f3ec` |
 | `--color-ink` | `#141312` |
+| `--color-black-deep` | `#0e0d0c` (behind photography) |
+| `--color-ink-hover` | `#191817` (dark card hover) |
 | `--color-brand` | `#1e5c32` |
-| `--color-brand-dark` | `#0f3d22` |
 | `--color-accent` | `#c8ff3e` (lime) |
 | `--color-surface` | `#ffffff` |
 | `--color-stone` | `#f4f4f2` |
-| `--color-line` | `rgba(20,19,18,.08)` |
-| `--color-line-2` | `rgba(20,19,18,.14)` |
-| `--radius-tile` | 22px |
-| `--radius-tile-lg` | 28px (large bento tiles) |
-| `--radius-card` | 14px (inputs) |
+| `--color-line` / `--color-line-2` | `rgba(20,19,18,.08)` / `.14` |
 | `--radius-pill` | 999px |
-| `--max-width-content` | 1320px |
 
-`tailwind.config.ts` does NOT define `fontFamily` — Tailwind v4 reads `--font-{name}` directly from `@theme`. Adding `fontFamily` in the config creates two sources of truth.
+**Radius is 999px or nothing.** Rectangular blocks are never rounded; the single exception is the
+3px checkbox square inside the calculator chips, which is written inline where it is used.
+
+`tailwind.config.ts` carries only content globs — in v4 the tokens live in `@theme`, and copies in
+both places drift.
+
+### Card grids draw seams with `gap: 1px`
+
+Every card grid (advantages, discounts, article cards, related) sits on a tinted background and
+separates its cards with a 1px gap, not with per-card borders. Borders double up on the seams.
 
 ### Fonts
 
-- **Inter Tight** (body, sans) — loaded via `next/font/google` in `src/app/layout.tsx` with `subsets: ['latin', 'cyrillic']`, weights `400/500/600`. Exposes `--font-inter-tight`.
-- **JetBrains Mono** (mono) — same pattern, Latin only, weights `400/500`. Exposes `--font-jetbrains-mono`.
-- **Fraunces** (display) — loaded via `<link>` tag in `layout.tsx`'s `<head>` because next/font v14.2 types don't expose Cyrillic or the full `opsz` axis for Fraunces. The `<link>` requests `ital,opsz,wght@0,9..144,300..600;1,9..144,300..500` which matches the bento reference exactly.
+- **Inter Tight** (body), **JetBrains Mono** (labels), **Fraunces** (display) and **Marggraff**
+  (the `.team` wordmark tail only) — all self-hosted via `next/font` in `src/app/layout.tsx`.
+- Fraunces ships no Cyrillic, so Russian headings render in Georgia. The prototype behaves the
+  same way; do not "fix" it by swapping the family.
+- Mono text is always uppercase and tracked — use the `.mono-label` class rather than repeating
+  the three declarations.
 
-In CSS, `--font-display: "Fraunces", Georgia, serif;`. **Never** add a `.font-display { font-family: ... }` rule in `globals.css` — it would override the `@theme` token.
+### Scroll engine (`src/lib/story-scroll.ts`)
 
-### Shared CTAs
+`useStoryScroll()` paints **everything scroll-dependent in one `requestAnimationFrame`** per
+scroll/resize: sticky tracks, parallax, topbar state, active menu item, progress bar. Splitting
+this across listeners is what made the prototype's menu lag. The active section is the one
+crossing `0.38 × viewport height` — deliberately not an IntersectionObserver.
 
-`globals.css` defines reusable button utilities to mirror reference `.btn` / `.btn.lime` / `.btn.ghost`:
+The engine only writes attributes (`data-on`, `data-solid`) plus two numeric transforms; the
+colours and transitions live in `globals.css`. Every CSS default is the no-JS state.
 
-| Class | Use | Visual |
-|---|---|---|
-| `.btn-ink` | Dark CTA | bg ink → brand on hover, arrow translateX(3) |
-| `.btn-lime` | Primary lime CTA | accent bg, wipe-fill ink on hover, arrow translateX(4) |
-| `.btn-ghost` | Outline on light bg | transparent → ink fill on hover |
-| `.btn-ghost-on-dark` | Outline on ink/brand bg | transparent → bg/.08 fill, accent border |
-| `.btn-now-cta` | Hero status mini CTA | accent text + bottom-line, lime wipe on hover |
+`useStoryReveal()` handles entrance animations. The hidden state exists only while
+`html.story-reveal` is set, and only the hook sets it, so a dead observer or missing JS leaves the
+page fully readable. A 4s failsafe reveals anything the observer missed.
 
-Each expects an `.arrow` element inside for the slide-on-hover animation.
+`prefers-reduced-motion` disables reveals, parallax, the slider intro, smooth scrolling and the
+custom cursor.
 
-### Icons
+### Section 02 must degrade
 
-All icons from `src/lib/icons.tsx` (re-exports `lucide-react`). Always import from `@/lib/icons`. Default `strokeWidth={1.5}` unless small inline glyphs.
+Below 900px wide **or** 620px tall the sticky track becomes ordinary flow, the frame column is
+hidden and all six steps show at full strength. This lives in `globals.css` (`.story-track`,
+`.story-track-pane`); the engine detects the degraded state by reading computed `position`. Without
+it the steps cannot be scrolled through on a short laptop screen.
 
 ### Calculator state
 
-`src/lib/calculator-context.tsx` — React Context + `useReducer`. State shape:
+`src/lib/calculator-context.tsx` — React Context + `useReducer`:
 
 ```ts
-{ packageKey, services: ServiceKey[], areaM2, hoodCount }
+{ packageKey, services, unit, areaM2, lmValue, hoodCount, objectKey }
 ```
 
-`MiniCalculator` (hero), `Calculator` (full), and `ContactForm` all consume it. Logic in `src/lib/pricing.ts` (pure, unit-tested in `pricing.test.ts`).
+The provider wraps `<main>` on the home page, so sections 02, 05 and 07 share one state. A
+`PRESET` action sets the package, its default services plus one extra, and syncs the form's object
+field; callers then `scrollToSection('07')`.
 
-### `data-calc-jump` deep links
+Pricing lives in `src/lib/pricing.ts` (pure, unit-tested). `computeEstimate` is what the story
+uses: volume in m² or in duct metres, chip-ordered breakdown, lines rounded to 100 ₽, and the
+−20% discount surfacing at 30 000 ₽. Coefficients and rates come from the handoff README.
 
-`[data-calc-jump="<svc>"]` on Services anchor links triggers Calculator to dispatch `SET_PACKAGE` + `TOGGLE_SERVICE`. Handler lives in `Calculator.tsx` via a document-level click listener.
+### Lead form
 
-### HowWeWork popup
+Posts to `/api/submit` → `src/lib/sheets.ts` appends a row via `googleapis` JWT. Requires
+`.env.local` with `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE_KEY` (literal `\n`),
+`GOOGLE_SHEET_ID`. The route recomputes the estimate server-side rather than trusting the client.
 
-Tile is `.pr-step` (article). Inside: `.pr-static` (default visible) and `.pr-popup` (hidden). On `:hover` or `[data-hint="open"]` on `.pr-step`, popup fades in, static fades out. Selectors are in `globals.css` — we don't rely on Tailwind's `group-data-[*]:` because v4 matching against arbitrary `data-*` values can be flaky.
+The submit button is disabled until name, phone and the personal-data consent are present, and its
+label names what is missing — that is a specified state, not decoration. Phone is stored as
+`+7XXXXXXXXXX`; the input shows 10 digits grouped `3 3 2 2` and drops a pasted leading 7/8.
 
-Auto-demo: first tile gets `data-hint="open"` 500ms after section enters viewport, held for 1500ms, cancelled if user hovers any tile first.
+`src/lib/schemas.test.ts` pins the payload shape: the form builds it by hand, and a field renamed
+on one side only would otherwise surface as a 400 on a real lead.
 
-### Compare slider (Cases)
+### Articles
 
-`CompareSlider` in `Cases.tsx` runs a `requestAnimationFrame` ping-pong cos curve 28%↔72% over 4.8s, gated by IntersectionObserver. Hover takes over with smooth resume (`t0Ref` rebase on `mouseleave`). Respects `prefers-reduced-motion`.
+Content lives in `src/data/articles.ts` as typed blocks (`p / h / quote / list / img / pair /
+note`) rendered by `src/components/story/ArticleBody.tsx`. Heading blocks get `#h1`, `#h2` … and
+the table of contents is built from the same counter. Body copy is final — transferred verbatim
+from the handoff and not to be rewritten.
 
-### Header
+Each article also carries a `faq` array that predates the redesign; it renders under the body and
+feeds `FAQPage` structured data.
 
-Sticky pill on `top:12px` with `bg-ink/.92 backdrop-blur-md`. Variants:
-- `landing` (default): full nav + contacts + lime CTA. Active section highlighted lime via IntersectionObserver on each `section[id]`.
-- `back`: brand + "На главную" pill. Used on `/privacy` (and `/contacts`/`/calculator` if needed).
+### Before/after slider
 
-Mobile (<lg): burger → full-screen drawer.
-
-### Google Sheets integration
-
-Form POSTs to `/api/submit` → `src/lib/sheets.ts` appends a row via `googleapis` JWT. Requires `.env.local` with `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE_KEY` (with literal `\n`), `GOOGLE_SHEET_ID`.
-
-### Phone mask
-
-`+7 999 888 77 66` — `+7` prefix rendered outside the input, user types 10 digits. Leading 7/8 stripped on paste. Full E.164 (`+7XXXXXXXXXX`) stored in form state.
-
-### Scroll reveal — INTENTIONALLY DISABLED
-
-Reference has no `[data-anim]` entrance reveals. `globals.css` neutralises the `[data-anim] { opacity:1; transform:none }`. `useScrollAnim` hook and `[data-anim]` markup remain in components but are visual no-ops. Don't re-enable.
+`src/components/story/CompareSlider.tsx` writes its position straight to the DOM instead of React
+state — a drag repaints on every pointer move. It starts closed, plays to 62% once on first sight,
+takes 6% per arrow key, and replays when the object tab changes. `role="slider"` with live
+`aria-valuenow`.
 
 ### What NOT to touch
 
-- `src/lib/pricing.ts` (formula)
-- `src/data/*.ts` (data)
-- `/api/submit` and `src/lib/sheets.ts`
-- Stack (React 18 / Next 14 / Tailwind v4 / shadcn)
+- Copy anywhere on the site — every string is final client-approved text.
+- `src/lib/pricing.ts` formulas without updating `pricing.test.ts` and the handoff README together.
+- `/api/submit` and `src/lib/sheets.ts`.
+- The palette and the four typefaces.
+- Article URLs (`/blog/<slug>`) — they are indexed.

@@ -52,7 +52,11 @@ export function Hero() {
         >
           Чистим то,
           <br />
-          что никто <span className="hero-outline">не видит.</span>
+          что никто{' '}
+          {/* The mobile mock breaks before the outlined words; wider screens
+              keep the two-line break of the desktop reference. */}
+          <br className="min-[560px]:hidden" />
+          <span className="hero-outline">не видит.</span>
         </h1>
 
         <div className="flex flex-wrap items-end justify-between gap-[26px] border-t border-bg/[.14] pt-[clamp(14px,2.2vh,26px)]">

@@ -1,72 +1,61 @@
-# AUDIT — Bento Modern reference vs. Next.js port
+# AUDIT — «Лендинг-история» (референс) vs порт на Next.js
 
-**Reference:** `vent bento modern/handoff_bento_modern/Vent - Bento Modern.html`
-**Date:** 2026-05-16
-**Method:** read reference top-to-bottom (CSS tokens → atoms → bento sections → JS scripts) and grep the port for each selector / keyframe / event listener.
+**Референс:** `design_handoff_vent_landing/` — `README.md` (спецификация, источник истины) и
+`design/*.dc.html` (прототип).
+**Дата:** 2026-08-10
+**Метод:** README прочитан целиком; каждая секция прототипа снята скриншотом на локальном
+статик-сервере и сверена с портом при одинаковом вьюпорте; поведение проверено в браузере
+(computed styles + реальные события скролла, драга и клавиатуры).
 
-Items are checked off as fixed. `□` = open, `■` = fixed in this pass.
+Список ведётся как в прошлый раз: `□` — открыто, `■` — закрыто/принято осознанно.
+
+> Чтобы открыть прототип локально с картинками: `cp public/images/*.jpg design_handoff_vent_landing/design/img/`
+> (папка `design/img/` в гите игнорируется — это побайтные копии `public/images/`).
 
 ---
 
-## 1. Fonts
+## 1. Осознанные расхождения с прототипом
 
-| # | Issue | Reference | Port | Fix |
+| # | Что | Референс | Порт | Почему |
 |---|---|---|---|---|
-| F1 | Fraunces axes | `ital,opsz@9..144,wght@300..600` | `axes: ['SOFT']`, no `opsz`, no italic | ■ replace `next/font` Fraunces with `<link>` to Google Fonts (matches reference exactly, also unblocks Cyrillic). |
-| F2 | Fraunces Cyrillic | reference loads Cyrillic by default | `subsets: ['latin','latin-ext']` (next/font types reject `'cyrillic'` for Fraunces in `next@14.2`) | ■ same as F1 — `<link>` request includes Cyrillic via `&subset=cyrillic`. |
-| F3 | Inter Tight weights | reference uses `400/500/600` | port loads `400/500/600/700` (700 unused) | ■ drop 700. |
-| F4 | `.font-display` override in `globals.css` | n/a | line 154-157: `.font-display { font-family: 'Fraunces', Georgia, serif; }` — clobbers the `var(--font-fraunces)` from next/font | ■ delete the rule. |
-| F5 | `CLAUDE.md` documentation | n/a | claims `font-sans = Onest`, mentions `HomeOrchestrator` (removed), wrong section order | ■ rewrite to match current architecture. |
-| F6 | `tailwind.config.ts` legacy `fontFamily` | n/a | duplicates v4 `@theme` definitions; in Tailwind v4 only `@theme` is read, but having both is a foot-gun | ■ remove `fontFamily` from `tailwind.config.ts`. Trim other duplicated `colors`/`borderRadius` if they conflict; keep only what `@theme` doesn't cover. |
-| F7 | Body explicit font | reference: `body { font-family: var(--sans); }` | port body has `font-family: var(--font-inter-tight)…` — works but only Latin glyphs | ■ keeps working after F1-F3 fixes (next/font Inter Tight has Cyrillic). No further change. |
+| D1 | URL статей | README: `/statyi/<slug>` | `/blog/<slug>` | ■ Эти адреса уже проиндексированы, слаги совпадают один в один. Миграция стоила бы переиндексации без выигрыша. Решение согласовано. |
+| D2 | FAQ внутри статьи | нет | есть, 4–5 вопросов на материал | ■ Блок был до редизайна и несёт `FAQPage`-разметку (шанс на rich result). Оформлен аккордеоном секции 08, чтобы не выглядеть пришитым. |
+| D3 | Разметка статей | нет | `Article` + `FAQPage` + `BreadcrumbList` | ■ SEO-слой сайта, дизайну не противоречит (не виден). |
+| D4 | Флаги `narrow / short / wide` | JS-состояние по `resize` | медиа-запросы | ■ В прототипе не было стилей — только инлайны. В проекте то же поведение выражается CSS: нет состояния, нет слушателя, нет рассинхрона при гидратации. Деградация секции 02 работает ровно по тем же порогам (900 px / 620 px). |
+| D5 | Стартовое состояние reveal | инлайновый `opacity:0` в разметке | скрытие включается классом `story-reveal` на `<html>` | ■ Требование README №7: контент не должен остаться невидимым. Без JS, при упавшем обсервере или ошибке в хуке страница читается полностью. |
+| D6 | Слайдер «до/после»: фокус | клик не даёт фокус (`preventDefault`) | клик ставит фокус явно | ■ В прототипе после клика стрелки не работали, пока не дойдёшь до слайдера табом. |
+| D7 | Пустой список услуг в заявке | бэкенда нет | заявка принимается | ■ Обязательные поля формы — имя, телефон, согласие. Лид, снявший все чипсы, не должен получать ошибку отправки на внешне заполненной форме. |
+| D8 | Перенос строки в H1 героя | в мобильном макете отдельная разметка | `<br>` только до 560 px | ■ Одна разметка на все ширины: до 560 px ломается как в мобильном макете, выше — как в десктопном. |
+| D9 | Кастомный курсор | кольцо 32 → 58 px | так же; вариант «магнит» (78 px) удалён | ■ Варианта нет в спецификации истории, а хук, который его включал, ушёл вместе с бенто. |
+| D10 | Ссылка «Диагностика» в футере | `/uslugi/diagnostika` | `/uslugi/videoinspekciya` | ■ В прототипе адрес выдуман; реальный маршрут существует с мая. |
+| D11 | CTA-полоса на списке статей | README: лайм-кнопка + телефон; в HTML телефон удалён | лайм-кнопка + телефон | ■ README — источник истины. |
+| D12 | Услуга «Дезинфекция» | в калькуляторе прототипа её нет | вырезана из каталога, `/uslugi/dezinfekciya` → 301 на `/uslugi` | ■ Решение согласовано. Текст статьи про ХАССП упоминает дезинфекцию как операцию — копирайт финальный, не трогали. |
+| D13 | Токен `#171614` (пустой фото-слот) | есть | удалён | ■ Все слоты закрыты реальными снимками, показывать нечего. |
+| D14 | Атрибуты `data-screen-label` | есть | нет | ■ Рантайм прототипа, к вёрстке отношения не имеет. |
 
----
+## 2. Расхождения, оставшиеся открытыми
 
-## 2. Animations / Transitions
+| # | Что | Статус |
+|---|---|---|
+| O1 | Фотографии в теле статей (`grease1-*`, `grease2-*`, `dust-*`, `service-ventilation`) — сток | □ Единственные нефинальные картинки макета. README прямо говорит заменить, когда заказчик пришлёт свои. |
+| O2 | Telegram и WhatsApp ведут на `t.me/vent` и `wa.me/74951200404` | □ Заглушки из макета. Живут в `src/lib/site.ts`, менять там же. |
+| O3 | Реквизиты в футере — «после регистрации юрлица» | □ Текст макета, финальный до появления юрлица. |
+| O4 | Fraunces не содержит кириллицы | □ Русские заголовки и в прототипе, и в порте рисует Georgia — расхождения между ними нет, но это не тот рисунок, который виден в макете на латинице. Решается только заменой гарнитуры, что запрещено ТЗ. |
 
-| # | Reference selector | What animates | Port status | Fix |
-|---|---|---|---|---|
-| A1 | `.btn.lime::before` (line 121) | `transform: scaleX(0→1) .45s cubic-bezier(.65,0,.35,1)` wipe-fill ink, text turns lime | No such class in port; `.btn.lime` doesn't exist; Services feature CTA, Hero status CTA, calc result CTA all use ad-hoc Tailwind that mimics but inconsistently | ■ add `.btn-lime` and `.btn-ink` utility classes in `globals.css` with `::before` wipe + arrow translate. Use across Services, Hero status, Calculator result, Mini-calc footer. |
-| A2 | `.btn.lime:hover .arrow` | `translateX(4) .35s cubic-bezier(.65,0,.35,1)` | mixed `translate-x-0.5` / `translate-x-1` in different components, no shared easing | ■ part of `.btn-lime` class — single source of truth. |
-| A3 | `.btn:hover .arrow` (non-lime) | `translateX(3) .25s` | inconsistent | ■ same `.btn-*` family. |
-| A4 | `.pill .dot.live` + `.h-status .live-dot` | `pulse 1.6s ease-in-out infinite`, keyframe = `50% { box-shadow: 0 0 0 8px rgba(200,255,62,0); }` | port has `live-pulse` keyframe identical to reference; `animate-live-pulse` utility applied in Hero `.h-status` and MiniCalc badge ✓ | OK |
-| A5 | `.compare-grip::after` | `ringspin 9s linear infinite` dashed ring | port has `animate-ringspin` on `<span>` inside grip ✓ | OK |
-| A6 | `.compare` JS (line 2488) | auto ping-pong 28↔72% 4.8s cos, IO-gated, hover takes control | port `Cases.tsx CompareSlider` ports the same RAF + IO logic. Check: `userControl` releases on `mouseleave`, `t0Ref` rebases. Looks correct. ✓ | OK |
-| A7 | `.h-status .now-foot a.now-cta::before` | wipe-fill lime `.45s cubic-bezier(.65,0,.35,1)`, text turns ink | port implements in JSX via `<span>` overlay — works but verbose, will refactor to shared `.btn-lime` class | ■ refactor to shared utility. |
-| A8 | `.case-tile:hover .case-expand` | grid-rows `0fr→1fr .35s cubic-bezier(.16,1,.3,1)` + opacity `.25s` | port uses `grid-rows-[0fr] group-hover:grid-rows-[1fr]` ✓ | OK |
-| A9 | `.ven-tile:hover img` | grayscale .3→0, opacity .88→1, scale 1.03; `filter .35s, transform .8s` | port: `group-hover:opacity-100 group-hover:[filter:grayscale(0)_contrast(1)]` with `duration-[800ms]` ✓ | OK |
-| A10 | `.ven-tile:hover .ven-popup` | translateY(6)→0 + opacity 0→1, pointer-events on | port has `group-hover:opacity-100 group-hover:translate-y-0` ✓ | OK |
-| A11 | `.pr-step:hover` | translateY(-2px) `.35s cubic-bezier(.16,1,.3,1)` | port `hover:-translate-y-0.5` ≈ -2px ✓ | OK |
-| A12 | `.pr-step .pr-popup` / `[data-hint=open]` | popup `translateY(8)→0` + opacity, static fades out | port uses `group-data-[hint=open]:[…]`. **Risk:** Tailwind v4 group-data syntax — may or may not match. | ■ replace with explicit CSS rule in `globals.css` (`.pr-step[data-hint=open] .pr-popup { opacity:1; transform:none; pointer-events:auto }` etc.) — guarantees match. |
-| A13 | HowWeWork auto-demo | 500ms after section visible → first card `data-hint='open'` for 1500ms; cancelled on hover | port `useEffect` does exactly this ✓ — works after A12 selector fix. | depends on A12 |
-| A14 | Counters (line 2716) | 0 → target over 1.1s easeOutCubic via RAF, once on IO threshold 0.4 | port `useCounter(target, 1100)` hook does this ✓ | OK |
-| A15 | `.calc-slider` thumb | `transform: scale(1.08) .15s` on hover; inset 7px brand | port has `<style jsx global>` block with `::-webkit-slider-thumb` styles ✓ | OK |
-| A16 | `.calc-slider .fill` | `transition: width .08s linear` | port: `transition-[width] duration-75` ≈ .075s — close enough ✓ | OK |
-| A17 | `.mc-field--hood` | `flex-grow .45s cubic-bezier(.16,1,.3,1)` collapse when no-hood pkg | port conditionally **mounts/unmounts** the field — abrupt | ■ render unconditionally; toggle `data-hood-shown` attribute → CSS animates `flex-grow`/`opacity`. |
-| A18 | `.case-tile .case-info` | bg → `rgba(20,19,18,.85) .25s` on hover | port: `group-hover:bg-ink/85 transition-colors` ✓ | OK |
-| A19 | `[data-anim]` reveal | **none** in reference | port already neutralised in globals.css (opacity:1, transform:none) ✓ | OK |
+## 3. Что проверено живьём
 
----
+- **Топбар.** Прозрачный над героем, за 60 px становится плотным: фон `rgba(246,243,236,.9)`, `blur(14px)`, текст чернильный, хвост «.team» из лайма в зелёный. Подчёркивание активного пункта — `scaleX(0→1)`.
+- **Активная секция.** Считается по линии `0.38 × высота вьюпорта` в общем кадре, не обсервером.
+- **Секция 02.** Шаги переключаются 0→5 по мере прокрутки трека. При высоте 600 px трек становится обычным потоком (`min-height:0`, `position:static`, одна колонка), кадры скрыты, все шесть строк — в полную силу.
+- **Секция 05.** Три слайдера сами доезжают до 62 % при появлении, тянутся указателем, шагают на 6 % по стрелкам, переигрываются при смене таба; подписи и буллиты меняются вместе с фото.
+- **Пресеты.** Шаг 03 секции 02 → «Общепит» + жир + зонты, 20 200 ₽. Кнопка секции 05 на табе «Офис» → «Офис» + пыль, 3 600 ₽. Оба скроллят к 07 со смещением −60 px и синхронизируют поле «объект» в форме.
+- **Форма.** Маска телефона срезает ведущую 8 и группирует 3 3 2 2; кнопка неактивна и называет, чего не хватает, пока не отмечено согласие. Хонипот-запрос отдаёт 200 и ничего не пишет, битый payload — 400.
+- **Мобильный вид (390 px).** Горизонтального скролла нет, меню и телефон в топбаре скрыты (логотип + CTA), все сплиты в одну колонку, H1 — 50 px (нижняя граница clamp).
 
-## 3. Interactions / JS-logic
+## 4. Метрики
 
-| # | Reference | Port | Fix |
-|---|---|---|---|
-| I1 | Header active link via IO on `section[id]` | port `Header.tsx` IO on each id, sets `activeId` state, lime highlight ✓ | OK |
-| I2 | Phone mask `+7 999 888 77 66`, prefix outside input, 10 digits in, leading 7/8 stripped | port `ContactForm.tsx` uses Controller + `digitsOnly`/`formatPhone` helpers, prefix `<span>+7</span>` outside `<input>` ✓ | OK |
-| I3 | `data-calc-jump="<svc>"` from Services → preselects pkg + service in Calculator | port: Services renders attr, Calculator `useEffect` document-listener dispatches `SET_PACKAGE` + `TOGGLE_SERVICE` ✓ | OK |
-| I4 | Mini-calc + Full-calc share state | port via `CalculatorContext` ✓ | OK |
-| I5 | Counters fire once when in view | port `useCounter` ✓ | OK |
-| I6 | HowWeWork auto-demo cancels on user hover | port has `mouseover` handler ✓ | OK after A12 |
-| I7 | Compare-slider hover takes control, releases on mouseleave with smooth resume | port ✓ | OK |
-| I8 | Reference button `.btn:not(.lime):hover .arrow { translateX(3) }` | port has it scattered as `group-hover:translate-x-0.5` etc. | ■ unified via shared `.btn-*` class (A1-A3). |
-
----
-
-## Summary of edits planned
-
-1. **Fonts (F1-F6):** rewrite `layout.tsx` to drop next/font for Fraunces, swap to `<link>` (matches reference). Trim Inter Tight weights. Delete `.font-display` override. Strip duplicate `fontFamily` from `tailwind.config.ts`. Update CLAUDE.md.
-2. **Shared CTA classes (A1-A3, A7, I8):** add `.btn-ink`, `.btn-lime`, `.btn-ghost` utilities to `globals.css` with `::before` wipe + arrow translate. Replace ad-hoc bento-buttons across Hero, Services, Calculator, HowWeWork, ContactForm with these classes.
-3. **HowWeWork data-hint (A12-A13):** add plain CSS in `globals.css`: `.pr-step[data-hint="open"] .pr-popup { opacity:1; transform:none; pointer-events:auto }` and inverse for static content fade-out. Drop Tailwind `group-data-[hint=…]` selectors.
-4. **Mini-calc hood field (A17):** render always, toggle `data-hood-shown="false"` attribute; CSS animates `flex-grow`/`flex-basis`/`opacity`/`pointer-events`.
-5. **Verify:** `npx tsc --noEmit`, `npm test`, `npm run build`.
+| | |
+|---|---|
+| `npx tsc --noEmit` | чисто |
+| `npm test` | 29 тестов, зелёные |
+| `npm run build` | чисто, 22 страницы, 5 статей пререндерены |
