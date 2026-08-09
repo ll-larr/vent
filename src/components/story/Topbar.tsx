@@ -27,6 +27,9 @@ const SECTION_LINKS: NavLink[] = [
   { id: '08', label: 'Вопросы', href: '/#08' },
 ];
 
+/** Secondary pages carry a shorter menu, as the article reference does. */
+const SHORT_LINK_IDS = new Set(['02', '05', '08']);
+
 const NAV_ITEM =
   'story-nav-item relative whitespace-nowrap py-[3px] text-[13.5px] max-[899px]:hidden';
 
@@ -38,6 +41,7 @@ export function Topbar({
   activeArticles?: boolean;
 }) {
   const story = variant === 'story';
+  const links = story ? SECTION_LINKS : SECTION_LINKS.filter((l) => SHORT_LINK_IDS.has(l.id));
 
   return (
     <header
@@ -62,7 +66,7 @@ export function Topbar({
         aria-label="Разделы сайта"
         className="flex flex-1 items-center justify-center gap-[clamp(13px,1.7vw,28px)]"
       >
-        {SECTION_LINKS.map((link) => (
+        {links.map((link) => (
           <Link
             key={link.id}
             href={link.href}

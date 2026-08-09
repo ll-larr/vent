@@ -1,98 +1,143 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ContentPage } from '@/components/ContentPage/ContentPage';
-import { Prose } from '@/components/Prose/Prose';
-import { ArrowUpRight } from '@/lib/icons';
-import { ARTICLES } from '@/data/articles';
-import { articleUrl } from '@/lib/content';
-
-const TITLE = 'Статьи о нормах чистки вентиляции';
-const DESCRIPTION =
-  'Справочные материалы о периодичности чистки вентиляции, актах, штрафах и требованиях ХАССП — для тех, кто готовится к проверке или ведёт график обслуживания.';
+import Image from 'next/image';
+import { Topbar } from '@/components/story/Topbar';
+import { StoryFooter } from '@/components/story/StoryFooter';
+import { SectionLabel } from '@/components/story/SectionLabel';
+import { ARTICLES, articleUrl } from '@/lib/content';
+import { plural } from '@/lib/utils';
+import { CONTACT_PHONE, CONTACT_PHONE_HREF } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
+  title: 'Статьи о чистке вентиляции',
+  description:
+    'Разборы по периодичности чистки вентиляции, документам и требованиям надзора: что спрашивают перед проверкой Роспотребнадзора и пожнадзора.',
   alternates: { canonical: '/blog' },
 };
 
-export default function BlogIndexPage() {
-  return (
-    <ContentPage
-      breadcrumbs={[{ name: 'Статьи', href: '/blog' }]}
-      eyebrow="Справочник"
-      title={
-        <>
-          Статьи о нормах <em className="italic text-brand">чистки вентиляции.</em>
-        </>
-      }
-      lead="Регуляторка простыми словами: что требуют СанПиН и правила пожарной безопасности, какие документы спрашивают при проверке и как не гадать на цифрах."
-    >
-      <Prose className="mb-14">
-        <p>
-          Этот раздел собирает материалы про одну и ту же ситуацию с разных сторон: к вам идёт или
-          может прийти проверка, и нужно быстро понять, что именно проверяют, какой документ
-          показать и какая периодичность чистки вентиляции вообще считается нормой. Мы намеренно
-          пишем как практики, которые сами выезжают на объекты и оформляют акты, а не как
-          копирайтеры, — без обещаний «гарантированно избавим от штрафа» и без выдуманных номеров
-          пунктов там, где мы не уверены в точной формулировке.
-        </p>
-        <p>
-          Материалы опираются на реально действующие документы: СанПиН 2.3/2.4.3590-20 для
-          организаций общественного питания, Правила противопожарного режима в РФ и технический
-          регламент ТР ТС 021/2011, который вводит требования ХАССП для пищевого бизнеса. Там, где
-          точная сумма штрафа или формулировка зависит от конкретных обстоятельств и квалификации
-          нарушения проверяющим органом, мы честно об этом пишем, а не подставляем цифру для
-          красоты.
-        </p>
-        <p>
-          Начать стоит с периодичности — она определяет, укладываетесь ли вы вообще в норму, и что
-          именно от объекта требуют разные ведомства. Дальше — практика для общепита, где интервал
-          чистки чаще всего сдвигается из-за интенсивности готовки, документ, которым это всё
-          подтверждается при проверке, разбор рисков по санитарной и противопожарной линии и,
-          отдельно, — как вентиляция вписывается в систему ХАССП, если ваш бизнес с ней уже
-          работает.
-        </p>
-        <p>
-          Эти материалы пригодятся управляющим ресторанов и кафе, ИП с пищеблоком, ответственным
-          за производственный контроль на складе или производстве — то есть тем, кто отвечает за
-          объект, а не читает нормативку из общего интереса. Мы опираемся на собственную практику:
-          работаем по Москве и области в радиусе 100 км с 2021 года и после каждой чистки
-          оформляем акт, поэтому представляем, какие вопросы реально задают на проверках, а какие
-          существуют только в пересказах «эксперты говорят».
-        </p>
-        <p>
-          Если после чтения остаётся вопрос по конкретному объекту — правильнее один раз посмотреть
-          на систему вживую, чем гадать по общим таблицам. Бесплатный видеоосмотр и точный расчёт
-          стоимости — обычная часть нашей работы, а не отдельная услуга «на всякий случай».
-        </p>
-      </Prose>
+const [lead, ...rest] = ARTICLES;
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16">
-        {ARTICLES.map((article) => (
+const META_ROW = 'mono-label flex gap-3.5 text-[10px] text-ink/45';
+
+export default function BlogPage() {
+  return (
+    <>
+      <Topbar variant="solid" activeArticles />
+
+      <main id="main">
+        <section className="border-b border-ink/[.12] px-[clamp(22px,3vw,56px)] pb-[clamp(24px,3.5vh,40px)] pt-[clamp(40px,7vh,84px)]">
+          <SectionLabel className="mb-4">
+            статьи · {ARTICLES.length} {plural(ARTICLES.length, ['материал', 'материала', 'материалов'])}
+          </SectionLabel>
+          <div className="flex flex-wrap items-end justify-between gap-[clamp(20px,3vw,48px)]">
+            <h1 className="flex-[1_1_480px] font-display text-[clamp(38px,6.4vw,104px)] font-light leading-[.92] tracking-[-.038em]">
+              Что спрашивают
+              <br />
+              перед проверкой.
+            </h1>
+            <p className="flex-[0_1_38ch] text-[clamp(15px,1.1vw,18px)] leading-[1.6] text-ink/[.66]">
+              Разборы по периодичности, документам и требованиям надзора — так, как это выглядит
+              на практике, без пересказа нормативов ради объёма.
+            </p>
+          </div>
+        </section>
+
+        <section className="px-[clamp(22px,3vw,56px)] pb-[clamp(48px,7vh,88px)] pt-[clamp(26px,4vh,48px)]">
           <Link
-            key={article.slug}
-            href={articleUrl(article.slug)}
-            className="group flex flex-col justify-between gap-6 bg-surface rounded-2xl shadow-card p-6 hover:-translate-y-0.5 transition-transform"
+            href={articleUrl(lead.slug)}
+            className="grid grid-cols-1 items-center gap-[clamp(18px,3vw,52px)] border-b border-ink/[.14] pb-[clamp(26px,4vh,44px)] text-ink min-[900px]:grid-cols-[1.05fr_1fr]"
           >
-            <div>
-              <h2 className="font-display font-normal text-[20px] leading-[1.2] tracking-[-.01em] text-ink mb-2.5">
-                {article.h1}
-              </h2>
-              <p className="text-[14.5px] text-ink/65 leading-[1.6]">{article.description}</p>
-            </div>
-            <span className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[.14em] text-brand">
-              Читать
-              <ArrowUpRight
-                size={14}
-                strokeWidth={1.75}
-                className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                aria-hidden="true"
+            <span className="relative block overflow-hidden bg-black-deep aspect-[16/10]">
+              <Image
+                src={lead.hero}
+                alt=""
+                fill
+                priority
+                sizes="(max-width: 900px) 100vw, 55vw"
+                className="object-cover"
               />
+              <span className="mono-label absolute left-3.5 top-3.5 rounded-pill bg-accent px-[13px] py-[7px] text-[9.5px] tracking-[.16em] text-ink">
+                читают чаще всего
+              </span>
+            </span>
+            <span className="block min-w-0">
+              <span className={`${META_ROW} mb-3`}>
+                {lead.date}
+                <span>{lead.read}</span>
+              </span>
+              <span className="mb-3 block font-display text-[clamp(28px,3.6vw,58px)] font-light leading-[1.02] tracking-[-.032em]">
+                {lead.title}
+              </span>
+              <span className="block max-w-[60ch] text-[clamp(15px,1.1vw,17.5px)] leading-[1.6] text-ink/[.66]">
+                {lead.description}
+              </span>
+              <span className="mono-label mt-[18px] inline-flex items-center gap-[9px] border-b border-brand/40 pb-1 text-[10.5px] text-brand">
+                читать <span aria-hidden="true">→</span>
+              </span>
             </span>
           </Link>
-        ))}
-      </div>
-    </ContentPage>
+
+          <div className="mt-[clamp(26px,4vh,44px)] grid grid-cols-[repeat(auto-fit,minmax(268px,1fr))] gap-px bg-ink/[.14]">
+            {rest.map((article) => (
+              <Link
+                key={article.slug}
+                href={articleUrl(article.slug)}
+                className="flex flex-col gap-3.5 bg-bg p-[clamp(18px,2vw,28px)] text-ink transition-colors duration-[350ms] hover:bg-surface"
+              >
+                <span className="relative block overflow-hidden bg-black-deep aspect-[16/10]">
+                  <Image
+                    src={article.hero}
+                    alt=""
+                    fill
+                    sizes="(max-width: 900px) 100vw, 320px"
+                    className="object-cover"
+                  />
+                </span>
+                <span className={META_ROW}>
+                  {article.date}
+                  <span>{article.read}</span>
+                </span>
+                <span className="block font-display text-[clamp(20px,1.8vw,28px)] font-normal leading-[1.12] tracking-[-.022em]">
+                  {article.title}
+                </span>
+                <span className="block text-[15px] leading-[1.55] text-ink/[.62]">
+                  {article.description}
+                </span>
+                <span className="mono-label mt-auto inline-flex items-center gap-2 text-[10px] text-brand">
+                  читать <span aria-hidden="true">→</span>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section className="flex flex-wrap items-center justify-between gap-6 bg-ink px-[clamp(22px,3vw,56px)] py-[clamp(40px,6vh,72px)] text-bg">
+          <div className="min-w-0">
+            <h2 className="mb-2.5 font-display text-[clamp(28px,3.6vw,56px)] font-light leading-none tracking-[-.032em]">
+              Проще спросить инженера.
+            </h2>
+            <p className="max-w-[80ch] text-[clamp(15px,1.1vw,17px)] leading-[1.6] text-bg/70">
+              Назовём периодичность и стоимость для вашего объекта после осмотра.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/#07"
+              className="inline-flex items-center gap-2.5 rounded-pill bg-accent px-6 py-[15px] text-[14.5px] font-medium text-ink transition-colors duration-[350ms] hover:bg-bg"
+            >
+              Рассчитать стоимость <span aria-hidden="true">→</span>
+            </Link>
+            <a
+              href={CONTACT_PHONE_HREF}
+              className="inline-flex items-center gap-2.5 rounded-pill border border-bg/[.24] px-[22px] py-3.5 text-[14.5px] transition-colors duration-[350ms] hover:border-accent hover:text-accent"
+            >
+              {CONTACT_PHONE}
+            </a>
+          </div>
+        </section>
+      </main>
+
+      <StoryFooter variant="compact" />
+    </>
   );
 }
