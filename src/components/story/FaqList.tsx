@@ -7,7 +7,7 @@ import { useState } from 'react';
    borrows section 08's accordion behaviour and typography to sit inside the
    article body without looking bolted on. One item open at a time; a second
    click on the open one closes it. */
-export function ArticleFaq({ items }: { items: Array<{ q: string; a: string }> }) {
+export function FaqList({ items }: { items: Array<{ q: string; a: string }> }) {
   const [open, setOpen] = useState(0);
   if (!items.length) return null;
 
@@ -23,7 +23,7 @@ export function ArticleFaq({ items }: { items: Array<{ q: string; a: string }> }
                 type="button"
                 onClick={() => setOpen(isOpen ? -1 : i)}
                 aria-expanded={isOpen}
-                aria-controls={`article-faq-${i}`}
+                aria-controls={`faq-item-${i}`}
                 className={[
                   'flex w-full cursor-pointer items-start justify-between gap-5 py-[clamp(13px,1.7vh,18px)] text-left transition-colors duration-300',
                   isOpen ? 'text-ink' : 'text-ink/[.78]',
@@ -43,7 +43,7 @@ export function ArticleFaq({ items }: { items: Array<{ q: string; a: string }> }
                   +
                 </span>
               </button>
-              <div id={`article-faq-${i}`} hidden={!isOpen} className="pb-[clamp(14px,2vh,20px)]">
+              <div id={`faq-item-${i}`} hidden={!isOpen} className="pb-[clamp(14px,2vh,20px)]">
                 <p className="text-[clamp(15px,1.05vw,16.5px)] leading-[1.6] text-ink/[.72]">
                   {item.a}
                 </p>
@@ -57,4 +57,4 @@ export function ArticleFaq({ items }: { items: Array<{ q: string; a: string }> }
   );
 }
 
-export default ArticleFaq;
+export default FaqList;

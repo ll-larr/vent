@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Header } from '@/components/Header/Header';
-import { CalculatorProvider } from '@/lib/calculator-context';
+import { Topbar } from '@/components/story/Topbar';
 import { ArrowRight } from '@/lib/icons';
 
 export const metadata: Metadata = {
@@ -163,8 +162,8 @@ function BulletList({ items }: { items: string[] }) {
 
 export default function PrivacyPage() {
   return (
-    <CalculatorProvider>
-      <Header variant="back" />
+    <>
+      <Topbar variant="solid" />
       <main id="main" className="bg-bg text-ink min-h-screen">
         <div className="max-w-[880px] mx-auto px-6 pt-20 pb-24">
           <div className="inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[.14em] text-ink/50">
@@ -234,6 +233,6 @@ export default function PrivacyPage() {
           </div>
         </div>
       </footer>
-    </CalculatorProvider>
+    </>
   );
 }

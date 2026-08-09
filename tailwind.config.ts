@@ -1,82 +1,14 @@
 import type { Config } from 'tailwindcss';
 
+// Tailwind v4 reads the design tokens from `@theme` in src/app/globals.css —
+// colours, fonts and the single radius all live there. Redeclaring any of them
+// here would create a second source of truth, so this file carries nothing but
+// the content globs.
 const config: Config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  theme: {
-    extend: {
-      colors: {
-        bg:          '#f6f3ec',
-        ink:         '#141312',
-        brand: {
-          DEFAULT: '#1e5c32',
-          dark:    '#0f3d22',
-          hover:   '#2d7d46',
-          accent:  '#22c55e',
-          light:   '#eef5ef',
-          muted:   '#5a6b5e',
-        },
-        'brand-dark':'#0f3d22',
-        accent:      '#c8ff3e',
-        surface:     '#ffffff',
-        mute:        '#5a6b5e',
-        line:        'rgba(20,19,18,0.08)',
-        stone:       '#f4f4f2',
-      },
-      // fontFamily intentionally removed — Tailwind v4 reads it from @theme
-      // in src/app/globals.css (--font-display / --font-sans / --font-mono).
-      // Keeping both creates two sources of truth.
-      maxWidth: {
-        content: '1120px',
-      },
-      borderRadius: {
-        pill: '980px',
-        card: '16px',
-        xl2: '24px',
-      },
-      backgroundImage: {
-        hero: 'linear-gradient(160deg, #0a2414 0%, #1e5c32 55%, #0f3d22 100%)',
-      },
-      boxShadow: {
-        card:    '0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
-        lifted:  '0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04)',
-        float:   '0 12px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06)',
-        'brand-glow': '0 0 0 4px rgba(30,92,50,0.15)',
-      },
-      keyframes: {
-        fadeUp: {
-          from: { opacity: '0', transform: 'translateY(28px)' },
-          to:   { opacity: '1', transform: 'translateY(0)' },
-        },
-        fadeIn: {
-          from: { opacity: '0' },
-          to:   { opacity: '1' },
-        },
-        scaleIn: {
-          from: { opacity: '0', transform: 'scale(0.95)' },
-          to:   { opacity: '1', transform: 'scale(1)' },
-        },
-        slideRight: {
-          from: { transform: 'scaleX(0)' },
-          to:   { transform: 'scaleX(1)' },
-        },
-        shimmer: {
-          '0%':   { backgroundPosition: '-200% center' },
-          '100%': { backgroundPosition: '200% center' },
-        },
-      },
-      animation: {
-        'fade-up':    'fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) forwards',
-        'fade-in':    'fadeIn 0.5s ease forwards',
-        'scale-in':   'scaleIn 0.5s cubic-bezier(0.16,1,0.3,1) forwards',
-        'slide-right':'slideRight 0.8s cubic-bezier(0.16,1,0.3,1) forwards',
-        shimmer:      'shimmer 2.5s linear infinite',
-      },
-    },
-  },
   plugins: [],
 };
 

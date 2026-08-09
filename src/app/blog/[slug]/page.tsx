@@ -8,10 +8,11 @@ import { StoryEngine } from '@/components/story/StoryEngine';
 import { StoryFooter } from '@/components/story/StoryFooter';
 import { SectionLabel } from '@/components/story/SectionLabel';
 import { ArticleBody, articleHeadings } from '@/components/story/ArticleBody';
-import { ArticleFaq } from '@/components/story/ArticleFaq';
+import { FaqList } from '@/components/story/FaqList';
+import { StoryCta } from '@/components/story/StoryCta';
 import { ARTICLES, articleUrl } from '@/lib/content';
 import { articleSchema, faqSchema, breadcrumbSchema, jsonLdScript } from '@/lib/schema';
-import { CONTACT_PHONE, CONTACT_PHONE_HREF, SITE_URL } from '@/lib/site';
+import { SITE_URL } from '@/lib/site';
 
 /* One template for all five materials. The prototype picked the article from
    ?slug=; here it is a real route, and the URL stays /blog/<slug> — those are
@@ -133,36 +134,15 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
 
           <div className="min-w-0">
             <ArticleBody blocks={article.blocks} />
-            <ArticleFaq items={article.faq} />
+            <FaqList items={article.faq} />
           </div>
         </div>
       </article>
 
-      <section className="flex flex-wrap items-center justify-between gap-6 bg-ink px-[clamp(22px,3vw,56px)] py-[clamp(40px,6vh,72px)] text-bg">
-        <div className="min-w-0">
-          <h2 className="mb-2.5 font-display text-[clamp(28px,3.6vw,56px)] font-light leading-none tracking-[-.032em]">
-            Посчитать для своего объекта.
-          </h2>
-          <p className="max-w-[48ch] text-[clamp(15px,1.1vw,17px)] leading-[1.6] text-bg/70">
-            Калькулятор даёт вилку за минуту. Точную сумму инженер называет на осмотре — и дальше
-            она не меняется.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <Link
-            href="/#07"
-            className="inline-flex items-center gap-2.5 rounded-pill bg-accent px-6 py-[15px] text-[14.5px] font-medium text-ink transition-colors duration-[350ms] hover:bg-bg"
-          >
-            Открыть калькулятор <span aria-hidden="true">→</span>
-          </Link>
-          <a
-            href={CONTACT_PHONE_HREF}
-            className="inline-flex items-center gap-2.5 rounded-pill border border-bg/[.24] px-[22px] py-3.5 text-[14.5px] transition-colors duration-[350ms] hover:border-accent hover:text-accent"
-          >
-            {CONTACT_PHONE}
-          </a>
-        </div>
-      </section>
+      <StoryCta
+        heading="Посчитать для своего объекта."
+        text="Калькулятор даёт вилку за минуту. Точную сумму инженер называет на осмотре — и дальше она не меняется."
+      />
 
       <section className="px-[clamp(22px,3vw,56px)] pb-[clamp(44px,6vh,80px)] pt-[clamp(36px,5.5vh,68px)]">
         <SectionLabel className="mb-[clamp(16px,2.5vh,26px)]">читайте также</SectionLabel>

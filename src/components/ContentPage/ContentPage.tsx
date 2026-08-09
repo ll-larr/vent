@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
-import { Header } from '@/components/Header/Header';
-import { Footer } from '@/components/Footer/Footer';
-import { ContactSection } from '@/components/ContactSection/ContactSection';
-import { CalculatorProvider } from '@/lib/calculator-context';
+import { Topbar } from '@/components/story/Topbar';
+import { StoryFooter } from '@/components/story/StoryFooter';
+import { StoryCta } from '@/components/story/StoryCta';
+import { SectionLabel } from '@/components/story/SectionLabel';
 import { Breadcrumbs, type BreadcrumbItem } from '@/components/Breadcrumbs/Breadcrumbs';
 import { jsonLdScript, type JsonLd } from '@/lib/schema';
 
@@ -15,32 +15,37 @@ export type ContentPageProps = {
   jsonLd?: JsonLd | JsonLd[];
 };
 
-// Shared shell for service/article pages — same Header/ContactSection/Footer
-// scaffold as calculator and contacts pages, wrapped in CalculatorProvider
-// because Header's calculator link and ContactSection both read that context.
+/* Shell for the service pages. They are not in the story handoff, so they wear
+   its chrome — sticky light topbar, dark closing strip, full footer — over
+   their own long-form body. */
 export function ContentPage({ breadcrumbs, eyebrow, title, lead, children, jsonLd }: ContentPageProps) {
   return (
-    <CalculatorProvider>
-      <Header />
-      <main id="main" className="pt-32 bg-bg">
-        <div className="px-5 md:px-[5vw] max-w-7xl mx-auto">
-          <div className="mb-12">
-            <Breadcrumbs items={breadcrumbs} />
-            {eyebrow && (
-              <div className="font-mono text-[11px] uppercase tracking-[.18em] text-brand mb-2.5">{eyebrow}</div>
-            )}
-            <h1 className="font-display font-light text-[clamp(40px,6vw,84px)] leading-none tracking-[-.025em]">
-              {title}
-            </h1>
-            {lead && <p className="text-ink/65 text-[16px] mt-6 max-w-2xl">{lead}</p>}
-          </div>
+    <>
+      <Topbar variant="solid" />
+      <main id="main" className="bg-bg">
+        <div className="mx-auto max-w-[1180px] px-[clamp(22px,3vw,56px)] pb-[clamp(30px,5vh,60px)] pt-[clamp(28px,5vh,64px)]">
+          <Breadcrumbs items={breadcrumbs} />
+          {eyebrow && <SectionLabel className="mb-3.5">{eyebrow}</SectionLabel>}
+          <h1 className="max-w-[20ch] font-display text-[clamp(34px,5.4vw,86px)] font-light leading-[.96] tracking-[-.036em]">
+            {title}
+          </h1>
+          {lead && (
+            <p className="mt-5 max-w-[56ch] text-[clamp(17px,1.5vw,24px)] leading-[1.5] text-ink/[.72]">
+              {lead}
+            </p>
+          )}
+        </div>
+        <div className="mx-auto max-w-[1180px] px-[clamp(22px,3vw,56px)] pb-[clamp(40px,6vh,80px)]">
           {children}
         </div>
-        <ContactSection />
+        <StoryCta
+          heading="Посчитать для своего объекта."
+          text="Калькулятор даёт вилку за минуту. Точную сумму инженер называет на осмотре — и дальше она не меняется."
+        />
       </main>
-      <Footer />
+      <StoryFooter />
       {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(jsonLd)} />}
-    </CalculatorProvider>
+    </>
   );
 }
 

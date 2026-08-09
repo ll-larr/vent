@@ -87,19 +87,14 @@ export function CustomCursor() {
       // re-enable on next move
     };
 
-    // Hover-state tracking — what the cursor is on top of.
-    // Magnetic buttons (`[data-magnet]`) get the wide ring; regular
-    // interactive elements get the medium "link" ring.
+    // Hover-state tracking — the ring grows over anything interactive.
     const INTERACTIVE_SEL =
-      'a, button, [role="button"], [role="checkbox"], [role="radio"], [role="tab"], input, textarea, select, label, summary';
+      'a, button, [role="button"], [role="checkbox"], [role="radio"], [role="slider"], input, textarea, select, label, summary, [data-hoverable]';
 
     const updateHover = (e: MouseEvent) => {
       const target = e.target as HTMLElement | null;
       if (!target) return;
-      const magnet = target.closest('[data-magnet]');
-      const interactive = target.closest(INTERACTIVE_SEL);
-      ring.classList.toggle('is-magnet', !!magnet);
-      ring.classList.toggle('is-link', !!interactive && !magnet);
+      ring.classList.toggle('is-link', !!target.closest(INTERACTIVE_SEL));
     };
 
     window.addEventListener('mousemove', onMove, { passive: true });

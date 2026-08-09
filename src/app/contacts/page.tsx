@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Header } from '@/components/Header/Header';
+import { Topbar } from '@/components/story/Topbar';
+import { StoryFooter } from '@/components/story/StoryFooter';
+import { StoryCta } from '@/components/story/StoryCta';
 import { Prose } from '@/components/Prose/Prose';
-import { Footer } from '@/components/Footer/Footer';
-import { ContactSection } from '@/components/ContactSection/ContactSection';
-import { CalculatorProvider } from '@/lib/calculator-context';
 import { Phone, Mail, MapPinned, Clock } from '@/lib/icons';
 import { CONTACT_PHONE, CONTACT_PHONE_HREF, CONTACT_EMAIL, CONTACT_EMAIL_HREF } from '@/lib/site';
 
@@ -18,9 +17,9 @@ export const metadata: Metadata = {
 
 export default function ContactsPage() {
   return (
-    <CalculatorProvider>
-      <Header />
-      <main id="main" className="pt-32 bg-bg">
+    <>
+      <Topbar variant="solid" />
+      <main id="main" className="bg-bg pt-[clamp(20px,3vh,40px)]">
         <section className="px-5 md:px-[5vw] py-12">
           <div className="max-w-5xl mx-auto">
             <div className="font-mono text-[11px] uppercase tracking-[.15em] text-ink/50 mb-3">
@@ -110,9 +109,12 @@ export default function ContactsPage() {
           </div>
         </section>
 
-        <ContactSection />
+        <StoryCta
+          heading="Посчитать для своего объекта."
+          text="Калькулятор даёт вилку за минуту. Точную сумму инженер называет на осмотре — и дальше она не меняется."
+        />
       </main>
-      <Footer />
-    </CalculatorProvider>
+      <StoryFooter />
+    </>
   );
 }

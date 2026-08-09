@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ContentPage } from '@/components/ContentPage/ContentPage';
 import { Prose } from '@/components/Prose/Prose';
-import { Faq } from '@/components/Faq/Faq';
+import { FaqList } from '@/components/story/FaqList';
 import { serviceSchema, faqSchema } from '@/lib/schema';
 import { serviceUrl } from '@/lib/content';
 import { SERVICES, formatPrice } from '@/lib/pricing';
@@ -214,7 +214,12 @@ export default function VytyazhkiIZontyPage() {
       </Prose>
 
       <div className="mt-14 mb-4">
-        <Faq heading="Вопросы о чистке вытяжек и зонтов" items={FAQ_ITEMS} />
+        <>
+          <h2 className="mb-4 font-display text-[clamp(26px,2.9vw,44px)] font-light leading-[1.06] tracking-[-.03em]">
+            Вопросы о чистке вытяжек и зонтов
+          </h2>
+          <FaqList items={FAQ_ITEMS} />
+        </>
       </div>
     </ContentPage>
   );

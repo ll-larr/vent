@@ -9,20 +9,12 @@
   --color-ink:          #141312;
   --color-black-deep:   #0e0d0c;
   --color-ink-hover:    #191817;
-  --color-slot:         #171614;
   --color-brand:        #1e5c32;
-  --color-brand-dark:   #0f3d22;
-  --color-brand-hover:  #2d7d46;
-  --color-brand-accent: #22c55e;
-  --color-brand-light:  #eef5ef;
-  --color-brand-muted:  #5a6b5e;
   --color-accent:       #c8ff3e;
   --color-surface:      #ffffff;
-  --color-mute:         #5a6b5e;
   --color-line:         rgba(20, 19, 18, 0.08);
   --color-line-2:       rgba(20, 19, 18, 0.14);
   --color-stone:        #f4f4f2;
-  --color-ink-2:        #1f1d1b;
 
   /* Fonts — all three come from next/font in layout.tsx and are self-hosted.
      Fraunces ships no Cyrillic, so Georgia is the real face of every Russian
@@ -34,77 +26,11 @@
      in layout.tsx (Basic Latin subset only, so it covers the wordmark alone). */
   --font-logo:    var(--font-marggraff), var(--font-fraunces), Georgia, serif;
 
-  --max-width-content: 1320px;
 
   /* Story design rounds pills, circles and badges only. The 3px on the
      calculator checkbox square is the single exception and lives inline.
      Rectangular blocks are never rounded. */
   --radius-pill: 999px;
-  /* Legacy bento radii — still referenced by the not-yet-ported pages
-     (/uslugi, /calculator, /contacts, /privacy). Delete together with the
-     bento components. */
-  --radius-card: 14px;
-  --radius-tile: 22px;
-  --radius-tile-lg: 28px;
-  --radius-xl2:  24px;
-
-  --background-image-hero: linear-gradient(160deg, #0a2414 0%, #1e5c32 55%, #0f3d22 100%);
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(28px); }
-    to   { opacity: 1; transform: translateY(0);    }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
-  @keyframes scaleIn {
-    from { opacity: 0; transform: scale(0.96); }
-    to   { opacity: 1; transform: scale(1);    }
-  }
-  @keyframes shimmer {
-    0%   { background-position: -200% center; }
-    100% { background-position:  200% center; }
-  }
-  @keyframes lineGrow {
-    from { transform: scaleX(0); }
-    to   { transform: scaleX(1); }
-  }
-  @keyframes pulse-dot {
-    0%, 100% { opacity: 1; transform: scale(1);    }
-    50%       { opacity: 0.6; transform: scale(1.3); }
-  }
-  @keyframes pulse-soft {
-    0%, 100% { opacity: 1; }
-    50%      { opacity: 0.4; }
-  }
-  @keyframes slider-hint {
-    0%, 60%, 100% { transform: translate(-50%, -50%) translateX(0); }
-    20% { transform: translate(-50%, -50%) translateX(-14px); }
-    40% { transform: translate(-50%, -50%) translateX(14px); }
-  }
-  @keyframes slider-glow {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(200, 255, 62, 0.35); }
-    50%      { box-shadow: 0 0 0 10px rgba(200, 255, 62, 0); }
-  }
-  /* Bento — compare slider grip dashed ring (cases) */
-  @keyframes ringspin {
-    to { transform: rotate(360deg); }
-  }
-  /* Bento — live dot pulse (used in pill .dot.live + h-status) */
-  @keyframes live-pulse {
-    50% { box-shadow: 0 0 0 8px rgba(200,255,62,0); }
-  }
-  /* Contact success-state — card slide-up + checkmark pop */
-  @keyframes ct-success-in {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0);    }
-  }
-  @keyframes ct-check-pop {
-    0%   { opacity: 0; transform: scale(0.4); }
-    70%  { opacity: 1; transform: scale(1.12); }
-    100% { opacity: 1; transform: scale(1);   }
-  }
 }
 
 @layer base {
@@ -145,374 +71,14 @@
     -moz-appearance: textfield;
     appearance: textfield;
   }
-
-  /* Contact form / success-state toggle. We conditionally render only one in
-     React, but keep this so a future always-rendered refactor can't show both
-     (display:flex would otherwise override the `hidden` attribute). */
-  .ct-success[hidden],
-  .ct-form[hidden] {
-    display: none !important;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-anim],
-  [data-anim].visible {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-}
-
-@layer utilities {
-  /* Scroll-reveal system disabled to match bento reference (no entrance animations).
-     Markup keeps [data-anim] / useScrollAnim hooks intact for future re-enable. */
-  [data-anim],
-  [data-anim].visible,
-  [data-anim="scale"],
-  [data-anim="scale"].visible {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
-  /* Noise texture overlay for Hero */
-  .noise-overlay {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    background-size: 180px 180px;
-  }
-
-  /* Animated shimmer for CTA buttons */
-  .btn-shimmer {
-    background-size: 200% auto;
-    animation: shimmer 3s linear infinite;
-  }
-
-  /* Line grow animation for step connectors */
-  .line-grow {
-    transform-origin: left center;
-    animation: lineGrow 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  .animate-pulse-soft {
-    animation: pulse-soft 1.8s ease-in-out infinite;
-  }
-
-  /* Bento — compare-slider grip dashed ring */
-  .animate-ringspin {
-    animation: ringspin 9s linear infinite;
-  }
-
-  /* Bento — live indicator dot (lime) */
-  .animate-live-pulse {
-    animation: live-pulse 1.6s ease-in-out infinite;
-  }
-
-  /* ================================================================
-     Bento CTAs — match reference .btn / .btn.lime / .btn.ghost exactly.
-     ================================================================ */
-  /* ================================================================
-     Unified button system — 3 types, single crossfade animation.
-     Matches design_handoff_vent_updates reference exactly:
-       Type A  .btn-lime          : lime bg + ink → hover cream bg + ink
-       Type B  .btn-ghost         : transparent + ink + line border → hover ink bg + lime
-       Type C  .btn-ink (default) : ink bg + cream → hover ink bg + lime text + lime border
-       Type C' .btn-ghost-on-dark : transparent + cream + faint border → hover lime text + lime border
-     Shared: padding 12px 18px, pill radius, weight 500 / 14px, gap 10,
-     crossfade 350ms ease on bg/color/border, arrow translateX(4) on hover.
-     NO ::before wipe overlays, NO padding-shift, NO shadow glow (removed).
-     ================================================================ */
-  .btn-ink,
-  .btn-lime,
-  .btn-ghost,
-  .btn-ghost-on-dark {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 18px;
-    border-radius: 999px;
-    border: 1px solid transparent;
-    font-family: var(--font-inter-tight), system-ui, sans-serif;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 1;
-    white-space: nowrap;
-    cursor: pointer;
-    user-select: none;
-    transition:
-      background-color 0.35s ease,
-      color 0.35s ease,
-      border-color 0.35s ease,
-      box-shadow 0.35s ease;
-  }
-  .btn-ink .arrow,
-  .btn-lime .arrow,
-  .btn-ghost .arrow,
-  .btn-ghost-on-dark .arrow {
-    display: inline-block;
-    transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
-  }
-  .btn-ink:hover .arrow,
-  .btn-lime:hover .arrow,
-  .btn-ghost:hover .arrow,
-  .btn-ghost-on-dark:hover .arrow {
-    transform: translateX(4px);
-  }
-
-  /* Type C — default ink */
-  .btn-ink {
-    background: var(--color-ink);
-    color: var(--color-bg);
-    border-color: transparent;
-  }
-  .btn-ink:hover {
-    background: var(--color-ink);
-    color: var(--color-accent);
-    border-color: var(--color-accent);
-  }
-
-  /* Type A — lime → cream */
-  .btn-lime {
-    background: var(--color-accent);
-    color: var(--color-ink);
-    border-color: transparent;
-  }
-  .btn-lime:hover {
-    background: var(--color-bg);
-    color: var(--color-ink);
-    border-color: transparent;
-  }
-
-  /* Type B — ghost on light */
-  .btn-ghost {
-    background: transparent;
-    color: var(--color-ink);
-    border-color: var(--color-line-2);
-  }
-  .btn-ghost:hover {
-    background: var(--color-ink);
-    color: var(--color-accent);
-    border-color: var(--color-ink);
-  }
-
-  /* Type C variant — ghost on dark (ink/brand surfaces) */
-  .btn-ghost-on-dark {
-    background: transparent;
-    color: var(--color-bg);
-    border-color: rgba(246, 243, 236, 0.22);
-  }
-  .btn-ghost-on-dark:hover {
-    background: transparent;
-    color: var(--color-accent);
-    border-color: var(--color-accent);
-  }
-
-  /* Hero status "оставить заявку" — Type A pill in mono caps. */
-  .btn-now-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 16px 10px 18px;
-    border-radius: 999px;
-    border: 1px solid transparent;
-    font-family: var(--font-jetbrains-mono), monospace;
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    background: var(--color-accent);
-    color: var(--color-ink);
-    cursor: pointer;
-    transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
-  }
-  .btn-now-cta:hover {
-    background: var(--color-bg);
-    color: var(--color-ink);
-    border-color: transparent;
-  }
-  .btn-now-cta .arrow {
-    display: inline-block;
-    transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
-  }
-  .btn-now-cta:hover .arrow { transform: translateX(4px); }
-
-  /* Pricelist CTA "скачать прайс-лист" — Type A pill in mono caps with PDF badge. */
-  .pl-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 20px 14px 22px;
-    border-radius: 999px;
-    border: 1px solid transparent;
-    font-family: var(--font-jetbrains-mono), monospace;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    background: var(--color-accent);
-    color: var(--color-ink);
-    cursor: pointer;
-    transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
-  }
-  .pl-cta:hover {
-    background: var(--color-bg);
-    color: var(--color-ink);
-    border-color: transparent;
-  }
-  .pl-cta .pl-ext {
-    font-family: var(--font-jetbrains-mono), monospace;
-    font-size: 9.5px;
-    letter-spacing: 0.14em;
-    padding: 3px 6px;
-    border-radius: 4px;
-    background: rgba(20, 19, 18, 0.18);
-    transition: background-color 0.35s ease, color 0.35s ease;
-  }
-  .pl-cta:hover .pl-ext {
-    background: rgba(20, 19, 18, 0.08);
-    color: var(--color-ink);
-  }
-  .pl-cta .arrow {
-    display: inline-block;
-    transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
-  }
-  .pl-cta:hover .arrow { transform: translateX(4px); }
-
-  /* ================================================================
-     HowWeWork popup — explicit CSS for [data-hint="open"] so we don't
-     rely on Tailwind v4 group-data-* selector matching.
-     ================================================================ */
-  .pr-step .pr-popup {
-    opacity: 0;
-    transform: translateY(8px);
-    pointer-events: none;
-    transition:
-      opacity 0.3s ease,
-      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .pr-step:hover .pr-popup,
-  .pr-step[data-hint="open"] .pr-popup {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-  .pr-step .pr-static { transition: opacity 0.25s; }
-  .pr-step:hover .pr-static,
-  .pr-step[data-hint="open"] .pr-static {
-    opacity: 0;
-  }
-
-  /* ================================================================
-     Mini calc hood field — animated collapse when not-restaurant pkg.
-     Reference uses .mc-grid.no-hood .mc-field--hood with flex-grow/basis.
-     ================================================================ */
-  .mc-field-hood {
-    flex: 1 1 0;
-    transition:
-      flex 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-      opacity 0.25s ease,
-      padding 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-      margin-right 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    overflow: hidden;
-  }
-  .mc-field-hood[data-hood-shown="false"] {
-    flex: 0 0 0;
-    opacity: 0;
-    padding-left: 0;
-    padding-right: 0;
-    margin-right: -10px;
-    transform: scale(0.92);
-    pointer-events: none;
-  }
-
-  /* ================================================================
-     Custom cursor (Apple-style). See src/components/CustomCursor.
-     - Toggled by .has-custom-cursor on <html> — capability + a11y gates
-       live in the component (hover: hover, prefers-reduced-motion).
-     - Native cursor is hidden ONLY when the class is present, so touch
-       and reduced-motion users keep their pointers (hand, I-beam, grab).
-     - `*` + `!important` is intentional — Tailwind `cursor-*` utilities
-       and shadcn/custom rules add cursor declarations everywhere, and
-       this is the only way to consistently override them in cascade
-       without touching each one. Do NOT relax this selector.
-     ================================================================ */
-  html.has-custom-cursor,
-  html.has-custom-cursor *,
-  html.has-custom-cursor *::before,
-  html.has-custom-cursor *::after {
-    cursor: none !important;
-  }
-
-  .custom-cursor-dot,
-  .custom-cursor-ring {
-    position: fixed;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0;
-    transition: opacity 0.18s ease;
-    mix-blend-mode: difference;
-    will-change: transform;
-  }
-  .custom-cursor-dot.is-visible,
-  .custom-cursor-ring.is-visible {
-    opacity: 1;
-  }
-
-  .custom-cursor-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    background: #ffffff;
-  }
-
-  .custom-cursor-ring {
-    width: 32px;
-    height: 32px;
-    border-radius: 999px;
-    border: 1.5px solid #ffffff;
-    background: transparent;
-    transition:
-      opacity 0.18s ease,
-      width 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-      height 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-      margin 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 0.18s ease,
-      background-color 0.18s ease,
-      mix-blend-mode 0s linear 0.18s;
-  }
-  /* Hover on regular interactive element — medium ring, lime accent.
-     Drop mix-blend-mode so the lime tint is true to color, not inverted. */
-  .custom-cursor-ring.is-link {
-    width: 56px;
-    height: 56px;
-    margin-left: -12px;
-    margin-top: -12px;
-    border-color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 18%, transparent);
-    mix-blend-mode: normal;
-  }
-  /* Hover on magnetic button — big ring. */
-  .custom-cursor-ring.is-magnet {
-    width: 78px;
-    height: 78px;
-    margin-left: -23px;
-    margin-top: -23px;
-    border-color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 22%, transparent);
-    mix-blend-mode: normal;
   }
 }
 
@@ -543,6 +109,68 @@ html.story-reveal [data-reveal]:not([data-revealed]) {
   [data-reveal] {
     transition: none;
   }
+}
+
+/* ===========================================================================
+   STORY — custom cursor.
+
+   Decoration, not function: the component gates itself on a fine pointer and
+   on prefers-reduced-motion, and `cursor: none` applies only while it says so,
+   so touch and reduced-motion visitors keep their native pointers.
+   `*` with !important is deliberate — Tailwind's cursor-* utilities are all
+   over the markup and nothing narrower reliably outranks them.
+   =========================================================================== */
+html.has-custom-cursor,
+html.has-custom-cursor *,
+html.has-custom-cursor *::before,
+html.has-custom-cursor *::after {
+  cursor: none !important;
+}
+
+.custom-cursor-dot,
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  border-radius: 999px;
+  opacity: 0;
+  mix-blend-mode: difference;
+  will-change: transform;
+  transition: opacity 0.18s ease;
+}
+.custom-cursor-dot.is-visible,
+.custom-cursor-ring.is-visible {
+  opacity: 1;
+}
+.custom-cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: #ffffff;
+}
+.custom-cursor-ring {
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid #ffffff;
+  transition:
+    opacity 0.18s ease,
+    width 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    margin 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.18s ease,
+    background-color 0.18s ease;
+}
+/* Over anything interactive the ring grows and takes the accent — blending
+   returns to normal so the lime reads true instead of inverted. */
+.custom-cursor-ring.is-link {
+  width: 58px;
+  height: 58px;
+  margin-left: -13px;
+  margin-top: -13px;
+  border-color: var(--color-accent);
+  background: rgba(200, 255, 62, 0.16);
+  mix-blend-mode: normal;
 }
 
 /* Small mono typography is the story's signature: always uppercase, always
@@ -689,71 +317,4 @@ html.story-reveal [data-reveal]:not([data-revealed]) {
   opacity: 1;
   transform: scale(1);
   z-index: 2;
-}
-
-/* ---------------------------------------------------------------------------
-   Calculator range slider thumb (WebKit + Firefox).
-   Lives here (not styled-jsx) so it survives framework upgrades and keeps
-   Calculator.tsx free of runtime CSS-in-JS. */
-.calc-range::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--color-surface);
-  border: 0;
-  box-shadow:
-    inset 0 0 0 7px var(--color-brand),
-    0 4px 14px rgba(30, 92, 50, 0.22),
-    0 1px 3px rgba(0, 0, 0, 0.18);
-  cursor: grab;
-  transition: transform 0.15s ease, box-shadow 0.25s ease;
-}
-.calc-range:hover::-webkit-slider-thumb {
-  transform: scale(1.08);
-  box-shadow:
-    inset 0 0 0 6px #2d7d46,
-    0 6px 18px rgba(30, 92, 50, 0.3),
-    0 1px 3px rgba(0, 0, 0, 0.2);
-}
-.calc-range:active::-webkit-slider-thumb {
-  cursor: grabbing;
-  transform: scale(1.15);
-  box-shadow:
-    inset 0 0 0 5px var(--color-brand),
-    0 0 0 8px rgba(30, 92, 50, 0.16),
-    0 8px 22px rgba(30, 92, 50, 0.35);
-}
-.calc-range::-moz-range-thumb {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--color-surface);
-  border: 0;
-  box-shadow:
-    inset 0 0 0 7px var(--color-brand),
-    0 4px 14px rgba(30, 92, 50, 0.22),
-    0 1px 3px rgba(0, 0, 0, 0.18);
-  cursor: grab;
-}
-.calc-range::-moz-range-track {
-  background: transparent;
-  height: 28px;
-}
-.calc-range:focus {
-  outline: none;
-}
-/* Keyboard focus stays visible — ring around the thumb. */
-.calc-range:focus-visible::-webkit-slider-thumb {
-  box-shadow:
-    inset 0 0 0 7px var(--color-brand),
-    0 0 0 3px var(--color-bg),
-    0 0 0 5px var(--color-brand);
-}
-.calc-range:focus-visible::-moz-range-thumb {
-  box-shadow:
-    inset 0 0 0 7px var(--color-brand),
-    0 0 0 3px var(--color-bg),
-    0 0 0 5px var(--color-brand);
 }

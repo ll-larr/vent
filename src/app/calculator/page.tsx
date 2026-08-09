@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Header } from '@/components/Header/Header';
-import { Footer } from '@/components/Footer/Footer';
-import { Calculator } from '@/components/Calculator/Calculator';
-import { ContactSection } from '@/components/ContactSection/ContactSection';
+import { Topbar } from '@/components/story/Topbar';
+import { StoryFooter } from '@/components/story/StoryFooter';
+import { CalculatorSection } from '@/components/story/CalculatorSection';
+import { FaqList } from '@/components/story/FaqList';
+import { SectionLabel } from '@/components/story/SectionLabel';
 import { Prose } from '@/components/Prose/Prose';
-import { Faq } from '@/components/Faq/Faq';
 import { CalculatorProvider } from '@/lib/calculator-context';
 import { faqSchema, jsonLdScript } from '@/lib/schema';
 import { PACKAGES, SERVICES } from '@/lib/pricing';
@@ -47,23 +47,21 @@ const FAQ_ITEMS: Array<{ q: string; a: string }> = [
 export default function CalculatorPage() {
   return (
     <CalculatorProvider>
-      <Header />
-      <main id="main" className="pt-32 bg-bg">
-        <div className="px-5 md:px-[5vw] max-w-7xl mx-auto mb-12">
-          <div className="font-mono text-[11px] uppercase tracking-[.15em] text-ink/50 mb-4">
-            калькулятор · /calculator
-          </div>
-          <h1 className="font-display font-light text-[clamp(40px,6vw,84px)] leading-none tracking-[-.025em] max-w-3xl">
-            Стоимость чистки <em className="italic text-brand">вентиляции.</em>
+      <Topbar variant="solid" />
+      <main id="main" className="bg-bg">
+        <div className="mx-auto max-w-[1180px] px-[clamp(22px,3vw,56px)] pb-[clamp(24px,4vh,44px)] pt-[clamp(28px,5vh,64px)]">
+          <SectionLabel className="mb-3.5">калькулятор</SectionLabel>
+          <h1 className="max-w-[20ch] font-display text-[clamp(34px,5.4vw,86px)] font-light leading-[.96] tracking-[-.036em]">
+            Стоимость чистки <span className="italic text-brand">вентиляции.</span>
           </h1>
-          <p className="text-ink/65 text-[16px] mt-6 max-w-2xl">
-            Выберите тип объекта, скорректируйте список услуг и укажите площадь. Точная стоимость определяется
-            после бесплатного осмотра.
+          <p className="mt-5 max-w-[56ch] text-[clamp(17px,1.5vw,24px)] leading-[1.5] text-ink/[.72]">
+            Выберите тип объекта, скорректируйте список услуг и укажите площадь. Точная стоимость
+            определяется после бесплатного осмотра.
           </p>
         </div>
-        <Calculator />
+        <CalculatorSection />
 
-        <section className="px-5 md:px-[5vw] max-w-7xl mx-auto py-16">
+        <section className="mx-auto max-w-[1180px] px-[clamp(22px,3vw,56px)] py-[clamp(40px,6vh,80px)]">
           <Prose>
             <h2>Как устроен расчёт</h2>
             <p>
@@ -142,18 +140,19 @@ export default function CalculatorPage() {
               подробно разобрано на страницах услуг —{' '}
               <Link href="/uslugi/chistka-ot-zhira">чистка от жира</Link>,{' '}
               <Link href="/uslugi/chistka-ot-pyli">чистка от пыли</Link> и{' '}
-              <Link href="/uslugi/dezinfekciya">дезинфекция воздуховодов</Link>.
+              <Link href="/uslugi/videoinspekciya">видеоинспекция каналов</Link>.
             </p>
           </Prose>
 
           <div className="mt-14 max-w-[70ch]">
-            <Faq heading="Частые вопросы про расчёт" items={FAQ_ITEMS} />
+            <h2 className="mb-4 font-display text-[clamp(26px,2.9vw,44px)] font-light leading-[1.06] tracking-[-.03em]">
+              Частые вопросы про расчёт
+            </h2>
+            <FaqList items={FAQ_ITEMS} />
           </div>
         </section>
-
-        <ContactSection />
       </main>
-      <Footer />
+      <StoryFooter />
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(faqSchema(FAQ_ITEMS))} />
     </CalculatorProvider>
   );
