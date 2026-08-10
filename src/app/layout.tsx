@@ -38,7 +38,7 @@ const fraunces = Fraunces({
   weight: 'variable',
 });
 
-// Marggraff Kursiv Zarte (Schriftguß AG, 1929) — used for the ".team" tail of
+// Marggraff Kursiv Zarte (Schriftguß AG, 1929) — used for the "clean" half of
 // the wordmark and nothing else. Subset to Basic Latin and repacked as woff2,
 // which takes the shipped file from 324 KB to 21 KB. The source .ttf is not in
 // the repo; regenerate with:
@@ -55,8 +55,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     // Keep under ~60 chars — longer titles get truncated in the SERP.
-    default: 'Промышленная чистка вентиляции в Москве — Vent.team',
-    template: '%s · Vent.team',
+    default: 'Промышленная чистка вентиляции в Москве — Vent Clean',
+    template: '%s · Vent Clean',
   },
   description:
     'Промышленная чистка вентканалов, вытяжек и зонтов для общепита, офисов и складов. По протоколу МЧС и СЭС. Расчёт онлайн.',
@@ -64,8 +64,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ru_RU',
     url: SITE_URL,
-    siteName: 'Vent.team',
-    title: 'Vent.team — промышленная чистка вентиляции',
+    siteName: 'Vent Clean',
+    title: 'Vent Clean — промышленная чистка вентиляции',
     description:
       'Промышленная чистка вентканалов, вытяжек и зонтов для общепита, офисов и складов.',
   },

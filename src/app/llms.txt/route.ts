@@ -3,8 +3,8 @@ import { CONTACT_EMAIL, CONTACT_PHONE, SITE_URL } from '@/lib/site';
 
 /* llms.txt — the plain-language brief AI crawlers read.
    Generated rather than served from public/ so the URLs always match the host
-   the site is actually deployed on; a static file froze them to vent.team,
-   which does not resolve. */
+   the site is actually deployed on; a static file froze them to a domain the
+   business did not own. */
 
 export const dynamic = 'force-static';
 
@@ -18,7 +18,7 @@ const SERVICE_LINES: Record<string, string> = {
 };
 
 export function GET() {
-  const body = `# Vent.team — промышленная чистка вентиляции
+  const body = `# Vent Clean — промышленная чистка вентиляции
 
 > Сервис промышленной чистки вентиляционных систем, вытяжек и зонтов для бизнеса:
 > общепит (рестораны, кафе, пищеблоки), офисы, склады и производства.

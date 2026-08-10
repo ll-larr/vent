@@ -6,7 +6,7 @@ import { ArrowRight } from '@/lib/icons';
 export const metadata: Metadata = {
   title: 'Согласие на обработку персональных данных',
   description:
-    'Какие данные собирает Vent.team через форму заявки, для чего, как хранит и сколько. Документ в соответствии с 152-ФЗ РФ.',
+    'Какие данные собирает Vent Clean через форму заявки, для чего, как хранит и сколько. Документ в соответствии с 152-ФЗ РФ.',
   robots: { index: false, follow: true },
   alternates: { canonical: '/privacy' },
 };
@@ -65,7 +65,7 @@ const SECTIONS: Array<{ n: string; title: string; body: React.ReactNode }> = [
       <>
         <p>
           Заявки попадают в защищённую таблицу Google Sheets, доступ к которой имеет только команда
-          Vent.team. Резервные копии хранятся на серверах в РФ. Данные передаются по защищённому
+          Vent Clean. Резервные копии хранятся на серверах в РФ. Данные передаются по защищённому
           соединению.
         </p>
         <p>Мы передаём данные третьим лицам только в трёх случаях:</p>
@@ -111,10 +111,10 @@ const SECTIONS: Array<{ n: string; title: string; body: React.ReactNode }> = [
         <p>
           Запросы принимаются по адресу{' '}
           <a
-            href="mailto:privacy@vent.team"
+            href="mailto:privacy@vent-clean.ru"
             className="text-brand border-b border-current hover:text-ink transition-colors"
           >
-            privacy@vent.team
+            privacy@vent-clean.ru
           </a>
           . Ответим в течение 10 рабочих дней, обычно — за день.
         </p>
@@ -196,7 +196,7 @@ export default function PrivacyPage() {
                 Вопросы по обработке <em className="italic text-accent">данных?</em>
               </h3>
               <p className="text-[13.5px] text-bg/65 m-0">
-                Напишите на privacy@vent.team или позвоните в офис — ответим тем же днём.
+                Напишите на privacy@vent-clean.ru или позвоните в офис — ответим тем же днём.
               </p>
             </div>
             <Link
@@ -219,11 +219,11 @@ export default function PrivacyPage() {
               Редакция: <b className="text-accent font-medium">15.05.2026</b>
             </span>
             <span>
-              Контакт: <b className="text-accent font-medium">privacy@vent.team</b>
+              Контакт: <b className="text-accent font-medium">privacy@vent-clean.ru</b>
             </span>
           </div>
           <div>
-            © 2021–2026 Vent.team ·{' '}
+            © 2021–2026 Vent Clean ·{' '}
             <Link
               href="/privacy"
               className="text-bg/70 border-b border-bg/[.15] hover:text-accent hover:border-accent"
