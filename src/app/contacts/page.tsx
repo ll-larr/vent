@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   // Root layout template appends "· Vent.team" — keep the page title bare.
   title: 'Контакты',
   description:
-    'Телефон, почта и часы работы Vent.team — промышленная чистка вентиляции для бизнеса в Москве и области в радиусе 100 км. Бесплатный видеоосмотр объекта перед расчётом.',
+    'Телефон, почта и часы работы Vent.team: промышленная чистка вентиляции для бизнеса в Москве и области в радиусе 100 км. Осмотр объекта перед расчётом.',
   alternates: { canonical: '/contacts' },
 };
 

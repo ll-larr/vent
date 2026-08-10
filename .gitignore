@@ -44,6 +44,7 @@ docs/CleanVent-razbor-2026.md
 docs/2026-08-06-site-legal-audit.md
 docs/2026-08-06-plan-rabot.md
 docs/prototype-*.html
+# (SEO-отчёты в docs/seo/ трекаются — это рабочая документация проекта)
 
 # Local copy of the previous site, carries its own git history and 255 MB
 cleanvent-nextjs/

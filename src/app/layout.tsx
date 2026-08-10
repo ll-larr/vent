@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter_Tight, JetBrains_Mono, Fraunces } from 'next/font/google';
 import localFont from 'next/font/local';
-import { localBusinessSchema, jsonLdScript } from '@/lib/schema';
+import { localBusinessSchema, websiteSchema, jsonLdScript } from '@/lib/schema';
 import { SITE_URL } from '@/lib/site';
 import CustomCursor from '@/components/CustomCursor/CustomCursor';
 import './globals.css';
@@ -81,7 +81,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans bg-bg text-ink antialiased">
         <CustomCursor />
         {children}
-        <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(localBusinessSchema())} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={jsonLdScript([localBusinessSchema(), websiteSchema()])}
+        />
       </body>
     </html>
   );

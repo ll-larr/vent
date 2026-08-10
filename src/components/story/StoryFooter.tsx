@@ -52,7 +52,7 @@ const COLUMNS: Array<{ title: string; links: FooterLink[] }> = [
   },
 ];
 
-const LINK_CLASS = 'text-bg/85 transition-colors duration-300 hover:text-accent';
+const LINK_CLASS = 'py-1 text-bg/85 transition-colors duration-300 hover:text-accent';
 
 const LEGAL_STRIP =
   'mono-label flex flex-wrap justify-between gap-[14px] text-[10px] tracking-[.12em] text-bg/45';
@@ -92,7 +92,7 @@ export function StoryFooter({ variant = 'full' }: { variant?: 'full' | 'compact'
         {COLUMNS.map((column) => (
           <div key={column.title}>
             <div className="mono-label mb-[14px] text-[10.5px] text-bg/50">{column.title}</div>
-            <div className="mono-label flex flex-col gap-[9px] text-[11.5px] tracking-[.06em]">
+            <div className="mono-label flex flex-col gap-px text-[11.5px] tracking-[.06em]">
               {column.links.map((link) =>
                 link.external ? (
                   <a

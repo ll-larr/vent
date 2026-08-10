@@ -52,6 +52,25 @@ export function localBusinessSchema(): JsonLd {
   };
 }
 
+/**
+ * Site-level identity. Ties every page to one WebSite node and one publisher,
+ * which is what disambiguates the brand for search engines and AI answers when
+ * the domain itself carries no history yet.
+ */
+export function websiteSchema(): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${SITE_URL}/#website`,
+    url: SITE_URL,
+    name: 'Vent.team',
+    inLanguage: 'ru-RU',
+    description:
+      'Промышленная чистка вентиляции, вытяжек и зонтов для общепита, офисов и складов. Москва и область.',
+    publisher: { '@id': `${SITE_URL}/#business` },
+  };
+}
+
 export function serviceSchema(name: string, priceRange: string, description?: string): JsonLd {
   return {
     '@context': 'https://schema.org',
