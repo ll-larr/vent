@@ -71,3 +71,9 @@ npx vercel --prod
 ```
 
 Что не должно уезжать на прод — в `.vercelignore`.
+
+Домен `vent.team` пока не зарегистрирован (NXDOMAIN на 10.08.2026) и к проекту не
+привязан, поэтому в Production задана переменная
+`NEXT_PUBLIC_SITE_URL=https://vent-final.vercel.app` — иначе canonical, sitemap и
+JSON-LD указывали бы на несуществующий адрес. Когда домен появится: привязать его к
+проекту, поменять переменную на `https://vent.team` и поставить 301 с vercel.app.

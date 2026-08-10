@@ -6,10 +6,11 @@ import { SERVICE_PAGES, ARTICLES, serviceUrl, articleUrl } from '@/lib/content';
 // `new Date()` here would stamp every URL as "modified now" on each build, and
 // search engines learn to ignore a lastmod that always says today.
 const LAST_MODIFIED = {
-  home: '2026-08-04',
-  calculator: '2026-08-04',
-  contacts: '2026-08-04',
-  content: '2026-08-05',
+  // The scroll-story redesign rebuilt every page on 2026-08-10.
+  home: '2026-08-10',
+  calculator: '2026-08-10',
+  contacts: '2026-08-10',
+  content: '2026-08-10',
 } as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
