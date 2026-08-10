@@ -26,6 +26,12 @@ const nextConfig = {
         destination: 'https://vent-clean.ru/:path*',
         permanent: true,
       },
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'vent-final.vercel.app' }],
+        destination: 'https://vent-clean.ru/:path*',
+        permanent: true,
+      },
     ];
   },
 };
