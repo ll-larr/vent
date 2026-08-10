@@ -18,6 +18,14 @@ const nextConfig = {
       // Disinfection left the catalogue with the story redesign — the page was
       // indexed, so it points at the services hub instead of 404-ing.
       { source: '/uslugi/dezinfekciya', destination: '/uslugi', permanent: true },
+      // One canonical host: the apex. Everything else is a permanent redirect
+      // so link equity and crawl budget land in one place.
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.vent-clean.ru' }],
+        destination: 'https://vent-clean.ru/:path*',
+        permanent: true,
+      },
     ];
   },
 };
