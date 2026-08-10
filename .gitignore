@@ -35,3 +35,23 @@ Thumbs.db
 # public repo. To open the .dc.html prototypes locally with pictures:
 #   cp public/images/*.jpg design_handoff_vent_landing/design/img/
 design_handoff_vent_landing/design/img/
+
+# This repository is public. The financial model, the tax/ОКВЭД analysis and
+# the legal audit are the owner's business material — they stay on disk and
+# out of git. Engineering plans under docs/superpowers/ are fine to track.
+finmodel/
+docs/CleanVent-razbor-2026.md
+docs/2026-08-06-site-legal-audit.md
+docs/2026-08-06-plan-rabot.md
+docs/prototype-*.html
+
+# Local copy of the previous site, carries its own git history and 255 MB
+cleanvent-nextjs/
+
+# Editor state
+*.code-workspace
+
+# Nothing loads these: the wordmark ships as a woff2 subset from src/fonts, and
+# the PT Sans pair belonged to the deleted client-side PDF generator. The files
+# stay on disk (the .ttf is licensed material the owner supplied).
+public/fonts/

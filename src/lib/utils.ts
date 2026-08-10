@@ -1,10 +1,3 @@
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
 /**
  * Russian plural agreement: plural(5, ['материал', 'материала', 'материалов']).
  * Forms are [one, few, many] — 1 материал, 2 материала, 5 материалов.

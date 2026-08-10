@@ -11,6 +11,9 @@ cleanvent-nextjs/
 docs/
 *.code-workspace
 
-# Source .ttf of the wordmark face. Anything under public/ is served publicly;
-# the site loads the subset woff2 from src/fonts instead.
-public/fonts/Marggraff Kursiv Zarte.ttf
+# Nothing under public/fonts is loaded — the wordmark ships as a woff2 subset
+# from src/fonts — and everything under public/ is served publicly.
+public/fonts/
+
+# Design handoff: 35 MB of prototypes and photo duplicates, not part of the site
+design_handoff_vent_landing/
