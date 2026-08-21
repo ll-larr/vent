@@ -111,10 +111,10 @@ const SECTIONS: Array<{ n: string; title: string; body: React.ReactNode }> = [
         <p>
           Запросы принимаются по адресу{' '}
           <a
-            href="mailto:privacy@vent-clean.ru"
+            href="mailto:privacy@vent.team"
             className="text-brand border-b border-current hover:text-ink transition-colors"
           >
-            privacy@vent-clean.ru
+            privacy@vent.team
           </a>
           . Ответим в течение 10 рабочих дней, обычно — за день.
         </p>
@@ -196,7 +196,7 @@ export default function PrivacyPage() {
                 Вопросы по обработке <em className="italic text-accent">данных?</em>
               </h3>
               <p className="text-[13.5px] text-bg/65 m-0">
-                Напишите на privacy@vent-clean.ru или позвоните в офис — ответим тем же днём.
+                Напишите на privacy@vent.team или позвоните в офис — ответим тем же днём.
               </p>
             </div>
             <Link
@@ -219,7 +219,7 @@ export default function PrivacyPage() {
               Редакция: <b className="text-accent font-medium">15.05.2026</b>
             </span>
             <span>
-              Контакт: <b className="text-accent font-medium">privacy@vent-clean.ru</b>
+              Контакт: <b className="text-accent font-medium">privacy@vent.team</b>
             </span>
           </div>
           <div>
