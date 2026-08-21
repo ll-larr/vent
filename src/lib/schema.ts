@@ -83,6 +83,37 @@ export function serviceSchema(name: string, priceRange: string, description?: st
   };
 }
 
+/**
+ * Section 02 as a HowTo. The six steps are the actual method, in scroll order,
+ * so the markup and the visible section can't describe different processes.
+ *
+ * Per-step prices are deliberately not emitted: HowToStep has no price
+ * property, and the totals are per-object anyway — the numbers live in Service
+ * offers instead. `url` points at the section anchor, `image` at the frame the
+ * step shows.
+ */
+export function howToSchema(
+  steps: Array<{ n: string; title: string; text: string; image: string }>,
+): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'Как проходит промышленная чистка вентиляции',
+    description:
+      'Порядок работ на объекте: от диагностики и замера до сборки и подписания акта очистки.',
+    inLanguage: 'ru-RU',
+    totalTime: 'PT8H',
+    step: steps.map((step, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: step.title,
+      text: step.text,
+      image: `${SITE_URL}${step.image}`,
+      url: `${SITE_URL}/#02`,
+    })),
+  };
+}
+
 export function jsonLdScript(data: JsonLd | JsonLd[]): { __html: string } {
   // Escape `<` so a literal "</script>" inside any value can't break out of the
   // JSON-LD script tag (defence in depth — current data is static).

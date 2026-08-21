@@ -1,5 +1,7 @@
-import Image from 'next/image';
 import type { ArticleBlock } from '@/lib/content';
+import { Figure, BeforeAfter } from '@/components/ContentPage/Figure';
+import { InlineText } from '@/components/story/InlineText';
+import { stripInline } from '@/lib/inline-link';
 
 /* Renderer for article body blocks.
 
@@ -7,20 +9,20 @@ import type { ArticleBlock } from '@/lib/content';
    contents is built from the same counter, so the two can't drift. Other
    blocks get a positional id purely so the wrapper has one.
 
-   Images are next/image with explicit aspect boxes; the photos in article
-   bodies are the only non-final assets in the design (see AUDIT.md). */
+   Images come from ContentPage/Figure, shared with the service pages; the
+   photos in article bodies are the only non-final assets in the design
+   (see AUDIT.md).
+
+   `p` and `list` items go through InlineText, so body copy can carry
+   `[текст](/uslugi/…)` links. Headings deliberately do not: they are anchor
+   targets and feed the table of contents as plain strings. */
 
 export function articleHeadings(blocks: ArticleBlock[]): Array<{ id: string; text: string }> {
   let n = 0;
   return blocks
     .filter((b): b is Extract<ArticleBlock, { t: 'h' }> => b.t === 'h')
-    .map((b) => ({ id: `h${++n}`, text: b.v }));
+    .map((b) => ({ id: `h${++n}`, text: stripInline(b.v) }));
 }
-
-const FRAME = 'relative block overflow-hidden bg-black-deep';
-const CAPTION = 'mono-label mt-2.5 text-[10px] tracking-[.12em] text-ink/45';
-const BADGE =
-  'mono-label absolute left-2.5 top-2.5 rounded-pill px-[11px] py-1.5 text-[9px] tracking-[.16em]';
 
 function Block({ block }: { block: ArticleBlock }) {
   switch (block.t) {
@@ -33,7 +35,7 @@ function Block({ block }: { block: ArticleBlock }) {
     case 'p':
       return (
         <p className="max-w-[68ch] text-[clamp(16px,1.15vw,18.5px)] leading-[1.65] text-ink/80">
-          {block.v}
+          <InlineText text={block.v} />
         </p>
       );
     case 'quote':
@@ -60,37 +62,16 @@ function Block({ block }: { block: ArticleBlock }) {
               <span className="mono-label pt-1 text-[10.5px] tracking-[.1em] text-brand">
                 {String(i + 1).padStart(2, '0')}
               </span>
-              {item}
+              <InlineText text={item} />
             </span>
           ))}
           <span className="border-t border-ink/[.14]" />
         </div>
       );
     case 'img':
-      return (
-        <figure className="my-[clamp(6px,1.4vh,16px)]">
-          <span className={`${FRAME} aspect-[16/9]`}>
-            <Image src={block.src} alt={block.cap} fill sizes="(max-width: 900px) 100vw, 820px" className="object-cover" />
-          </span>
-          <figcaption className={CAPTION}>{block.cap}</figcaption>
-        </figure>
-      );
+      return <Figure src={block.src} cap={block.cap} />;
     case 'pair':
-      return (
-        <figure className="my-[clamp(6px,1.4vh,16px)]">
-          <span className="grid grid-cols-2 gap-2">
-            <span className={`${FRAME} aspect-[4/3]`}>
-              <Image src={block.src} alt="До чистки" fill sizes="(max-width: 900px) 50vw, 410px" className="object-cover" />
-              <span className={`${BADGE} bg-ink/[.86] text-bg`}>до</span>
-            </span>
-            <span className={`${FRAME} aspect-[4/3]`}>
-              <Image src={block.src2} alt="После чистки" fill sizes="(max-width: 900px) 50vw, 410px" className="object-cover" />
-              <span className={`${BADGE} bg-accent text-ink`}>после</span>
-            </span>
-          </span>
-          <figcaption className={CAPTION}>{block.cap}</figcaption>
-        </figure>
-      );
+      return <BeforeAfter src={block.src} src2={block.src2} cap={block.cap} />;
   }
 }
 
