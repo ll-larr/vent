@@ -1,7 +1,15 @@
 'use client';
 
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
-import { PACKAGES, type PackageKey, type ServiceKey, type VolumeUnit } from './pricing';
+import {
+  DEFAULT_COUNT,
+  PACKAGES,
+  SERVICES,
+  type PackageKey,
+  type ServiceKey,
+  type UnitCounts,
+  type VolumeUnit,
+} from './pricing';
 
 /** The three object types the lead form offers (no "своё" — a lead needs one). */
 export type ObjectKey = 'restaurant' | 'office' | 'warehouse';
@@ -20,7 +28,8 @@ export type CalcState = {
   areaM2: number;
   /** Duct length, пог.м. */
   lmValue: number;
-  hoodCount: number;
+  /** штуки per counted service — зонты, установки, крыльчатки и остальные. */
+  counts: UnitCounts;
   /** Object type in the lead form; presets keep it in step with packageKey. */
   objectKey: ObjectKey;
 };
@@ -31,7 +40,7 @@ export type CalcAction =
   | { type: 'SET_AREA'; value: number }
   | { type: 'SET_LM'; value: number }
   | { type: 'SET_UNIT'; unit: VolumeUnit }
-  | { type: 'SET_HOOD_COUNT'; value: number }
+  | { type: 'SET_COUNT'; key: ServiceKey; value: number }
   | { type: 'SET_OBJECT'; key: ObjectKey }
   /** Deep link from sections 02 and 05: package + its defaults + one extra. */
   | { type: 'PRESET'; key: PackageKey; extra?: ServiceKey };
@@ -42,11 +51,15 @@ export const INITIAL_STATE: CalcState = {
   unit: 'm2',
   areaM2: 120,
   lmValue: 60,
-  hoodCount: 2,
+  counts: { hood: 2 },
   objectKey: 'restaurant',
 };
 
-const MAX_HOODS = 40;
+/** Upper bound for a counter, from the service that owns it. */
+function countMax(key: ServiceKey): number {
+  const service = SERVICES[key];
+  return service.kind === 'unit' ? service.countMax : 0;
+}
 
 function reducer(state: CalcState, action: CalcAction): CalcState {
   switch (action.type) {
@@ -60,12 +73,16 @@ function reducer(state: CalcState, action: CalcAction): CalcState {
     }
     case 'TOGGLE_SERVICE': {
       const exists = state.services.includes(action.key);
-      return {
-        ...state,
-        services: exists
-          ? state.services.filter((s) => s !== action.key)
-          : [...state.services, action.key],
-      };
+      if (exists) {
+        return { ...state, services: state.services.filter((s) => s !== action.key) };
+      }
+      // Ticking a counted service for the first time seeds its counter, so the
+      // line never lands in the estimate as "0 шт".
+      const seeded =
+        SERVICES[action.key].kind === 'unit' && state.counts[action.key] === undefined
+          ? { ...state.counts, [action.key]: DEFAULT_COUNT }
+          : state.counts;
+      return { ...state, services: [...state.services, action.key], counts: seeded };
     }
     case 'SET_AREA':
       return { ...state, areaM2: Math.max(0, action.value) };
@@ -81,8 +98,10 @@ function reducer(state: CalcState, action: CalcAction): CalcState {
       }
       return { ...state, unit: 'm2' };
     }
-    case 'SET_HOOD_COUNT':
-      return { ...state, hoodCount: Math.max(0, Math.min(MAX_HOODS, action.value)) };
+    case 'SET_COUNT': {
+      const value = Math.max(0, Math.min(countMax(action.key), action.value));
+      return { ...state, counts: { ...state.counts, [action.key]: value } };
+    }
     case 'SET_OBJECT':
       return { ...state, objectKey: action.key };
     case 'PRESET': {

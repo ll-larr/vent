@@ -19,7 +19,13 @@ import type { PackageKey, ServiceKey } from '@/lib/pricing';
 const SVC_TO_PACKAGE: Record<ServiceKey, PackageKey> = {
   grease: 'restaurant',
   hood: 'restaurant',
+  impellerGrease: 'restaurant',
+  hydrofilter: 'restaurant',
   dust: 'office',
+  grille: 'office',
+  ahu: 'office',
+  impellerAir: 'office',
+  valve: 'custom',
   diag: 'custom',
 };
 

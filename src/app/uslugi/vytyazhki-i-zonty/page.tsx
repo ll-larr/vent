@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ContentPage } from '@/components/ContentPage/ContentPage';
 import { Prose } from '@/components/Prose/Prose';
+import { Figure, BeforeAfter } from '@/components/ContentPage/Figure';
 import { FaqList } from '@/components/story/FaqList';
 import { serviceSchema, faqSchema } from '@/lib/schema';
 import { serviceUrl } from '@/lib/content';
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 const FAQ_ITEMS = [
   {
     q: 'Сколько стоит чистка вытяжки в ресторане?',
-    a: 'От 2 000 ₽ за зонт стандартного размера до 1500×1500 мм. Для более крупных зонтов и нестандартных конструкций цену определяет инженер на осмотре.',
+    a: 'От 1 700 ₽ за зонт стандартного размера до 1500×1500 мм и от 2 550 ₽ за зонт большего размера. Для нестандартных конструкций цену определяет инженер на осмотре.',
   },
   {
     q: 'Зонт снимают целиком или моют на месте?',
@@ -96,6 +97,14 @@ export default function VytyazhkiIZontyPage() {
           царапаются и не тускнеют, в отличие от чистки жёсткими губками.
         </p>
 
+        <BeforeAfter
+          src="/images/grease2-before.jpg"
+          src2="/images/grease2-after.jpg"
+          cap="жироулавливающий фильтр зонта: до мойки в ванне и после"
+          alt="Жироулавливающий фильтр кухонного зонта, забитый нагаром, до мойки"
+          alt2="Тот же фильтр зонта после мойки в ванне, металл чистый и неповреждённый"
+        />
+
         <h2>Как часто мыть вытяжку на кухне</h2>
         <p>
           Зонт над активно работающей линией — грилем, фритюрницей, жарочной поверхностью —
@@ -121,6 +130,12 @@ export default function VytyazhkiIZontyPage() {
           на осмотре подскажет, что подойдёт конкретной кухне: полная разборка зонта или только
           мойка фильтров по более частому графику.
         </p>
+
+        <Figure
+          src="/images/tech-05-hoods.jpg"
+          cap="зонты и жироулавители снимаем, моем в ванне и ставим обратно"
+          alt="Снятые зонты и жироулавливающие фильтры кухни в моечной ванне"
+        />
 
         <h2>Что нужно от объекта для выезда бригады</h2>
         <p>

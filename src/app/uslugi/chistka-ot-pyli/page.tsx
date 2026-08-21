@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ContentPage } from '@/components/ContentPage/ContentPage';
 import { Prose } from '@/components/Prose/Prose';
+import { Figure, BeforeAfter } from '@/components/ContentPage/Figure';
 import { FaqList } from '@/components/story/FaqList';
 import { serviceSchema, faqSchema } from '@/lib/schema';
 import { serviceUrl } from '@/lib/content';
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 const FAQ_ITEMS = [
   {
     q: 'Сколько стоит чистка воздуховодов в офисе?',
-    a: 'От 100 ₽ за погонный метр для труб малого сечения до 220 ₽ для широких коробов сечением более 600×400 мм. Итоговая цена — по фактическому метражу трассы после осмотра.',
+    a: 'От 85 ₽ за погонный метр для труб сечением до 500 мм и до 130 ₽ для коробов и труб большего сечения. Короба шире 500×300 мм инженер считает отдельно на осмотре. Итоговая цена — по фактическому метражу трассы.',
   },
   {
     q: 'Как часто нужно чистить вентиляцию в офисе или на складе?',
@@ -66,7 +67,7 @@ export default function ChistkaOtPyliPage() {
       }
       lead="Пыль, волокна и мелкий мусор в приточно-вытяжной вентиляции офисов, складов и производств снижают воздухообмен и качество воздуха в помещении. Чистим каналы без остановки объекта."
       jsonLd={[
-        serviceSchema(PAGE.h1, '100–220 ₽/пог.м', PAGE.description),
+        serviceSchema(PAGE.h1, '85–130 ₽/пог.м', PAGE.description),
         faqSchema(FAQ_ITEMS),
       ]}
     >
@@ -97,6 +98,14 @@ export default function ChistkaOtPyliPage() {
           обработки после механической.
         </p>
 
+        <BeforeAfter
+          src="/images/dust-before.jpg"
+          src2="/images/dust-after.jpg"
+          cap="воздуховод офисной приточной системы: слой пыли и тот же участок после чистки"
+          alt="Слой пыли и волокон на стенках офисного воздуховода до чистки"
+          alt2="Тот же офисный воздуховод после чистки, стенки без пылевых отложений"
+        />
+
         <h2>Признаки того, что воздуховодам нужна чистка</h2>
         <ul>
           <li>Слабый поток воздуха из решёток и диффузоров при исправном вентиляторе.</li>
@@ -125,6 +134,12 @@ export default function ChistkaOtPyliPage() {
           <li>Обработка вентиляционных установок и калориферов при необходимости.</li>
           <li>Сборка, проверка тяги на всех выходах, вывоз мусора с объекта.</li>
         </ul>
+
+        <Figure
+          src="/images/tech-04-filter.jpg"
+          cap="фильтрующий блок держит участок под разрежением и вытягивает снятую пыль"
+          alt="Фильтрующая установка, подключённая к воздуховоду во время чистки от пыли"
+        />
 
         <h2>Сколько занимает чистка офиса или склада</h2>
         <p>

@@ -6,9 +6,12 @@ import {
   PACKAGES,
   SERVICES,
   SERVICE_SHORT,
+  UNIT_SERVICES,
   computeEstimate,
   formatNumber,
+  unitCount,
   type PackageKey,
+  type ServiceKey,
 } from '@/lib/pricing';
 import { SectionLabel } from './SectionLabel';
 
@@ -29,6 +32,15 @@ const QUICK_LM = [20, 50, 100, 200];
 const TICKS_M2 = ['0 м²', '100', '200', '300+'];
 const TICKS_LM = ['0 пог.м', '100', '250', '400+'];
 
+const COUNT_BTN =
+  'grid h-[38px] w-[38px] cursor-pointer place-items-center rounded-pill bg-surface transition-colors duration-300 hover:bg-ink hover:text-accent';
+
+/** Каждая штучная услуга подписывает свой счётчик сама. */
+function COUNT_LABEL(key: ServiceKey): string {
+  const service = SERVICES[key];
+  return service.kind === 'unit' ? service.countLabel : '';
+}
+
 function rate(key: (typeof CALCULATOR_SERVICES)[number]): string {
   const service = SERVICES[key];
   if (service.kind === 'linear') return `${service.min} ₽/пог.м`;
@@ -44,7 +56,7 @@ export function Calculator({ onSendEstimate }: { onSendEstimate: () => void }) {
     state.services,
     { unit: state.unit, areaM2: state.areaM2, lmValue: state.lmValue },
     state.packageKey,
-    state.hoodCount,
+    state.counts,
   );
 
   const setAmount = (value: number) =>
@@ -184,35 +196,40 @@ export function Calculator({ onSendEstimate }: { onSendEstimate: () => void }) {
         )}
       </div>
 
-      {state.services.includes('hood') && (
-        <div className="mt-0.5 flex items-center justify-between gap-3.5 bg-surface py-3 pl-[22px] pr-3.5">
-          <span className="mono-label text-[10.5px] text-ink/50">зонты</span>
-          <span className="inline-flex items-center gap-1.5 rounded-pill bg-bg p-[5px]">
-            <button
-              type="button"
-              aria-label="Меньше зонтов"
-              onClick={() => dispatch({ type: 'SET_HOOD_COUNT', value: state.hoodCount - 1 })}
-              className="grid h-[38px] w-[38px] cursor-pointer place-items-center rounded-pill bg-surface transition-colors duration-300 hover:bg-ink hover:text-accent"
-            >
-              −
-            </button>
-            <span className="inline-flex items-baseline gap-[5px] px-2">
-              <b className="font-display text-[28px] font-light tracking-[-.02em]">
-                {state.hoodCount}
-              </b>
-              <span className="mono-label text-[10.5px] text-ink/50">шт</span>
+      {UNIT_SERVICES.filter((key) => state.services.includes(key)).map((key) => {
+        const count = unitCount(state.counts, key);
+        const caption = COUNT_LABEL(key);
+        return (
+          <div
+            key={key}
+            className="mt-0.5 flex items-center justify-between gap-3.5 bg-surface py-3 pl-[22px] pr-3.5"
+          >
+            <span className="mono-label text-[10.5px] text-ink/50">{caption}</span>
+            <span className="inline-flex items-center gap-1.5 rounded-pill bg-bg p-[5px]">
+              <button
+                type="button"
+                aria-label={`Меньше: ${caption}`}
+                onClick={() => dispatch({ type: 'SET_COUNT', key, value: count - 1 })}
+                className={COUNT_BTN}
+              >
+                −
+              </button>
+              <span className="inline-flex items-baseline gap-[5px] px-2">
+                <b className="font-display text-[28px] font-light tracking-[-.02em]">{count}</b>
+                <span className="mono-label text-[10.5px] text-ink/50">шт</span>
+              </span>
+              <button
+                type="button"
+                aria-label={`Больше: ${caption}`}
+                onClick={() => dispatch({ type: 'SET_COUNT', key, value: count + 1 })}
+                className={COUNT_BTN}
+              >
+                +
+              </button>
             </span>
-            <button
-              type="button"
-              aria-label="Больше зонтов"
-              onClick={() => dispatch({ type: 'SET_HOOD_COUNT', value: state.hoodCount + 1 })}
-              className="grid h-[38px] w-[38px] cursor-pointer place-items-center rounded-pill bg-surface transition-colors duration-300 hover:bg-ink hover:text-accent"
-            >
-              +
-            </button>
-          </span>
-        </div>
-      )}
+          </div>
+        );
+      })}
 
       <div className="mt-3.5 flex flex-wrap items-start justify-between gap-[clamp(16px,2.5vw,36px)] bg-ink p-[clamp(18px,2vw,26px)] text-bg">
         <div className="min-w-0">

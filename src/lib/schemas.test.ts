@@ -13,7 +13,7 @@ const storyPayload = {
   areaM2: 120,
   lmValue: 60,
   unit: 'm2',
-  hoodCount: 2,
+  counts: { hood: 2 },
   services: ['grease', 'hood'],
   comment: 'кухня 140 м², четыре зонта',
   website: '',
@@ -47,9 +47,25 @@ describe('submitSchema', () => {
     expect(submitSchema.safeParse({ ...storyPayload, services: [] }).success).toBe(true);
   });
 
-  it('rejects the service key dropped in the redesign', () => {
+  it('accepts the services added in the 2026 price update', () => {
+    const parsed = submitSchema.safeParse({
+      ...storyPayload,
+      services: ['grease', 'hood', 'ahu', 'impellerGrease', 'impellerAir', 'hydrofilter', 'grille', 'valve', 'diag'],
+      counts: { hood: 2, ahu: 1, impellerGrease: 4, impellerAir: 2, hydrofilter: 1, grille: 12, valve: 2 },
+    });
+    expect(parsed.success).toBe(true);
+  });
+
+  // Disinfection needs a Роспотребнадзор licence, so it is priced in the PDF
+  // list and must never become a calculator chip or reach the sheet.
+  it('rejects services that need a licence', () => {
     expect(
       submitSchema.safeParse({ ...storyPayload, services: ['disinfect'] }).success,
     ).toBe(false);
+  });
+
+  it('defaults counts for a payload that omits them', () => {
+    const { counts, ...withoutCounts } = storyPayload;
+    expect(submitSchema.parse(withoutCounts).counts).toEqual({});
   });
 });

@@ -13,7 +13,7 @@ const HOOK = computeEstimate(
   ['grease', 'hood'],
   { unit: 'm2', areaM2: 120, lmValue: 0 },
   'restaurant',
-  2,
+  { hood: 2 },
 );
 
 export function Hero() {

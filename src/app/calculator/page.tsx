@@ -8,15 +8,23 @@ import { SectionLabel } from '@/components/story/SectionLabel';
 import { Prose } from '@/components/Prose/Prose';
 import { CalculatorProvider } from '@/lib/calculator-context';
 import { faqSchema, jsonLdScript } from '@/lib/schema';
-import { PACKAGES, SERVICES } from '@/lib/pricing';
+import { PACKAGES, SERVICES, formatPrice } from '@/lib/pricing';
 
 export const metadata: Metadata = {
   // Root layout template appends "· Vent Clean" — keep the page title bare.
   title: 'Калькулятор стоимости чистки вентиляции',
   description:
-    'Рассчитайте онлайн стоимость промышленной чистки вентиляции и вытяжек для общепита, офиса или производства. Цены от 100 ₽/пог.м.',
+    'Рассчитайте онлайн стоимость промышленной чистки вентиляции и вытяжек для общепита, офиса или производства. Цены от 85 ₽/пог.м.',
   alternates: { canonical: '/calculator' },
 };
+
+/* Every price on this page comes off the catalog — the tier tables already did,
+   and the prose now does too, so a rate change in pricing.ts cannot leave a
+   stale number in the copy. */
+const greaseMin = SERVICES.grease.kind === 'linear' ? SERVICES.grease.min : 0;
+const dustMin = SERVICES.dust.kind === 'linear' ? SERVICES.dust.min : 0;
+const diagPrice = formatPrice(SERVICES.diag.kind === 'fixed' ? SERVICES.diag.price : 0);
+const hoodPrice = formatPrice(SERVICES.hood.kind === 'unit' ? SERVICES.hood.price : 0);
 
 // The calculator widget itself is also embedded on the homepage, so this route
 // needs substance of its own — otherwise it's a duplicate section on a second
@@ -24,7 +32,7 @@ export const metadata: Metadata = {
 const FAQ_ITEMS: Array<{ q: string; a: string }> = [
   {
     q: 'Почему калькулятор показывает вилку, а не точную сумму?',
-    a: `Пока мы не увидели объект, неизвестна реальная длина трасс, степень загрязнения и наличие ревизионных лючков. Калькулятор считает по нижней границе тарифа: ${SERVICES.grease.label.toLowerCase()} — от 300 ₽/пог.м, чистка от пыли — от 100 ₽/пог.м. После бесплатного видеоосмотра цена фиксируется в договоре и дальше не меняется.`,
+    a: `Пока мы не увидели объект, неизвестна реальная длина трасс, степень загрязнения и наличие ревизионных лючков. Калькулятор считает по нижней границе тарифа: ${SERVICES.grease.label.toLowerCase()} — от ${greaseMin} ₽/пог.м, чистка от пыли — от ${dustMin} ₽/пог.м. После видеоосмотра объекта (${diagPrice}) цена фиксируется в договоре и дальше не меняется.`,
   },
   {
     q: 'Как площадь помещения превращается в погонные метры воздуховодов?',
@@ -32,11 +40,11 @@ const FAQ_ITEMS: Array<{ q: string; a: string }> = [
   },
   {
     q: 'От чего цена за погонный метр отличается в полтора раза?',
-    a: 'От сечения канала и типа загрязнения. Труба до 600 мм считается по нижнему тарифу, короб больше 600×400 мм — по верхнему: это больше площади внутренней поверхности и другой инструмент. Жир снимается тяжелее пыли, поэтому кухонные трассы всегда дороже офисных.',
+    a: 'От сечения канала и типа загрязнения. Труба до 500 мм считается по нижнему тарифу, короб больше 500×300 мм — по верхнему: это больше площади внутренней поверхности и другой инструмент. Жир снимается тяжелее пыли, поэтому кухонные трассы всегда дороже офисных.',
   },
   {
     q: 'Что входит в стоимость, а что оплачивается отдельно?',
-    a: `В работы входят выезд бригады, расходники, укрытие оборудования и мебели, вынос снятых отложений и фотоотчёт до/после. Отдельно считаются диагностика с видеоинспекцией (${SERVICES.diag.kind === 'fixed' ? SERVICES.diag.price : 4500} ₽) и монтаж ревизионных лючков, если их нет и вскрывать канал больше негде.`,
+    a: `В работы входят выезд бригады, расходники, укрытие оборудования и мебели, вынос снятых отложений и фотоотчёт до/после. Отдельно считаются диагностика с видеоинспекцией (${diagPrice}) и монтаж ревизионных лючков, если их нет и вскрывать канал больше негде.`,
   },
   {
     q: 'Расчёт из калькулятора обязывает к чему-нибудь?',
@@ -56,7 +64,7 @@ export default function CalculatorPage() {
           </h1>
           <p className="mt-5 max-w-[56ch] text-[clamp(17px,1.5vw,24px)] leading-[1.5] text-ink/[.72]">
             Выберите тип объекта, скорректируйте список услуг и укажите площадь. Точная стоимость
-            определяется после бесплатного осмотра.
+            определяется после видеоосмотра объекта.
           </p>
         </div>
         <CalculatorSection />
@@ -100,7 +108,7 @@ export default function CalculatorPage() {
                       <tr key={tier.code}>
                         <td>{tier.label}</td>
                         <td>{tier.rate} ₽/пог.м</td>
-                        <td>{dustTiers[i] ? `${dustTiers[i].rate} ₽/пог.м` : '—'}</td>
+                        <td>{dustTiers[i] ? `${dustTiers[i].rate} ₽/пог.м` : 'по запросу'}</td>
                       </tr>
                     );
                   },
@@ -115,8 +123,7 @@ export default function CalculatorPage() {
             </p>
             <p>
               Отдельно считаются работы, которые не измеряются метрами: чистка зонта пищеблока — от{' '}
-              {SERVICES.hood.kind === 'unit' ? SERVICES.hood.price.toLocaleString('ru-RU') : '2 000'}{' '}
-              ₽ за штуку и выездная диагностика с видеоинспекцией — 4 500 ₽.
+              {hoodPrice} за штуку и выездная диагностика с видеоинспекцией — {diagPrice}.
             </p>
 
             <h2>Почему точную сумму называют только после осмотра</h2>
@@ -127,10 +134,10 @@ export default function CalculatorPage() {
               круглосуточно — тогда бригада выходит ночью.
             </p>
             <p>
-              Поэтому порядок такой: калькулятор даёт ориентир, затем бесплатный{' '}
-              <Link href="/uslugi/videoinspekciya">видеоосмотр каналов</Link> показывает фактическое
-              состояние, и уже после него сумма фиксируется в договоре. Дальше она не растёт — «нашли
-              ещё грязь, доплатите» у нас не бывает.
+              Поэтому порядок такой: калькулятор даёт ориентир,{' '}
+              <Link href="/uslugi/videoinspekciya">видеоосмотр каналов</Link> за {diagPrice}{' '}
+              показывает фактическое состояние, и уже после него сумма фиксируется в договоре.
+              Дальше она не растёт — «нашли ещё грязь, доплатите» у нас не бывает.
             </p>
 
             <h2>Если нужно точнее прямо сейчас</h2>

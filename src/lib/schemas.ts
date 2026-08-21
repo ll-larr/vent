@@ -1,6 +1,17 @@
 import { z } from 'zod';
 
-export const SERVICE_KEYS = ['grease', 'dust', 'hood', 'diag'] as const;
+export const SERVICE_KEYS = [
+  'grease',
+  'dust',
+  'hood',
+  'ahu',
+  'impellerGrease',
+  'impellerAir',
+  'hydrofilter',
+  'grille',
+  'valve',
+  'diag',
+] as const;
 export const PACKAGE_KEYS = ['restaurant', 'office', 'warehouse', 'custom'] as const;
 
 // Phone is stored as full E.164-ish: +7XXXXXXXXXX (12 chars: +7 + 10 digits)
@@ -23,8 +34,10 @@ export const submitSchema = z.object({
   // both the mode and the metres.
   unit: z.enum(['m2', 'lm']).default('m2'),
   lmValue: z.coerce.number().int().min(0).max(100_000).default(0),
-  // Mirrors the calculator so the server can recompute the estimate for the sheet.
-  hoodCount: z.coerce.number().int().min(0).max(40).default(0),
+  // Mirrors the calculator so the server can recompute the estimate for the
+  // sheet. Keys outside SERVICE_KEYS are dropped by the route before pricing,
+  // so a stale client cannot inflate a quote through this field.
+  counts: z.record(z.string(), z.coerce.number().int().min(0).max(200)).default({}),
   // May be empty. The story form asks only for name, phone and consent — a
   // visitor who cleared every chip is still a lead, and rejecting them here
   // would show a failed-to-send error for a form that looked complete.

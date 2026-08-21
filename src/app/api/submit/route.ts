@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { submitSchema } from '@/lib/schemas';
 import { appendRow } from '@/lib/sheets';
-import { PACKAGES, SERVICES, computeEstimate, formatPrice } from '@/lib/pricing';
+import { PACKAGES, SERVICES, computeEstimate, formatPrice, type UnitCounts } from '@/lib/pricing';
 import { rateLimitOk } from '@/lib/rate-limit';
 
 const MAX_BODY_BYTES = 10_000;
@@ -46,11 +46,17 @@ export async function POST(req: NextRequest) {
 
     // Recomputed server-side rather than trusted from the client — the sheet
     // is the sales team's source of truth for what was quoted.
+    // Only counters for services actually in the catalog reach the estimator.
+    const counts: UnitCounts = {};
+    for (const [key, value] of Object.entries(data.counts)) {
+      if (key in SERVICES) counts[key as keyof typeof SERVICES] = value;
+    }
+
     const { total } = computeEstimate(
       data.services,
       { unit: data.unit, areaM2: data.areaM2, lmValue: data.lmValue },
       data.packageKey,
-      data.hoodCount,
+      counts,
     );
 
     const row = [

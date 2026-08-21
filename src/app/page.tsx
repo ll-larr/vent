@@ -12,21 +12,30 @@ import { CalculatorSection } from '@/components/story/CalculatorSection';
 import { StoryFaq } from '@/components/story/StoryFaq';
 import { CalculatorProvider } from '@/lib/calculator-context';
 import { StoryFooter } from '@/components/story/StoryFooter';
-import { FAQ } from '@/data/story';
-import { serviceSchema, faqSchema, jsonLdScript } from '@/lib/schema';
-import { SERVICES } from '@/lib/pricing';
+import { FAQ, TECH_STEPS } from '@/data/story';
+import { serviceSchema, faqSchema, howToSchema, jsonLdScript } from '@/lib/schema';
+import { CALCULATOR_SERVICES, SERVICES, formatPrice, type ServiceKey } from '@/lib/pricing';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
 };
 
-// Structured data mirrors what the page actually offers — the four calculator
-// services and the six questions rendered in section 08.
+// Structured data mirrors what the page actually offers — every calculator
+// service, the six-step method of section 02 and the six questions of
+// section 08. Every node is generated from the same data the sections render,
+// so a rate change in pricing.ts cannot leave stale prices in the markup.
+const priceRange = (key: ServiceKey): string => {
+  const service = SERVICES[key];
+  if (service.kind === 'linear') return `от ${service.min} ₽/пог.м`;
+  if (service.kind === 'unit') return `от ${formatPrice(service.price)}/шт`;
+  return formatPrice(service.price);
+};
+
 const homeJsonLd = jsonLdScript([
-  serviceSchema(SERVICES.grease.label, 'от 300 ₽/пог.м', SERVICES.grease.hint),
-  serviceSchema(SERVICES.dust.label, 'от 100 ₽/пог.м', SERVICES.dust.hint),
-  serviceSchema(SERVICES.hood.label, 'от 2 000 ₽/шт', SERVICES.hood.hint),
-  serviceSchema(SERVICES.diag.label, '4 500 ₽', SERVICES.diag.hint),
+  ...CALCULATOR_SERVICES.map((key) =>
+    serviceSchema(SERVICES[key].label, priceRange(key), SERVICES[key].hint),
+  ),
+  howToSchema(TECH_STEPS),
   faqSchema(FAQ),
 ]);
 

@@ -6,6 +6,10 @@ import { StoryCta } from '@/components/story/StoryCta';
 import { Prose } from '@/components/Prose/Prose';
 import { Phone, Mail, MapPinned, Clock } from '@/lib/icons';
 import { CONTACT_PHONE, CONTACT_PHONE_HREF, CONTACT_EMAIL, CONTACT_EMAIL_HREF } from '@/lib/site';
+import { SERVICES, formatPrice } from '@/lib/pricing';
+
+// Цена осмотра берётся из каталога, чтобы не разойтись с калькулятором.
+const diagPrice = formatPrice(SERVICES.diag.kind === 'fixed' ? SERVICES.diag.price : 0);
 
 export const metadata: Metadata = {
   // Root layout template appends "· Vent Clean" — keep the page title bare.
@@ -78,10 +82,11 @@ export default function ContactsPage() {
                 стоимости по телефону, не выезжая.
               </p>
               <p>
-                Дальше — бесплатный видеоосмотр каналов на объекте. Он занимает от получаса до двух
-                часов в зависимости от разветвлённости системы, кухню или офис при этом не
-                останавливаем. По итогам осмотра вы получаете запись из каналов и коммерческое
-                предложение с фиксированной суммой, которая после подписания договора уже не растёт.
+                Дальше — видеоосмотр каналов на объекте, {diagPrice} отдельной строкой. Он занимает
+                от получаса до двух часов в зависимости от разветвлённости системы, кухню или офис
+                при этом не останавливаем. По итогам осмотра вы получаете запись из каналов и
+                коммерческое предложение с фиксированной суммой, которая после подписания договора
+                уже не растёт.
               </p>
 
               <h2>География выездов</h2>

@@ -57,9 +57,20 @@ cp public/images/*.jpg design_handoff_vent_landing/design/img/
 
 ## Прайс-лист
 
-`ПРАЙС-ЛИСТ.md` — источник. PDF в `public/files/vent-pricelist-2026.pdf` собирается из него
-печатью HTML в headless Chrome; при правке цен обновлять оба файла вместе с
-`src/lib/pricing.ts`.
+`ПРАЙС-ЛИСТ.md` — источник цен, 42 позиции. PDF в `public/files/vent-pricelist-2026.pdf`
+собирается скриптом:
+
+```bash
+pip install reportlab
+python scripts/build-pricelist.py
+```
+
+Скрипт печатает A4 на системных шрифтах (Georgia под заголовки — так же, как кириллица ведёт
+себя на сайте; Segoe UI и Consolas вместо Inter Tight и JetBrains Mono, которые лежат в .woff2 и
+reportlab их не читает). Ссылка на PDF — кнопка «прайс · pdf» в секции 07.
+
+При правке цен обновлять три места вместе: `ПРАЙС-ЛИСТ.md`, `scripts/build-pricelist.py` и
+`src/lib/pricing.ts` — в последнем только позиции, которые считает калькулятор.
 
 ## Деплой
 

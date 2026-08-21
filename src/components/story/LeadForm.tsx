@@ -74,7 +74,7 @@ export function LeadForm() {
           areaM2: state.areaM2,
           lmValue: state.lmValue,
           unit: state.unit,
-          hoodCount: state.hoodCount,
+          counts: state.counts,
           services: state.services,
           comment: note.trim(),
           website,
