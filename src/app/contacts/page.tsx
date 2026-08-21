@@ -12,10 +12,10 @@ import { SERVICES, formatPrice } from '@/lib/pricing';
 const diagPrice = formatPrice(SERVICES.diag.kind === 'fixed' ? SERVICES.diag.price : 0);
 
 export const metadata: Metadata = {
-  // Root layout template appends "· Vent Clean" — keep the page title bare.
+  // Root layout template appends "· vent.team" — keep the page title bare.
   title: 'Контакты',
   description:
-    'Телефон, почта и часы работы Vent Clean: промышленная чистка вентиляции для бизнеса в Москве и области в радиусе 100 км. Осмотр объекта перед расчётом.',
+    'Телефон, почта и часы работы vent.team: промышленная чистка вентиляции для бизнеса в Москве и области в радиусе 100 км. Осмотр объекта перед расчётом.',
   alternates: { canonical: '/contacts' },
 };
 

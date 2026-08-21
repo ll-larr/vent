@@ -24,7 +24,7 @@ export function localBusinessSchema(): JsonLd {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     '@id': `${SITE_URL}/#business`,
-    name: 'Vent Clean',
+    name: 'vent.team',
     description: 'Промышленная чистка вентиляции для бизнеса',
     image: `${SITE_URL}/opengraph-image`,
     priceRange: '₽₽',
@@ -63,7 +63,7 @@ export function websiteSchema(): JsonLd {
     '@type': 'WebSite',
     '@id': `${SITE_URL}/#website`,
     url: SITE_URL,
-    name: 'Vent Clean',
+    name: 'vent.team',
     inLanguage: 'ru-RU',
     description:
       'Промышленная чистка вентиляции, вытяжек и зонтов для общепита, офисов и складов. Москва и область.',

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Собирает public/files/vent-pricelist-2026.pdf — прайс Vent Clean на A4.
+"""Собирает public/files/vent-pricelist-2026.pdf — прайс vent.team на A4.
 
 Источник цен — ПРАЙС-ЛИСТ.md в корне репозитория: правьте оба вместе, а также
 src/lib/pricing.ts для позиций, которые считает калькулятор.
@@ -27,7 +27,6 @@ from reportlab.platypus import (BaseDocTemplate, CondPageBreak, Frame,
 
 WIN = r"C:\Windows\Fonts"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MARGGRAFF = os.path.join(ROOT, "public", "fonts", "Marggraff Kursiv Zarte.ttf")
 OUT = os.path.join(ROOT, "public", "files", "vent-pricelist-2026.pdf")
 
 pdfmetrics.registerFont(TTFont("Display",     os.path.join(WIN, "georgia.ttf")))
@@ -36,9 +35,7 @@ pdfmetrics.registerFont(TTFont("Body",        os.path.join(WIN, "segoeui.ttf")))
 pdfmetrics.registerFont(TTFont("Body-B",      os.path.join(WIN, "segoeuib.ttf")))
 pdfmetrics.registerFont(TTFont("Mono",        os.path.join(WIN, "consola.ttf")))
 pdfmetrics.registerFont(TTFont("Mono-B",      os.path.join(WIN, "consolab.ttf")))
-HAS_MARGGRAFF = os.path.exists(MARGGRAFF)
-if HAS_MARGGRAFF:
-    pdfmetrics.registerFont(TTFont("Accent", MARGGRAFF))
+pdfmetrics.registerFont(TTFont("Display-I",   os.path.join(WIN, "georgiai.ttf")))
 
 # --- палитра проекта -------------------------------------------------------
 INK       = colors.HexColor("#141312")
@@ -207,16 +204,11 @@ def furniture(canvas, doc):
     # словесный знак
     canvas.setFillColor(INK)
     canvas.setFont("Display-B", 15)
-    w = canvas.stringWidth("Vent", "Display-B", 15)
-    canvas.drawString(M_L, top, "Vent")
-    if HAS_MARGGRAFF:
-        canvas.setFillColor(BRAND)
-        canvas.setFont("Accent", 19)
-        canvas.drawString(M_L + w + 3, top - 1, "clean")
-    else:
-        canvas.setFillColor(BRAND)
-        canvas.setFont("Display", 15)
-        canvas.drawString(M_L + w + 4, top, "clean")
+    w = canvas.stringWidth("vent", "Display-B", 15)
+    canvas.drawString(M_L, top, "vent")
+    canvas.setFillColor(BRAND)
+    canvas.setFont("Display-I", 15)
+    canvas.drawString(M_L + w, top, ".team")
 
     canvas.setFillColor(INK_FAINT)
     canvas.setFont("Mono", 7.2)
@@ -236,7 +228,7 @@ def furniture(canvas, doc):
     canvas.setFillColor(INK_SOFT)
     canvas.setFont("Body", 7.6)
     canvas.drawString(M_L, base,
-                      "+7 (495) 120-04-04   ·   hello@vent-clean.ru   ·   vent-clean.ru")
+                      "+7 (495) 120-04-04   ·   hello@vent.team   ·   vent.team")
     canvas.setFillColor(INK_FAINT)
     canvas.setFont("Mono", 7.2)
     canvas.drawRightString(PAGE_W - M_R, base, "%d" % doc.page)
@@ -245,8 +237,8 @@ def furniture(canvas, doc):
 doc = BaseDocTemplate(OUT, pagesize=A4,
                       leftMargin=M_L, rightMargin=M_R,
                       topMargin=M_TOP, bottomMargin=M_BOT,
-                      title="Прайс-лист Vent Clean 2026",
-                      author="Vent Clean", subject="Прайс-лист на 2026 год")
+                      title="Прайс-лист vent.team 2026",
+                      author="vent.team", subject="Прайс-лист на 2026 год")
 frame = Frame(M_L, M_BOT, PAGE_W - M_L - M_R, PAGE_H - M_TOP - M_BOT, id="body",
               leftPadding=0, rightPadding=0, topPadding=0, bottomPadding=0)
 doc.addPageTemplates([PageTemplate(id="all", frames=[frame], onPage=furniture)])

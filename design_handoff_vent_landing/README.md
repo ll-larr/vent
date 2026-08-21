@@ -57,11 +57,11 @@
 | **Fraunces** | 300 (заголовки), 400 (подзаголовки/карточки), italic 300 (цитаты, акцент «свой объект») | все заголовки, крупные цифры, телефон/почта в форме |
 | **Inter Tight** | 400, 500, 600 | body-текст, кнопки, поля |
 | **JetBrains Mono** | 400, 500 | метки, номера, цены, служебный текст — всегда `text-transform:uppercase` + `letter-spacing:.1–.16em` |
-| **Marggraff** | локальный `.woff2` | **только** для «.team» в логотипе и футере |
+| ~~**Marggraff**~~ | снят 21.08.2026 | «.team» набирается курсивом Fraunces, отдельной гарнитуры больше нет |
 
 Подключение Google Fonts:
 `Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500` + `Inter+Tight:wght@400;500;600` + `JetBrains+Mono:wght@400;500`, `display=swap`.
-Marggraff — `@font-face` из `fonts/marggraff-kursiv-zarte.woff2`, `font-display:swap`.
+Marggraff снят вместе с ребрендингом: «.team» — italic-начертание Fraunces.
 
 ### Типографическая шкала
 
@@ -116,7 +116,7 @@ Marggraff — `@font-face` из `fonts/marggraff-kursiv-zarte.woff2`, `font-disp
 | Пункты меню | `rgba(246,243,236,.72)`, активный `#c8ff3e` | `rgba(20,19,18,.6)`, активный `#141312` |
 | Подчёркивание активного | `#c8ff3e` | `#1e5c32` |
 
-Переход — `.45s ease`. Логотип: Fraunces 400, 21 px, `ls:-.02em`, «vent» + «.team» гарнитурой Marggraff `.9em`.
+Переход — `.45s ease`. Логотип: Fraunces 400, 21 px, `ls:-.02em`, «vent» + «.team» курсивом Fraunces, без разрядки между частями.
 Меню: 13.5 px, пункты «Технология / Как работаем / Преимущества / Объекты / Скидки / Вопросы / Статьи», `gap:clamp(13px,1.7vw,28px)`. Под активным пунктом — линия 1.5 px, `transform:scaleX(0→1)`, `transform-origin:left`, `.4s cubic-bezier(.16,1,.3,1)`.
 Телефон: JetBrains Mono 11.5 px, `ls:.06em`.
 CTA «Рассчитать →»: лайм-пилюля, `padding:10px 17px`, 13 px / 500; ховер — фон `#141312`, текст `#c8ff3e`.
@@ -460,7 +460,7 @@ CTA «Рассчитать →»: лайм-пилюля, `padding:10px 17px`, 13
 
 Старые стоковые файлы (`grease*`, `dust*`, `reservoir*`, `service-*`, `promo-restaurant`) остались в `img/` и используются только в **теле статей** (блоки `img` и `pair`). Их тоже нужно заменить реальными снимками, когда заказчик их пришлёт — это единственные нефинальные картинки в макете.
 
-`design/fonts/marggraff-kursiv-zarte.woff2` — акцидентный шрифт **только** для «.team».
+`design/fonts/marggraff-kursiv-zarte.woff2` — акцидентный шрифт «.team»; в порте снят, «.team» идёт курсивом Fraunces.
 
 Иконки — только две, инлайновые SVG в форме: Telegram и WhatsApp (`viewBox="0 0 24 24"`, `fill="currentColor"`, 22×22 в кружке 50 px). Иконочный шрифт не подключается.
 

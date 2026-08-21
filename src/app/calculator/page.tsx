@@ -11,7 +11,7 @@ import { faqSchema, jsonLdScript } from '@/lib/schema';
 import { PACKAGES, SERVICES, formatPrice } from '@/lib/pricing';
 
 export const metadata: Metadata = {
-  // Root layout template appends "· Vent Clean" — keep the page title bare.
+  // Root layout template appends "· vent.team" — keep the page title bare.
   title: 'Калькулятор стоимости чистки вентиляции',
   description:
     'Рассчитайте онлайн стоимость промышленной чистки вентиляции и вытяжек для общепита, офиса или производства. Цены от 85 ₽/пог.м.',

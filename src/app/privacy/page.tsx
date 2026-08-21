@@ -6,7 +6,7 @@ import { ArrowRight } from '@/lib/icons';
 export const metadata: Metadata = {
   title: 'Согласие на обработку персональных данных',
   description:
-    'Какие данные собирает Vent Clean через форму заявки, для чего, как хранит и сколько. Документ в соответствии с 152-ФЗ РФ.',
+    'Какие данные собирает vent.team через форму заявки, для чего, как хранит и сколько. Документ в соответствии с 152-ФЗ РФ.',
   robots: { index: false, follow: true },
   alternates: { canonical: '/privacy' },
 };
@@ -65,7 +65,7 @@ const SECTIONS: Array<{ n: string; title: string; body: React.ReactNode }> = [
       <>
         <p>
           Заявки попадают в защищённую таблицу Google Sheets, доступ к которой имеет только команда
-          Vent Clean. Резервные копии хранятся на серверах в РФ. Данные передаются по защищённому
+          vent.team. Резервные копии хранятся на серверах в РФ. Данные передаются по защищённому
           соединению.
         </p>
         <p>Мы передаём данные третьим лицам только в трёх случаях:</p>
@@ -223,7 +223,7 @@ export default function PrivacyPage() {
             </span>
           </div>
           <div>
-            © 2021–2026 Vent Clean ·{' '}
+            © 2021–2026 vent.team ·{' '}
             <Link
               href="/privacy"
               className="text-bg/70 border-b border-bg/[.15] hover:text-accent hover:border-accent"

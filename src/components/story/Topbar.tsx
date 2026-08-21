@@ -56,10 +56,10 @@ export function Topbar({
     >
       <Link
         href={story ? '/#01' : '/'}
-        className="flex flex-[0_0_auto] items-baseline gap-[.18em] font-display text-[21px] font-normal tracking-[-.02em] text-inherit"
+        className="flex flex-[0_0_auto] items-baseline font-display text-[21px] font-normal tracking-[-.02em] text-inherit"
       >
         vent
-        <span className="story-logo-tail font-logo text-[.9em] text-accent">clean</span>
+        <span className="story-logo-tail italic text-accent">.team</span>
       </Link>
 
       <nav

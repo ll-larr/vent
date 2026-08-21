@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'Vent Clean — промышленная чистка вентиляции';
+export const alt = 'vent.team — промышленная чистка вентиляции';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -30,7 +30,7 @@ export default async function OG() {
             display: 'flex',
           }}
         >
-          Vent Clean — est. 2021
+          vent.team — est. 2021
         </div>
         <div
           style={{

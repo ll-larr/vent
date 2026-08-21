@@ -86,9 +86,9 @@ separates its cards with a 1px gap, not with per-card borders. Borders double up
 
 ### Fonts
 
-- **Inter Tight** (body), **JetBrains Mono** (labels), **Fraunces** (display) and **Marggraff**
-  (the accent half of the wordmark, `clean`, and nothing else) — all self-hosted via
-  `next/font` in `src/app/layout.tsx`.
+- **Inter Tight** (body), **JetBrains Mono** (labels) and **Fraunces** (display) — all
+  self-hosted via `next/font` in `src/app/layout.tsx`. The wordmark is Fraunces throughout:
+  `vent` upright, `.team` in the real italic, no accent face.
 - Fraunces ships no Cyrillic, so Russian headings render in Georgia. The prototype behaves the
   same way; do not "fix" it by swapping the family.
 - Mono text is always uppercase and tracked — use the `.mono-label` class rather than repeating

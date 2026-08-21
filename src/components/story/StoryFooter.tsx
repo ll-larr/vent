@@ -62,7 +62,7 @@ export function StoryFooter({ variant = 'full' }: { variant?: 'full' | 'compact'
     return (
       <footer className="bg-ink px-[clamp(22px,3vw,56px)] pb-7 pt-0 text-bg">
         <div className={`${LEGAL_STRIP} border-t border-bg/[.12] pt-4`}>
-          <span>Vent Clean · чистка вентиляции · москва и область</span>
+          <span>vent.team · чистка вентиляции · москва и область</span>
           <Link href="/" className="border-b border-bg/20 text-bg/70 hover:text-accent">
             На главную
           </Link>
@@ -76,8 +76,8 @@ export function StoryFooter({ variant = 'full' }: { variant?: 'full' | 'compact'
       <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] items-start gap-[clamp(24px,3vw,56px)]">
         <div className="col-span-2 min-w-0 max-[719px]:col-span-1">
           <div className="font-display text-[clamp(30px,4.4vw,72px)] font-light leading-[.93] tracking-[-.032em]">
-            vent{' '}
-            <span className="font-logo text-[.85em] text-accent">clean</span>
+            vent
+            <span className="italic text-accent">.team</span>
             <br />
             чистим то,
             <br />
@@ -117,7 +117,7 @@ export function StoryFooter({ variant = 'full' }: { variant?: 'full' | 'compact'
       </div>
 
       <div className={`${LEGAL_STRIP} mt-[34px] border-t border-bg/10 pt-4`}>
-        <span>Vent Clean · реквизиты — после регистрации юрлица</span>
+        <span>vent.team · реквизиты — после регистрации юрлица</span>
         <Link href="/privacy" className="border-b border-bg/20 text-bg/70 hover:text-accent">
           Политика конфиденциальности
         </Link>

@@ -22,10 +22,6 @@
   --font-display: var(--font-fraunces), Georgia, serif;
   --font-sans:    var(--font-inter-tight), system-ui, -apple-system, sans-serif;
   --font-mono:    var(--font-jetbrains-mono), ui-monospace, monospace;
-  /* Wordmark tail ".team" — Marggraff Kursiv Zarte, self-hosted via next/font
-     in layout.tsx (Basic Latin subset only, so it covers the wordmark alone). */
-  --font-logo:    var(--font-marggraff), var(--font-fraunces), Georgia, serif;
-
 
   /* Story design rounds pills, circles and badges only. The 3px on the
      calculator checkbox square is the single exception and lives inline.
