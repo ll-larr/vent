@@ -11,8 +11,8 @@ cleanvent-nextjs/
 docs/
 *.code-workspace
 
-# Nothing under public/fonts is loaded — the wordmark ships as a woff2 subset
-# from src/fonts — and everything under public/ is served publicly.
+# public/fonts is empty since the wordmark lost its accent face — the tail is
+# Fraunces italic now. Kept ignored so a stray font drop is never served.
 public/fonts/
 
 # Design handoff: 35 MB of prototypes and photo duplicates, not part of the site
